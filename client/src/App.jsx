@@ -12,14 +12,14 @@ import Analysze from "./pages/Analysze"
 import Tracker from "./pages/Tracker"
 import Profile from "./pages/Profile"
 import Footer from "./Components/Footer"
-import Navbar from "./Components/navebar"
+import Navebar from "./components/Navebar"
 
 
 
 
 const Layout = ({ children }) => (
   <div className="min-h-screen flex flex-col">
-    <Navbar />
+    <Navebar />
     <main className="flex-1">{children}</main>
     <Footer />
   </div>

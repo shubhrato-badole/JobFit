@@ -78,7 +78,7 @@ const Home = () => (
   <div className="bg-white">
 
     {/* HERO */}
-    <section className="max-w-6xl mx-auto px-8 pt-20 pb-28 min-h-[88vh] flex flex-col md:flex-row items-center gap-16">
+    <section className="max-w-6xl mx-auto px-8 pt-15 pb-25 min-h-[80vh] flex flex-col md:flex-row items-center gap-16">
       <div className="flex-1">
         <div className="inline-flex items-center gap-2 text-xs text-gray-500 border border-gray-200 rounded-full px-3 py-1.5 mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
