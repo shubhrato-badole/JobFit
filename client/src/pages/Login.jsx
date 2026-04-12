@@ -1,9 +1,9 @@
 import React from "react"
 import { useState } from "react"
-import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { Link, useNavigate, useLocation } from 'react'
+import { useAuth } from './AuthContext'
 import axios, { formToJSON } from 'axios'
-import API from "../Components/Api"
+import API from "../components/Api"
 
 
 const Login = () => {

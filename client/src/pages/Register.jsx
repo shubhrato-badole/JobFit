@@ -1,7 +1,7 @@
 import React from "react"
-import { Link,  useState , useNavigate , } from "react-router-dom"
-import {useAuth} from "../context/AuthContext"
-import API from "../Components/Api"
+import { Link,  useState , useNavigate , } from "react"
+import {useAuth} from "./AuthContext"
+import API from "../components/Api"
 
 
 const Register = () => {

@@ -1,17 +1,18 @@
 import React from "react"
 import {BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import {AuthContex, useAuth} from "./pages/AuthContext"
+import {AuthProvider, useAuth} from "./pages/AuthContext"
 import ProtectedRoute from "./pages/protectedRoutes"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
-import onboarding from "./pages/Onboarding"
+import Onboarding from "./pages/Onboarding"
 import Dashboard from "./pages/Dashboard"
-import jobSearch from "./pages/JobSearch"
-
+import JobSearch from "./pages/JobSearch"
 import Analysze from "./pages/Analysze"
 import Tracker from "./pages/Tracker"
 import Profile from "./pages/Profile"
+import Footer from "./components/Footer"
+import Navbar from "./components/Navebar"
 
 
 
@@ -26,6 +27,8 @@ const Layout = ({ children }) => (
 
 const AppRoutes = () =>{
 const {user} = useAuth();
+
+return(
 <Layout>
     <Routes>
 
@@ -34,12 +37,26 @@ const {user} = useAuth();
       <Route path="/login" element={ user ? <Login/> : <Dashboard/>}></Route>
       <Route path="/register" element={user ? <Register/> : <Dashboard/>}></Route>
 
-      <Route path="/onboarding" element= {<ProtectedRoute> <onboarding/> </ProtectedRoute> }/>
-      <Route path="/onboarding" element= {<ProtectedRoute> <Dashboard/> </ProtectedRoute> }/>
-      <Route path="/onboarding" element= {<ProtectedRoute> <jobSearch/> </ProtectedRoute> }/>
-      <Route path="/onboarding" element= {<ProtectedRoute> <Analysze/> </ProtectedRoute> }/>
-     <Route path="/onboarding" element= {<ProtectedRoute> <Tracker/> </ProtectedRoute> }/>
-      <Route path="/onboarding" element= {<ProtectedRoute> <Profile/> </ProtectedRoute> }/>
+      <Route path="/onboarding" element= {<ProtectedRoute> <Onboarding/> </ProtectedRoute> }/>
+      <Route path="/Dashboard" element= {<ProtectedRoute> <Dashboard/> </ProtectedRoute> }/>
+      <Route path="/JobSearch" element= {<ProtectedRoute> <JobSearch/> </ProtectedRoute> }/>
+      <Route path="/Analysze" element= {<ProtectedRoute> <Analysze/> </ProtectedRoute> }/>
+     <Route path="/Tracker" element= {<ProtectedRoute> <Tracker/> </ProtectedRoute> }/>
+      <Route path="/Profile" element= {<ProtectedRoute> <Profile/> </ProtectedRoute> }/>
     </Routes>
     </Layout>
+)
 }
+
+ 
+
+const App = () => (
+  <BrowserRouter>
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
+  </BrowserRouter>
+)
+ 
+export default App
+ 

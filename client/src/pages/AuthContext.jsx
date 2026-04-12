@@ -1,12 +1,12 @@
 import React from "react"
-import{useState , useContext , createContext , useEffect} from "react-router-dom"
-import API from "../Components/Api"
+import{useState , useContext , createContext , useEffect} from "react"
+import API from "../components/Api"
 
 
 
 const AuthContext =createContext(null);
 
-const authProvider =   ({children}) => {
+export const AuthProvider =   ({children}) => {
  const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -24,17 +24,17 @@ const checkAuth = async () => {
 } 
   } , [])
 
-const login = (userData) => setUser(userData)
+const Login = (userData) => setUser(userData)
 
   const logout = async () =>{
     try{
 await API.post("/api/auth/logout")} catch {}
-setUser("null")
+setUser(null)
   }
 
   
 return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, Login, logout }}>
       {children}
     </AuthContext.Provider>
   )
