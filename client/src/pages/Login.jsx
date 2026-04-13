@@ -16,8 +16,8 @@ const Login = () => {
         password: "",
 
     })
-    const [loading, setLoading] = useState(false)
-    const [serverError, setServerError] = useState("")
+    const [loading, setLoading] = useState(false);
+    const [serverError, setServerError] = useState("");
     const from = location.state?.from?.pathname || '/dashboard'
 
 
@@ -48,15 +48,16 @@ const Login = () => {
 
 
 return(
-    <div className="flex felx-col item-center justify-center">
-        <div>
-            <div>
-                <p>job <span>fit</span></p>
-                <h1>welcome back </h1>
-                <p> Login to continue your job search</p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+        <div className=" w-full max-w-sm  ">
+            <div className="text-center mb-5">
+                <p className="text-xl text-gray-900 font-semibold tracking-tight">Job<span className="text-blue-600">Fit</span></p>
+                <h1 className="text-xl font-semibold text-gray-900 mt-2 mb-1 ">welcome back </h1>
+                <p  className="text-sm text-gray-600"> Login to continue your job search</p>
             </div>
 
-
+        <div  className="bg-white rounded-2xl border border-gray-200 p-7">
+ 
             <button
                 type="button"
                 className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors mb-5"
@@ -76,34 +77,42 @@ return(
                 <div className="flex-1 h-px bg-gray-100" />
             </div>
 
-            {error && (
+            {serverError && (
                 <div className="mb-4 px-3 py-2.5 bg-red-50 border border-red-100 rounded-lg text-sm text-red-600">
                     {serverError}
                 </div>
             )}
+    
 
-            <div>
-                <form onClick={handleSubmit}>
-                    <div>
-                        <label >Email adress</label>
-                        <a href="#" >foorget password</a>
+           
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div >
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5" >Email address</label>
+                     
                         <input type="email"
                             name="email"
                             placeholder="example@gmail.com"
-                            value={Form.password}
-                            onChnage={handleChange} />
+                            value={Form.email}
+                            onChange={handleChange} 
+                             className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-blue-400 transition-colors"
+                             />
+                            
 
                     </div>
-                    <div>
-                        <label >password</label>
+                    <div  className="flex  items-center justify-between ">
+                        <label className="text-sm font-medium text-gray-700">password</label>
+                       <a href="#"  className="text-end text-sm text-blue-600 hover:underline">foorget password</a>
+                       </div>
                         <input type="password"
                             name="password"
                             placeholder="password"
-                            value={Form.email}
-                            onChnage={handleChange} />
+                            value={Form.password}
+                            onChange={handleChange} 
+                            className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-blue-400 transition-colors"
+                            />
 
-                    </div>
-                    <button type="submit"  >
+                   
+                    <button type="submit" className="w-full py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" >
 
                         {loading
                             ? <>
@@ -115,10 +124,11 @@ return(
                             : 'Login'
                         }
 
-                        Login</button>
+                        </button>
                 </form>
-            </div>
-            <p>Don't have an account {''}  <Link to="/register" className="text-gray-900 font-medium hover:underline">
+                        </div>
+            
+            <p className="text-sm text-gray-500 text-center mt-4">Don't have an account? {''}  <Link to="/register" className="text-blue-600 font-medium hover:underline">
                 Create one free
             </Link>
             </p>

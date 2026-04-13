@@ -1,5 +1,5 @@
-import React from "react"
-import { Link,  useState , useNavigate , } from "react"
+import {React ,  useState }from "react"
+import { Link,   useNavigate  } from "react-router-dom"
 import {useAuth} from "./AuthContext"
 import API from "../components/Api"
 
@@ -14,7 +14,7 @@ const [user , setUser] = useState({
     password: "",
 });
 const [error , seterror] = useState();
-const [Loading , setLoading] = useState ();
+const [Loading , setLoading] = useState(false);
 
 
 const handleChange = (e) =>{
@@ -111,7 +111,7 @@ return (
           </div>
 
           <button type="submit">
-             {loading
+             {Loading
                             ? <>
                                 <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
                                     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="30 70" />
@@ -120,7 +120,6 @@ return (
                             </>
                             : 'Login'
                         }
-             Login
           </button>
           </form>
         
