@@ -48,12 +48,12 @@ try {
 
 return (
 
-<div>
-    <div>
-           <div>
-            <p>job <span>fit</span></p>
-            <h1>Create your account</h1>
-            <p>Start analyzing jobs in under 2 minutes</p>
+<div  className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-5">
+    <div className="w-full max-w-sm">
+           <div className="text-center mb-5">
+            <p  className="text-xl font-semibold text-gray-900 mb-2" >Job<span className="text-blue-600">Fit</span></p>
+            <h1 className="text-xl text-gray-900 font-semibold mb-1">Create your account</h1>
+            <p className="text-sm text-gray-500"> Start analyzing jobs in under 2 minutes</p>
            </div>
 
            <div className="bg-white rounded-2xl border border-gray-200 p-7">
@@ -77,7 +77,7 @@ return (
             <span className="text-xs text-gray-400">or</span>
             <div className="flex-1 h-px bg-gray-100" />
           </div>
-          </div>
+         
  
                {error && (
             <div className="mb-4 px-3 py-2.5 bg-red-50 border border-red-100 rounded-lg text-sm text-red-600">
@@ -85,32 +85,41 @@ return (
             </div>
           )}
 
-          <form onClick= {handleSubmit}>
-          <div>
-            <label > Full name </label>
+         
+          <form onSubmit= {handleSubmit}>
+         <div className="flex flex-col gap-2">
+          
+            <label className="text-sm text-gray-900"> Full Name </label>
             <input type="text" 
               name ="name "
-             placeholder="job fit"
+             placeholder="JobFit"
              onChange={handleChange} 
-            />
-          </div>
-          <div>
-           <lable>Email adress</lable>
+          className=" w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 outline-none 
+          focus:border-blue-400 transition-colors
+          "  />
+        
+          
+           <lable className="text-sm ">Email adress</lable>
            <input type="email"
                  name ="email"
                  placeholder="example@gmail.com"
-                 onChnage={handleChange}
-            />
-          </div>
-          <div 
-          type ="password"
+                 onChange={handleChange}
+          className=" w-full border border-gray-200 px-3 py-2.5 rounded-xl text-sm" outline-none focus:border-blue-400 transition-colors  />
+       
+    
+         <lable className="text-sm ">Password</lable>
+          <input type ="password"
           name = "password"
           placeholder="Minimum 8 character"
-          onChnage={handleChange}
-          >
-          </div>
+          onChange={handleChange}
+          className=" w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 "
+           />
+        
 
-          <button type="submit">
+          <button type="submit" 
+           disabled={Loading}
+           className="w-full text-sm text-white bg-black px-3 py-2.5 mt-2 rounded-xl
+           hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2  ">
              {Loading
                             ? <>
                                 <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -121,16 +130,18 @@ return (
                             : 'Login'
                         }
           </button>
+          </div>
           </form>
+          
+           </div>
         
         <div>
-          <p>By creating an account you agree to our 
-            <a href="#">Terms</a>   and
-           <a href="#"> Privacy Policy</a>  </p>
+          <p className="inline-felx flex-wrap text-sm text-center mt-2 text-gray-600">By creating an account you agree to our  <a href="#" className="text-blue-600">Terms</a>   and
+           <a href="#" className="text-blue-600"> Privacy Policy</a>  </p>
 
-           <p className="text-sm text-gray-500 text-center mt-5">
+           <p className="text-sm text-gray-500 text-center  mt-5">
           Already have an account?{' '}
-          <Link to="/login" className="text-gray-900 font-medium hover:underline">
+          <Link to="/login" className="text-blue-600 font-medium hover:underline">
             Login
           </Link>
         </p>
