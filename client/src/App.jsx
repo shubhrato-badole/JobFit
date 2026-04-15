@@ -5,7 +5,6 @@ import ProtectedRoute from "./pages/protectedRoutes"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
-import 
 import Onboarding from "./pages/Onboarding"
 import Dashboard from "./pages/Dashboard"
 import JobSearch from "./pages/JobSearch"
