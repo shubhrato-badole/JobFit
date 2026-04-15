@@ -1,4 +1,4 @@
-import { email, string, z } from "zod";
+import { z } from "zod";
 
 const email = z
     .string()
@@ -24,11 +24,11 @@ export const LoginSchema = z.object({
  export const validation = (schema) => {
     return (req, res, next) => {
         const result = schema.safeParse(req.body);
-        if (!message.sucess) {
+        if (!result.sucess) {
             const error = result.error.errors[0].message;
             return res.status(400).json({
                 success: false,
-                message,
+                error,
             });
         }
 

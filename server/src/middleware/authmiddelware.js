@@ -1,19 +1,20 @@
 import jwt from "jsonwebtoken"
-import axios from "axios"
 import db from "../database"
 
 
- export const Authorization = async (res , req, next) =>{
 
-const {acesstoken , refreshtoken} = req.cookies;
+ export const Authorization = async (req , res , next) =>{
 
-     if(!acesstoken){
+const {accessToken , refreshtoken} = req.cookies;
+
+     if(!accessToken){
    return res.status(401).json({
     error: 'Not authenticated'
    })
      }
+
       try{
-    const decoded = jwt.verify( acesstoken ,process.env.JWT_SECRET)
+    const decoded = jwt.verify( accessToken ,process.env.JWT_SECRET_ACESSTOKEN)
     req.user = decoded; //email and userID
     next()
 
@@ -29,30 +30,32 @@ const {acesstoken , refreshtoken} = req.cookies;
          }
 
      try{
-        const decoded = jwt.verify(refreshtoken , process.env.JWT_SECRET)
-        const user = decoded.user
+        const decoded = jwt.verify(refreshtoken , process.env.JWT_SECRET_REFRESHTOKEN)
         
-        const result = await db.query("SELECT FROM user WHERE id= $1 ," [user.userID])
-        const savedRefreshtoken = result.row[0].refreshtoken
+        const result = await db.query("SELECT * FROM users WHERE id= $1 "  ,[decoded.id])
+        const user = result.rows[0]
         
-        if(refreshtoken !== savedRefreshtoken){
+        if(!user || user.refreshtoken  !== refreshtoken){
          return res.status(401).json({
              error: 'Not authenticated'
          })
         }
         
-        const acesstoken = jwt.sign({ userID : result.id , email:result.eamil },
-             process.env.JWT_SECRET,
-             {expiresIn: '1h'}
+        const newaccessToken = jwt.sign({ id : user.id , email:user.email },
+             process.env.JWT_SECRET_ACESSTOKEN,
+             {expiresIn: '30m'}
         )                 
     
 
-       res.cookie("acesstoken" , acesstoken ,{
+       res.cookie("accessToken" , newaccessToken ,{
         httpOnly:true,
         secure:true,
-         sameSite: "lax",
+         sameSite: "strict",
+         maxAge: 30 * 60 * 1000,
         })
-        req.user = result.row[0]?.id;
+        req.user = {id: user.id,
+        email: user.email,
+         }; 
         next();
 
       } catch(err){
