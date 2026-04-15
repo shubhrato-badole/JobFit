@@ -10,6 +10,7 @@ const navigate = useNavigate();
 const location = useLocation();
 
 const Activelocation = (path) => location.pathname === path 
+const pathname = location.pathname;
 
 const HandleLogout = async () =>{
     await logout();
@@ -37,7 +38,7 @@ const HandleLogout = async () =>{
 if (user){
     return(
         <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-<div className="w-full h-16 flex item-flex  px-8 gap-4">
+<div className="w-full h-16 flex  items-center px-8 gap-4">
    <Link to= "/" className="textgray-900 text-xl font-semibold">Job <span 
    className="text-blue-600">Fit </span>
    </Link>
@@ -58,11 +59,11 @@ if (user){
    }
    </div>
    <div className="flex item-flex gap-3">
-    <div className="text-ms text-gray-600">{initials}</div>
+    <div className="text-ms text-gray-600 bg-gray-200 px-4 py-2 rounded-full">{initials}</div>
 
  <button
               onClick={HandleLogout}
-              className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+              className="px-4 py-1.5 text-sm text-red-600 hover:bg-red-100 rounded-full"
             >
               Logout
             </button>
@@ -74,18 +75,20 @@ if (user){
 
 return (
 
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-   <div className=" w-full flex felx-centre px-10 h-20 gap-6">
-    <Link to="/" className="text-gary-900 text-xl mt-6 font-semibold">Job<span className="text-blue-600">Fit</span></Link>
-   <div className="flex item-center gap-6 flex-1">
+    <nav className="sticky flex top-0 z-50 bg-white border-b border-gray-200">
+   <div className=" w-full flex items-center px-10 h-20 gap-6">
+    <Link to="/" className="text-gary-900 text-xl font-semibold">Job<span className="text-blue-600">Fit</span></Link>
+   <div className="flex items-center gap-6 flex-1">
 <div className="flex items-center gap-6 flex-1">
-          <a href="#how" className="text-ml text-gray-500 hover:text-gray-900">
+          <a href= { pathname === "/login"? "/" : "#how"} className="text-ml text-gray-500 hover:text-gray-900">
             How it works
           </a>
-          <a href="#features" className="text-ml text-gray-500 hover:text-gray-900">
+          
+          <a href={ pathname === "/login"? "/" :"#features"} className="text-ml text-gray-500 hover:text-gray-900">
             Features
           </a>
-          <a href="#faq" className="text-ml text-gray-500 hover:text-gray-900">
+        
+          <a href={ pathname === "/login"? "/" :"#faq" }className="text-ml text-gray-500 hover:text-gray-900">
             FAQ
           </a>
         </div>

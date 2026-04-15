@@ -13,7 +13,7 @@ const ProtectedRoute = ({children}) =>{
     )
     }
     
-    return user ? Children : <Navigate to="/login" replace />
+    return user ? children : <Navigate to="/login" replace />
 }
 
 export default ProtectedRoute

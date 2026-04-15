@@ -13,6 +13,7 @@ const [user , setUser] = useState({
     email : "",
     password: "",
 });
+
 const [error , seterror] = useState();
 const [Loading , setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ const handleChange = (e) =>{
                 ...prev,
                 [e.target.name]: e.target.value
             }))
-            setServerError('')
+            seterror('')
 
 }
 
@@ -30,19 +31,21 @@ const handleSubmit = async (e) => {
   e.preventDefault()
         setLoading(true)
 
+
 try {
-    const {data} = await API.post("api/auth/register" , user)
+    const {data} = await API.post("/api/auth/register" , user)
      Login(data.user)
+     console.log(data.user)
       navigate('/onboarding')
-} catch (err){
+         } catch (err){
     // Backend sends specific messages like:
       // "Email already in use"
       // "Password must be at least 8 characters"
-      seterror(err.response?.data?.error || 'Something went wrong')
-    } finally {
-      setLoading(false)
-}
-}
+              seterror(err.response?.data?.error || 'Something went wrong')
+          } finally {
+             setLoading(false)
+       }
+      }
 
 
 
@@ -91,25 +94,28 @@ return (
           
             <label className="text-sm text-gray-900"> Full Name </label>
             <input type="text" 
-              name ="name "
+              name="name"
              placeholder="JobFit"
              onChange={handleChange} 
+             value={user.name}
           className=" w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 outline-none 
           focus:border-blue-400 transition-colors
           "  />
         
           
-           <lable className="text-sm ">Email adress</lable>
+           <label className="text-sm ">Email adress</label>
            <input type="email"
                  name ="email"
+                  value={user.email}
                  placeholder="example@gmail.com"
                  onChange={handleChange}
           className=" w-full border border-gray-200 px-3 py-2.5 rounded-xl text-sm" outline-none focus:border-blue-400 transition-colors  />
        
     
-         <lable className="text-sm ">Password</lable>
+         <label className="text-sm ">Password</label>
           <input type ="password"
-          name = "password"
+          name ="password"
+           value={user.password}
           placeholder="Minimum 8 character"
           onChange={handleChange}
           className=" w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 "
@@ -127,7 +133,7 @@ return (
                                 </svg>
                                 Logging in...
                             </>
-                            : 'Login'
+                            : 'Register'
                         }
           </button>
           </div>
@@ -142,7 +148,7 @@ return (
            <p className="text-sm text-gray-500 text-center  mt-5">
           Already have an account?{' '}
           <Link to="/login" className="text-blue-600 font-medium hover:underline">
-            Login
+             Login
           </Link>
         </p>
        </div>

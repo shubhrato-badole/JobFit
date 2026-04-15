@@ -1,17 +1,17 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import express from "express"
-import db from "../database"
-import {inputValidation , LoginSchema , RegisterSchema }from "../middleware/inputValidation"
-import authMiddelware from "../middleware/authmiddelware"
-import rateLimit from "../middleware/RateLimit"
+import db from "../database.js"
+import {inputValidation , LoginSchema , RegisterSchema }from "../middleware/inputValidation.js"
+import Authorization from "../middleware/authmiddelware.js"
+import RateLimit from "../middleware/RateLimit.js"
 
 
 const router = express.Router();
 
 const cookies_options = ({
     httpOnly: true,
-  secure:   process.env.NODE_ENV === 'production',
+  secure:   false,
   sameSite: 'strict',
   maxAge:    30 * 60 * 1000,
 })
@@ -19,13 +19,13 @@ const cookies_options = ({
 
 const cookies_options_refreshToken= ({
     httpOnly: true,
-  secure:   process.env.NODE_ENV === 'production',
+  secure:  false,
   sameSite: 'strict',
   maxAge:   7 * 24 * 60 * 60 * 1000,
 })
 
 
- router.post("/register" , rateLimit ,inputValidation(RegisterSchema), async  (req , res) =>{
+ router.post("/register" , RateLimit ,inputValidation(RegisterSchema), async  (req , res) =>{
     const {name , email ,password} = req.body;
 
      try{ 
@@ -75,7 +75,7 @@ const cookies_options_refreshToken= ({
 
 
 
-router.post("/login" , rateLimit , inputValidation(LoginSchema), async (req , res) =>{
+router.post("/login" , RateLimit , inputValidation(LoginSchema), async (req , res) =>{
  const {email , password} = req.body;
 
  const existing = await db.query("SELECT * FROM users WHERE email=$1" , [email.toLowerCase().trim()])
@@ -88,8 +88,8 @@ if(existing.rows.length === 0){
 try {
     const user = existing.rows[0]
 
-const passwordValid = await user && bcrypt.compare(password , user.password)
- if ( !user ||!passwordValid) {
+const passwordValid = await  bcrypt.compare(password , user.password)
+ if (!passwordValid) {
       return res.status(401).json({ error: 'Incorrect email or password' })
     }
 
@@ -107,7 +107,6 @@ const passwordValid = await user && bcrypt.compare(password , user.password)
 
 
      res.cookie("accessToken" , accessToken , cookies_options)
-    res.cookie("refreshtoken" , refreshtoken , cookies_options_refreshToken)
 
 res.status(201).json({
       user: {
@@ -120,13 +119,14 @@ res.status(201).json({
     })
     }catch(err){
     console.error('Register error:', err)
+      console.error("REGISTER ERROR:", err) 
     res.status(500).json({ error: 'Server error. Please try again.' })
     }
     
 } )
 
 
-router.get("/me", authMiddelware , async  (req , res ) => {
+router.get("/me", Authorization , async  (req , res ) => {
 
 try{
    const {rows} =  await db.query("SELECT * FROM users WHERE id=$1" , [req.user.id])
@@ -167,4 +167,4 @@ router.post("/logout"  , (req, res) =>{
 
 })
 
-module.exports = router
+export default router ;

@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken"
-import db from "../database"
+import db from "../database.js"
 
 
 
- export const Authorization = async (req , res , next) =>{
+ const Authorization = async (req , res , next) =>{
 
 const {accessToken , refreshtoken} = req.cookies;
 
@@ -49,7 +49,7 @@ const {accessToken , refreshtoken} = req.cookies;
 
        res.cookie("accessToken" , newaccessToken ,{
         httpOnly:true,
-        secure:true,
+        secure:false,
          sameSite: "strict",
          maxAge: 30 * 60 * 1000,
         })
@@ -71,4 +71,4 @@ const {accessToken , refreshtoken} = req.cookies;
 
 } 
 
-
+ export default Authorization;
