@@ -3,6 +3,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
 import authRoutes from "./routes/auth.js"
+import Resume from "./routes/resume.js"
 import db from "./database.js"
 
 
@@ -21,6 +22,8 @@ app.use(cookieParser())
 
 
 app.use("/api/auth", authRoutes  )
+app.use("api/resume", Resume ) 
+
 
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err)
