@@ -5,6 +5,7 @@ import dotenv from "dotenv"
 import authRoutes from "./routes/auth.js"
 import Resume from "./routes/resume.js"
 import db from "./database.js"
+import Analyzse from "./routes/jobanalysze.js"
 
 
 
@@ -22,7 +23,8 @@ app.use(cookieParser())
 
 
 app.use("/api/auth", authRoutes  )
-app.use("api/resume", Resume ) 
+app.use("/api/resume", Resume )
+app.use("/api/ai" , Analyzse )
 
 
 app.use((err, req, res, next) => {

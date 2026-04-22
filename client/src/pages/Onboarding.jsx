@@ -5,11 +5,6 @@ import { useEffect } from "react";
 
 
 
-
-
-
-
-
 const ScoreRing = ({score}) =>{
   const color = score >=75 ? '#16a34a' :  score >= 50 ? '#d97706' : '#dc2626'
   const label = score >=75 ?' Strong resume' : score >=50 ?  'Decent resume' : 'Needs work'
@@ -50,16 +45,15 @@ const OnBoarding = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [Dragging, setDragging] = useState(false);
-  const [Status, setStatus] = useState('done');
-  const [result, setResult] = useState(
-  );
+  const [Status, setStatus] = useState('ideal');
+  const [result, setResult] = useState(null);
 
 
 useEffect(()=>{
   const checkExisting = async ()=>{
     try{
     const {data} = await API.get("/api/resume/status")
-    if(data.hasResume && data.score){
+    if(data.hasResume && data.score !== null){
       setResult({
             score:       data.score,
             strong:      data.feedback?.strong      || [],
@@ -115,17 +109,17 @@ useEffect(()=>{
 
 
     try {
-      const analyzeTimer = settimeout(()=> setStatus('analyzing'), 1500)
-      const result = await API.post("/api/resume/upload", formData, {
+      const analyzeTimer = setTimeout(()=> setStatus('analyzing'), 1500)
+      const {data} = await API.post("/api/resume/upload", formData, {
         headers: { "Content-Type": 'multipart/form-data' }
       })
      clearTimeout(analyzeTimer)
       setStatus('done')
       setResult({
-        score: result.score ,
-        strong: result.strong || [],
-        improve: result.improve || [],
-        targetRoles: result.targetRoles || [],
+        score: data.score ,
+        strong: data.strong || [],
+        improve: data.improve || [],
+        targetRoles: data.targetRoles || [],
       })
     }
     catch (err) {
@@ -202,7 +196,7 @@ useEffect(()=>{
 {Status === 'analyzing' &&  (
                 <div>
               <div>
-               <h1 className="text-xl text-gary-900 font-semibold mb-1 ">Analyzing your resume</h1>
+               <h1 className="text-xl text-gray-900 font-semibold mb-1 ">Analyzing your resume</h1>
                 <p className="text-xs text-gray-500  mb-6 leading-relaxed">AI is reviewing your resume quality and finding the best roles for you...</p>
               </div> 
                 <div className="flex flex-col items-center py-4">
@@ -326,17 +320,12 @@ useEffect(()=>{
 
 
 
-{Status === 'done' &&  (
+{Status === 'done' && result && (
        <div className="w-full max-w-lg">
         <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-4">
            <div className="flex items-center">
-           <ScoreRing score={result?.score ?? 50}  />
+           <ScoreRing score={result?.score }  />
 
-{/* <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M5 12l5 5L20 7" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div> */}
     
       <div className="flex flex-col justify-center ml-8">
                 <h2 className="text-base font-semibold text-gray-900 mb-0.5 mx-">
@@ -353,7 +342,7 @@ useEffect(()=>{
 
 
           
-             {/* {result?.score !== null && ( */}
+             {result?.score !== null && (
                <div className="grid grid-cols-2 gap-4 mb-4"> 
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                      <div className="flex items-center gap-2 mb-3">
@@ -368,7 +357,7 @@ useEffect(()=>{
                    {result?.strong.length === 0 ?  <p className="text-xs text-gray-400">No data</p> : ( 
               <ul className="space-y-1.5">
                       {result?.strong.map((s , i)=> 
-                      <li key={i} className="text-xs text-gary-600 gap-2 leading-relaxed"> 
+                      <li key={i} className="text-xs text-gray-600 gap-2 leading-relaxed"> 
                       <span className="text-green-500 shrink-0 mt-0.5">•</span> {s}</li> 
                       )}
              </ul>)}
@@ -387,16 +376,16 @@ useEffect(()=>{
              {result?.improve.length === 0 ?  <p className="text-xs text-gray-400">No data</p> : 
              (
              <ul> {result?.improve.map((s,i)=>
-              <li key={i} className="text-xs text-gary-600 gap-2 leading-relaxed"><span 
+              <li key={i} className="text-xs text-gray-600 gap-2 leading-relaxed"><span 
               className="text-amber-500 shrink-0 mt-0.5">•</span>
               {s}</li>
              )}</ul>
-               )}
+               ) } 
                </div>
-      </div>
+      </div> )}
 
 
-                {/* {result?.targetRoles.length > 0 && (  */}
+                {result?.targetRoles.length > 0 && ( 
                    <div className="bg-white border border-gray-200 rounded-xl p-4 mb-4">
                     <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-3">
                     Roles you should target
@@ -410,14 +399,14 @@ useEffect(()=>{
                         )}
                       </div>
                 </div> 
-
+                )}
 
                 <div className="flex gap-3">
                   <button  onClick={() => navigate('/dashboard')}
                     className="flex-1 bg-gray-900 py-3 rounded-xl text-sm font-semibold text-white hover:bg-gray-700 transition-colors">
                     Go to dashboard →
                   </button>
-                  <button  onClick={() => navigate('/dashboard')}
+                  <button  onClick={() => navigate('/analyze')}
                       className="flex-1 bg-gray-900 py-3 rounded-xl text-sm font-semibold text-white hover:bg-gray-700 transition-colors">
                      Analyze a job
                   </button>

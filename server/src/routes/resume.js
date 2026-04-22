@@ -72,26 +72,25 @@ try{
 
     try{
         aiResult = await analyszeResume(resumeText)
-
-        await db.query(`UPDATE users SET resume_score = $1 
-        resume_feedback = $2 target_roles = $3 WHERE id=$4` ,
+        await db.query(`UPDATE users SET resume_score =$1, 
+        resume_feedback =$2 , target_roles =$3  WHERE id=$4`,
         [aiResult.score,
         JSON.stringify({ strong: aiResult.strong  , improve:aiResult.improve }),
         JSON.stringify(aiResult.targetRoles),
          req.user.id
         ])
 
-    } catch(err){
+    } catch(aiErr){
      console.error('AI resume analysis failed:', aiErr.message)
     }
 
     res.json({
          message:     'Resume uploaded successfully',
           hasResume:   true,
-         score:aiResult.score ?? null,
-          strong: aiResult.strong ?? [] ,
-         improve:aiResult.improve ?? [],
-         targetRoles: aiResult.targetRoles ?? [],
+         score:aiResult?.score ?? null,
+          strong: aiResult?.strong ?? [] ,
+         improve:aiResult?.improve ?? [],
+         targetRoles: aiResult?.targetRoles ?? [],
     })
 
 
@@ -104,5 +103,29 @@ console.error('Resume upload error:', err)
 }
 
 } ) 
+
+router.get("/status", Authorization, async (req, res) => {
+  try {
+    const result = await db.query(
+      `SELECT resume_score, resume_feedback, target_roles 
+       FROM users WHERE id = $1`,
+      [req.user.id]
+    )
+
+    const user = result.rows[0]
+
+    res.json({
+      hasResume: !!user,
+      score: user?.resume_score ?? null,
+      feedback: user?.resume_feedback ?? {},
+      targetRoles: user?.target_roles ?? []
+    })
+
+  } catch (err) {
+    console.error("Status error:", err)
+    res.status(500).json({ error: "Failed to fetch status" })
+  }
+})
+
 
 export default router ;

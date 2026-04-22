@@ -18,34 +18,21 @@ const Analysze = () => {
 
   const jobData = location.state || {}
   const [form, setForm] = useState({
-    company: jobData.company || 'IBM',
-    role: jobData.role || 'FULLSTACK DEVELOPER',
+    company: jobData.company || '',
+    role: jobData.role || '',
     jobDesc: jobData.jobDesc || ''
 
   })
 
   const [error, setError] = useState('');
-  const [status, setStatus] = useState('done');
-  const [result, setResult] = useState([]);
+  const [status, setStatus] = useState('ideal');
+  const [Result, setResult] = useState({
+  matchScore: 0,
+  missingSkill: [],
+  strengths: [],
+  suggestion: []
+});
   const [saved, setSaved] = useState(false);
-  const [Result, setRResult] = useState({
-    matchScore: 85,
-    missingSkill: ["TypeScript generics",
-      "Next.js App Router",
-      "Cypress E2E testing",
-      "WebSocket real‑time updates"],
-
-    strengths: ["React component architecture",
-      "Responsive CSS with Tailwind",
-      "REST API integration",
-      "Debugging with DevTools",
-      "Clear documentation"],
-
-    suggestion: ["Add TypeScript to a side project, focusing on component props and API responses.",
-      "Write a single unit test for your most used utility function using Jest.",
-      "Quantify the impact of one past project on your resume .",
-      "Prepare a 2‑minute explanation of how you'd implement the main feature described in this JD."],
-  })
 
   const handleChnage = (e) => {
     setForm(prev => 
@@ -67,7 +54,11 @@ const Analysze = () => {
 
     try {
       const { data } = await API.post("/api/ai/analyze", form)
-      setResult(data)
+      setResult( {matchScore: data.matchScore,
+  missingSkill: data.missingSkills || [],
+  strengths: data.strengths       || [],
+  suggestion: data.suggestions    ||[]
+})
       setStatus('done')
     } catch (err) {
       setError(err.response?.data?.error || 'Analysis failed. Please try again.')
@@ -134,12 +125,12 @@ const Analysze = () => {
                 rows={8}
                 className="border border-gray-200 w-full rounded-xl px-4 py-2" />
 
-              {/* <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-gray-400 mt-1">
               {form.jobDesc.length} characters
               {form.jobDesc.length > 0 && form.jobDesc.length < 50 && (
                 <span className="text-amber-500"> — paste more of the JD for accurate results</span>
               )}
-            </p> */}
+            </p>
 
             </div>
             {error &&
@@ -152,9 +143,9 @@ const Analysze = () => {
              hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" >
               {status === 'uploading' ? (
 
-                <div>
+                <div className="flex gap-5">
                   <>
-                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <svg className="animate-spin  w-4 h-4" viewBox="0 0 24 24" fill="none">
                       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="30 70" />
                     </svg>
                     Analyzing — usually takes 3-4 seconds...
@@ -172,28 +163,28 @@ const Analysze = () => {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-4 flex items-center gap-5">
               <div >
                 <p className="text-xs text-gray-600 mb-2">Match score </p>
-                <span className={`text-5xl font-semibold tabular-nums ${scoreColor(Result.matchScore)}`}>{75}</span>
+                <span className={`text-5xl font-semibold tabular-nums ${scoreColor(Result?.matchScore)}`}>{75}</span>
                 <span className="text-xl text-gray-500 ml-1">/100</span>
 
               </div>
 
 
               <div className="flex-1">
-                <p className=" text-sm font-medium text-gray-900 mb-2 "> {form.role} AT {form.company}  </p>
+                <p className=" text-sm font-medium text-gray-900 mb-2 "> {form.role} at {form.company}  </p>
 
                 <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
 
                   <div
-                    className={`h-full rounded-full transition-all duration-700 ${Result.matchScore >= 75 ? 'bg-green-500' :
-                        Result.matchScore >= 50 ? 'bg-amber-400' :
+                    className={`h-full rounded-full transition-all duration-700 ${Result?.matchScore >= 75 ? 'bg-green-500' :
+                        Result?.matchScore >= 50 ? 'bg-amber-400' :
                           'bg-red-400'
                       }`}
-                    style={{ width: `${Result.matchScore}%` }}
+                    style={{ width: `${Result?.matchScore}%` }}
                   />
                 </div>
                 <p className="text-xs text-gray-500 mt-1.5">
-                  {Result.matchScore >= 75 ? 'Strong match — apply with confidence' :
-                    Result.matchScore >= 50 ? 'Decent match — close some skill gaps first' :
+                  {Result?.matchScore >= 75 ? 'Strong match — apply with confidence' :
+                    Result?.matchScore >= 50 ? 'Decent match — close some skill gaps first' :
                       'Weak match — significant skills missing'}
                 </p>
               </div>
@@ -205,10 +196,10 @@ const Analysze = () => {
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="bg-white border border-gray-200 rounded-xl p-4 ">
                 <p className=" text-sm font-medium text-gray-400 uppercase tracking-wide mb-3">MISSING SKILLS</p>
-                {Result.missingSkill.length === 0 ? <p className="text-xs text-gray-400">No critical gaps found</p>
+                {Result?.missingSkill?.length === 0 ? <p className="text-xs text-gray-400">No critical gaps found</p>
                   :
                   <div className="flex flex-wrap gap-1.5">
-                    {Result.missingSkill.map(s => (
+                    {Result?.missingSkill?.map(s => (
                       <div key={s} className="text-xs text-red-600 border border-red-100 font-medium bg-red-100 px-2.5 py-1 rounded-xl ">{s}
                       </div>
                     ))} </div>}
@@ -217,9 +208,9 @@ const Analysze = () => {
 
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <p className=" text-sm font-medium text-gray-400 uppercase tracking-wide mb-3">YOUR STRENGTHS</p>
-                {Result.strengths.length === 0 ? 'No matches found' :
+                {Result?.strengths?.length === 0 ? 'No matches found' :
                   <div className="flex flex-wrap gap-1.5">
-                    {Result.strengths.map(s => (
+                    {Result?.strengths?.map(s => (
                       <div className="text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-xl fotn-medium border border-green-100" key={s}>{s}</div>
                     ))}
                   </div>
@@ -232,7 +223,7 @@ const Analysze = () => {
 
             <div className="bg-white border border-gray-200 p-5 rounded-xl mb-5">
               <p className="mb-4 text-sm text-gray-400 font-medium uppercase tracking-wide">HOW TO IMPROVE</p>
-              {Result.suggestion.map((s, i) => (
+              {Result?.suggestion?.map((s, i) => (
                 <div className="flex gap-2 text-sm text-gray-600 leading-relaxed" key={i}><span className="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center text-xs font-medium text-gray-500 shrink-0 mt-0.5">{i + 1}</span>{s}</div>
               ))}
             </div>
@@ -289,8 +280,6 @@ const Analysze = () => {
   )
 
 }
-
-
 
 
 
