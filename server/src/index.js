@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.js"
 import Resume from "./routes/resume.js"
 import db from "./database.js"
 import Analyzse from "./routes/jobanalysze.js"
+import Tracker from "./routes/tracker.js" 
 
 
 
@@ -25,6 +26,7 @@ app.use(cookieParser())
 app.use("/api/auth", authRoutes  )
 app.use("/api/resume", Resume )
 app.use("/api/ai" , Analyzse )
+app.use("/api/tracker" , Tracker )
 
 
 app.use((err, req, res, next) => {

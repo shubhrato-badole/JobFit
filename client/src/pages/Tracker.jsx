@@ -32,7 +32,7 @@ const AppModal = ({ app, onClose, onStatusChange, onDelete }) => {
   const handleStatusChange = async (newStatus) => {
     setSaving(true)
     try {
-      await API.patch(`/api/applications/${app.id}`, { status: newStatus })
+      await API.patch(`/api/tracker/${app.id}`, { status: newStatus })
       setStatus(newStatus)
       onStatusChange(app.id, newStatus)
     } catch {
@@ -46,7 +46,7 @@ const AppModal = ({ app, onClose, onStatusChange, onDelete }) => {
     if (!window.confirm('Delete this application?')) return
     setDeleting(true)
     try {
-      await API.delete(`/api/applications/${app.id}`)
+      await API.delete(`/api/tracker/${app.id}`)
       onDelete(app.id)
       onClose()
     } catch {
@@ -56,11 +56,11 @@ const AppModal = ({ app, onClose, onStatusChange, onDelete }) => {
     }
   }
    const missing = typeof app.missing_skills === 'string'
-      ? JSON.parse(app.missing_skills) : (app.missing_skills || ['(app.missing_skills || []) ' , 'hgxgfxy'])
+      ? JSON.parse(app.missing_skills) : (app.missing_skills || [])
    const strengths = typeof app.strengths === 'string'
-     ? JSON.parse(app.strengths) : (app.styrengths || ['sdkfvhjv','sjbvjha'])
+     ? JSON.parse(app.strengths) : (app.styrengths || [])
      const suggestions = typeof app.suggestions ? 
-      app.suggestions?.split('\n').filter(Boolean) :["Improve React", "Learn Docker", "Practice DSA"]
+      app.suggestions?.split('\n').filter(Boolean) :[]
        
 
   return (
@@ -155,28 +155,25 @@ const AppModal = ({ app, onClose, onStatusChange, onDelete }) => {
 const Tracker = () => {
 
   const [app, setApp] = useState([
-    { id: 1, company: "Google", role: "SDE", status: "APPLIED", match_score: 85 },
-    { id: 2, company: "Amazon", role: "Backend", status: "INTERVIEW", match_score: 72 },
-    { id: 3, company: "Microsoft", role: "Frontend", status: "OFFER", match_score: 90 },
-    { id: 4, company: "Meta", role: "Full Stack", status: "REJECTED", match_score: 60 }
   ])
 
   const [loading, setLoading] = useState(false)
   const [selected, setSelected] = useState(null)
 
 
-  // useEffect(() => {
-  //   const fetchApp = async () => {
-  //     try {
-  //       const { data } = await API.get("api/applications")
-  //     } catch (err) {
-  //       console.error(err)
-  //     } finally {
-  //       setLoading(false)
-  //     }
-  //   }
-  //   fetchApp()
-  // },[])
+  useEffect(() => {
+    const fetchApp = async () => {
+      try {
+        const { data } = await API.get("api/tracker")
+        setApp(data.application)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchApp()
+  },[])
 
   const handleStatusChnages = (id, newStatus) => {
     setApp(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a))
