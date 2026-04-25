@@ -6,7 +6,8 @@ import authRoutes from "./routes/auth.js"
 import Resume from "./routes/resume.js"
 import db from "./database.js"
 import Analyzse from "./routes/jobanalysze.js"
-import Tracker from "./routes/tracker.js" 
+import Tracker from "./routes/tracker.js"
+import Dashboard from "./routes/dashboard.js" 
 
 
 
@@ -27,6 +28,7 @@ app.use("/api/auth", authRoutes  )
 app.use("/api/resume", Resume )
 app.use("/api/ai" , Analyzse )
 app.use("/api/tracker" , Tracker )
+app.use("/api/dashboard" , Dashboard )
 
 
 app.use((err, req, res, next) => {
