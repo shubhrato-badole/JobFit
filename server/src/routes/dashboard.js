@@ -26,7 +26,7 @@ router.get("/user", Authorization, async (req, res) => {
     })
 
     const total = Object.values(statusCounts).reduce((a, b) => a + b, 0)
-      console.log(total)
+      
 
     const interview = statusCounts['INTERVIEW'] || 0
     const applied = statusCounts['APPLIED'] || 0
@@ -39,7 +39,7 @@ router.get("/user", Authorization, async (req, res) => {
           AND match_score IS NOT NULL `, [userId])
     
 
-    const avgScore = parseInt(averageSccore.rows[0]?.avg_score) || 3
+    const avgScore = parseInt(averageSccore.rows[0]?.avg_score) || 0
 
 
     const missingSkill = await db.query(`SELECT skill, COUNT(*) as
@@ -53,7 +53,7 @@ router.get("/user", Authorization, async (req, res) => {
         skill: r.skill,
         count: parseInt(r.count)
     }));
-    console.log(topMissingKills)
+  
 
     const recentJob = await db.query(`SELECT  id , company , role
      , match_score ,status , created_at  FROM applications

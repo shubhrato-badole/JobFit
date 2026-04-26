@@ -13,6 +13,7 @@ const cookies_options = ({
     httpOnly: true,
   secure:   false,
   sameSite: 'strict',
+  maxAge: 30 * 60 * 1000
 })
 
 
@@ -63,6 +64,7 @@ const cookies_options_refreshToken= ({
         email:     user.email,
         role:      user.role,
         createdAt: user.created_at,
+        hasResume: user.resume_text ? true : false
       }
     })
     }catch(err){

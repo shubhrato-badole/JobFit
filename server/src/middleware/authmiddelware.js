@@ -51,6 +51,7 @@ const {accessToken , refreshtoken} = req.cookies;
         httpOnly:true,
         secure:false,
          sameSite: "strict",
+         maxAge: 30 * 60 * 1000 
         })
         req.user = {id: user.id,
         email: user.email,
