@@ -7,7 +7,7 @@ import db from "../database.js"
 
 const {accessToken , refreshtoken} = req.cookies;
 
-     if(!accessToken){
+     if(!accessToken && !refreshtoken){
    return res.status(401).json({
     error: 'Not authenticated'
    })
@@ -50,8 +50,8 @@ const {accessToken , refreshtoken} = req.cookies;
        res.cookie("accessToken" , newaccessToken ,{
         httpOnly:true,
         secure:false,
-         sameSite: "strict",
-         maxAge: 30 * 60 * 1000 
+         sameSite: "lax",
+        maxAge: 30 * 60 * 1000
         })
         req.user = {id: user.id,
         email: user.email,

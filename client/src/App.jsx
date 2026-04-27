@@ -36,10 +36,9 @@ return(
       <Route path="/" element={ <Home /> }></Route>
       <Route path="/login" element={ user ? <Dashboard/> : <Login/> }></Route>
       <Route path="/register" element={user ?  <Dashboard/> :<Register/>}></Route>
-
       <Route path="/onboarding" element= {<ProtectedRoute> <Onboarding/> </ProtectedRoute> }/>
       <Route path="/Dashboard" element= {<ProtectedRoute> <Dashboard/> </ProtectedRoute> }/>
-      <Route path="/JobSearch" element= {<ProtectedRoute> <JobSearch/> </ProtectedRoute> }/>
+      <Route path="/Jobs" element= {<ProtectedRoute> <JobSearch/> </ProtectedRoute> }/>
       <Route path="/analyze" element= {<ProtectedRoute> <Analysze/> </ProtectedRoute> }/>
      <Route path="/Tracker" element= {<ProtectedRoute> <Tracker/> </ProtectedRoute> }/>
       <Route path="/Profile" element= {<ProtectedRoute> <Profile/> </ProtectedRoute> }/>
