@@ -134,7 +134,8 @@ const Analysze = () => {
 
             </div>
             {error &&
-              <div className=""> {error}</div>}
+              <div className="text-red-500 text-center text-xs bg-red-50
+               border border-red-100 rounded-lg px-2 py-1 mt-2"> {error}</div>}
 
             <button
               onClick={handleSubmit}

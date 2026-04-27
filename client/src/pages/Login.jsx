@@ -46,6 +46,11 @@ const Login = () => {
         }
     }
 
+const handleGoogleLogin = () => {
+  window.location.href = "http://localhost:3000/api/auth/google"
+}
+
+
 
 return(
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
@@ -59,6 +64,7 @@ return(
         <div  className="bg-white rounded-2xl border border-gray-200 p-7">
  
             <button
+            onClick={handleGoogleLogin}
                 type="button"
                 className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors mb-5"
             >

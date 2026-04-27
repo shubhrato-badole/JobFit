@@ -8,6 +8,8 @@ import db from "./database.js"
 import Analyzse from "./routes/jobanalysze.js"
 import Tracker from "./routes/tracker.js"
 import Dashboard from "./routes/dashboard.js" 
+import passport from "passport"
+
 
 
 
@@ -15,7 +17,7 @@ import Dashboard from "./routes/dashboard.js"
 dotenv.config()
 const app = express();
 const PORT = 3000
-
+app.use(passport.initialize())
 app.use(cors ({
     origin:"http://localhost:5173",
     credentials: true

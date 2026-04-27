@@ -175,9 +175,14 @@ if (loading) {
                    
                     </div>
                     <div>
+                      {user?.hasResume ? (
+                        <div>
                       <p className="text-sm text-gray-900 font-semibold ">Focus on {missingSkill?.[0]?.skill}</p>
                       <p className="text-xs text-gray-500  mt-0.5">
                         It appears missing in {missingSkill?.[0]?.count} times of your {stats?.total} job{ stats?.total > 1 ? 's' : ''}</p>
+                     </div> ) : (
+                        <p className="text-xs text-gray-400 ">Upload your resume to get insights</p>
+                      )} 
                     </div>
                   </div>
           </div>
