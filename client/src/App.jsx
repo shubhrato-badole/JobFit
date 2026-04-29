@@ -43,7 +43,7 @@ return(
       <Route path="/analyze" element= {<ProtectedRoute> <Analysze/> </ProtectedRoute> }/>
      <Route path="/Tracker" element= {<ProtectedRoute> <Tracker/> </ProtectedRoute> }/>
       <Route path="/Profile" element= {<ProtectedRoute> <Profile/> </ProtectedRoute> }/>
-       <Route path="/saved" element= {<ProtectedRoute> <Saved/> </ProtectedRoute> }/>
+      <Route path="/saved" element= {<ProtectedRoute> <Saved/> </ProtectedRoute> }/>
     </Routes>
     </Layout>
 )
