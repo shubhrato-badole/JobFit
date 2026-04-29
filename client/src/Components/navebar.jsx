@@ -78,7 +78,7 @@ if (user){
 
    <div className="flex item-flex gap-3">
     <div className="relative" ref={menuRef}>
-    <button onClick={()=> setopen(prev => !prev)} className="text-ms text-gray-600 bg-gray-200 px-4 py-2 rounded-full">{initials}</button>
+    <button onClick={()=> setopen(prev => !prev)} className="text-ms text-gray-600 font-semibold bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 ">{initials}</button>
       
      
       {open &&     <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">

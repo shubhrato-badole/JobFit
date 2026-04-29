@@ -132,7 +132,12 @@ const formatData = (date) =>{
         <h1 className="text-gray-900 text-2xl font-semibold mb-1">Profile & settings</h1>
         <p className="text-sm text-gray-500">Manage your account details and preferences</p>
       </div>
+
+
       {/* // proifle deltail card  */}
+
+
+
       <div className="flex items-center gap-4 border border-gray-200 rounded-2xl bg-white p-5 mb-5  ">
         <div className="w-14 h-14 bg-blue-50 rounded-full 
        text-blue-700 border border-blue-200 flex items-center justify-center font-semibold text-xl shrink-0 ">
@@ -167,7 +172,7 @@ const formatData = (date) =>{
               <p className="text-sm text-gray-900 font-semibold">Resume uploaded</p>
               <p className="text-xs text-gray-500 ">1 apr 2026 </p>
             </div>
-           <button onClick={()=> navigate("/onbording")}
+           <button onClick={()=> navigate("/onboarding")}
             className="text-xs text-gray-900 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
              Re-upload
            </button>
@@ -185,7 +190,7 @@ const formatData = (date) =>{
             <p className="text-xs text-gray-500">Upload your resume to start analyzing jobs</p>
             </div>
 
-           <button onClick={()=> navigate("/onbording")}
+           <button onClick={()=> navigate("/onboarding")}
             className="text-xs text-white border border-gray-200 bg-gray-900 px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
              Upload Now
            </button>
@@ -229,6 +234,18 @@ const formatData = (date) =>{
               text-sm text-gray-900 outline-none focus:border-blue-400 transition-colors"/>
             </div>
 
+                {saveMsg && (
+            <div className="px-3 py-2.5 bg-green-50 border border-green-100 rounded-lg text-sm text-green-700">
+              {saveMsg}
+            </div>
+          )}
+          {saveErr && (
+            <div className="px-3 py-2.5 bg-red-50 border border-red-100 rounded-lg text-sm text-red-600">
+              {saveErr}
+            </div>
+          )}
+
+
               <button onClick={()=> navigate("/onbording")}
                 disabled={saving || (name === profile?.name && email === profile?.email)}
             className="text-sm text-white border border-gray-200 bg-gray-900 px-5 py-2.5 rounded-lg hover:bg-gray-700 transition-colors">
@@ -240,12 +257,13 @@ const formatData = (date) =>{
           
            <div className="border border-gray-200 bg-white rounded-2xl p-5 mb-5  ">
             <h2 className="text-sm font-semibold text-gray-900 mb-4">password</h2>
-            <form onSubmit={handleDelete} className="space-y-4">
+            <form onSubmit={handlePwdChange} className="space-y-4">
             <div>
               <label className=" block text-sm text-gray-700 mb-1.5"> Current password</label>
               <input 
               onChange={(e)=>  { setCurPwd(e.target.value); setPwdMsg(''); setPwdErr('') }}
               type="text" value={curPwd} required
+              placeholder="Your current password"
               className="w-full px-3 py-2.5 border border-gray-200 rounded-xl 
               text-sm text-gray-900 outline-none focus:border-blue-400 transition-colors"/>
             </div>
@@ -254,9 +272,21 @@ const formatData = (date) =>{
               <input 
               onChange={(e)=>  { setNewPwd(e.target.value); setPwdMsg(''); setPwdErr('') }}
               type="text" value={newPwd} required
+              placeholder="Minimum 8 characters"
               className="w-full px-3 py-2.5 border border-gray-200 rounded-xl 
               text-sm text-gray-900 outline-none focus:border-blue-400 transition-colors"/>
             </div>
+
+             {pwdMsg && (
+            <div className="px-3 py-2.5 bg-green-50 border border-green-100 rounded-lg text-sm text-green-700">
+              {pwdMsg}
+            </div>
+          )}
+          {pwdErr && (
+            <div className="px-3 py-2.5 bg-red-50 border border-red-100 rounded-lg text-sm text-red-600">
+              {pwdErr}
+            </div>
+          )}
 
               <button  type="submit"
                   disabled={savingPwd || !curPwd || !newPwd}
@@ -267,7 +297,31 @@ const formatData = (date) =>{
                </form>
           </div>
           
+           <div className="border border-red-100 bg-white rounded-2xl p-5 mb-5 ">
+                  <h2 className="text-sm font-semibold text-red-600 mb-1">Danger Zone</h2>
+                  <p className="text-xs text-gray-500 mb-4">Permanently delete your account and all data. This cannot be undone.</p>
+                 
+               {!showDelete ?
+                 <button onClick={ () => setShowDelete(true)}
+                  className="text-sm font-medium text-red-600 border border-red-200 bg-red-50 px-8 py-2.5 rounded-lg hover:bg-red-100 transition-colors">
+                  Delete account
+                 </button>
+
+                :
+                 <div className="border border-red-200 bg-red-50 rounded-2xl p-5   ">
+                  <p className=" text-xs font-medium text-red-600 mb-3">Are you sure? This will permanently delete your account, resume, and all applications.</p>
+                   <div className="gap-3 flex">
+                    <button onClick={handleDelete} className="text-sm font-medium text-white border border-red-200 bg-red-600 px-8 py-2.5 rounded-lg hover:bg-red-500 transition-colors">
+                      {deleting ? 'Deleting...'   : 'Yes, delete my account'}
+                     
+                    </button>
+                     <button onClick={() => setShowDelete(false)}
+                      className="text-sm border border-gray-300 px-5 py-2.5 rounded-lg" >Cancel</button>
+                     </div>
+                 </div> }
+            
            
+           </div>
 
       </div>
       
