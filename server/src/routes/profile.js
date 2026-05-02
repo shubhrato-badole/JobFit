@@ -1,4 +1,5 @@
 import express from "express"
+import bcrypt from "bcrypt"
 import Authorization from "../middleware/authmiddelware.js"
 import db from "../database.js"
 
@@ -57,8 +58,7 @@ router.patch("/change"  , Authorization  , async (req , res ) => {
       try{
         if (email?.trim()) {
         const existing = await db.query("SELECT id FROM users WHERE email=$1 AND id != $2 " , [email?.trim(), req.user.id])
-             console.log(existing)
-
+          
           if(existing.rows.length > 0){
             return res.status(409).json({
                 error: 'Email already in use by another account'
@@ -80,17 +80,63 @@ router.patch("/change"  , Authorization  , async (req , res ) => {
 
       }
 
-
-
-
-
 })
 
 router.patch("/password" , Authorization , async (req , res) => {
+    const {currentPassword , newPassword} = req.body
+
+
+    if(!currentPassword?.trim() || !newPassword?.trim() ){
+     return res.status(400).json({ error: 'Both current and new password are required' })
+    }
+
+if (newPassword.length < 8) {
+    return res.status(400).json({ error: 'New password must be at least 8 characters' })
+  }
+
+
+    try{
+        const {rows}  = await db.query("SELECT password FROM users WHERE id=$1", [req.user.id])
+       
+    const user = rows[0]
+
+    if (user.password === 'GOOGLE_OAUTH_NO_PASSWORD') {
+      return res.status(400).json({
+        error: 'Your account uses Google sign-in. Password change is not available.'
+      })
+    }
+
+    const passwordValid =  await bcrypt.compare(currentPassword , user.password);
+       if (!passwordValid) {
+      return res.status(401).json({ error: 'Current password is incorrect' })
+    }
+
+    const hashPassword = await bcrypt.hash( newPassword, 10)
+
+    await db.query("UPDATE users SET password = $1 WHERE id=$2", [hashPassword , req.user.id])
+
+     res.json({ message: 'Password updated successfully' })
+
+
+    }catch(err){
+      console.error('Change password error:', err)
+      res.status(500).json({ error: 'Server error' })
+    }
 
 })
 
 router.delete("/delete" , Authorization , async (req , res) => {
+
+try{
+    await db.query("DELETE FROM users WHERE id=$1" ,[ req.user.id])
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshtoken');
+
+    res.json({ message: 'Account deleted' })
+}catch (err) {
+    console.error('Delete account error:', err)
+    res.status(500).json({ error: 'Server error' })
+  }
 
 })
 

@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 const JobCard = ({ job, onSave , savedIds }) => {
   const navigate = useNavigate()
   const [saving, setSaving] = useState(false)
- const alreadySaved = savedIds?.has(job.id)
+ const alreadySaved = savedIds.includes(job.id)
 
   const handleAnalyze = () => {
     navigate('/analyze', {
@@ -25,6 +25,7 @@ const JobCard = ({ job, onSave , savedIds }) => {
   }
 
   const handleSave = async () => {
+    if (alreadySaved) return
     setSaving(true)
     try {
       const { data } = await API.post(`/api/jobs/saved`, {
@@ -33,10 +34,9 @@ const JobCard = ({ job, onSave , savedIds }) => {
         location: job.location,
         jobUrl: job.applyUrl,
         jobDescription: job.jobdesc,
-       
-     
-        
+         
       })
+       onSave(job.id)
     } catch (err) {
       if (err.response?.status === 409) onSave(job.id)
     } finally {
@@ -138,7 +138,7 @@ const Jobsearch = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
-  const [savedIds, setSavedIds] = useState(new Set());
+  const [savedIds, setSavedIds] = useState([]);
 
 
   const handleSearch = async (e) => {
@@ -172,8 +172,9 @@ const Jobsearch = () => {
   }
 
   const handleSave = (id) => {
-    setSavedIds(prev => new Set([...prev, id]))
-  }
+    setSavedIds(prev => {if (prev.includes(id)) return prev
+    return [...prev, id] })
+    }
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-8">
@@ -234,7 +235,7 @@ const Jobsearch = () => {
 
             {['React developer', 'Full stack Node',
               'Frontend engineer', 'JavaScript developer'].map((item => (
-                <button type="button" key={item} onClick={() => { setQuery(item); setTimeout(() => handleSearch(), 100) }}
+                <button type="button" key={item} onClick={() => { setQuery(item) ; setError('') }}
                   className="text-xs text-gray-900 px-3 py-1 border border-gray-300 rounded-xl
   hover:bg-gray-500  hover:text-white transition-colors ">
                   {item}</button>

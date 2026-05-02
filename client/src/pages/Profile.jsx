@@ -64,7 +64,7 @@ const Profile = () => {
     } catch (err) {
       setSaveErr(err.response?.data?.error || '')
     } finally {
-      setSaveErr(false)
+      setSaving(false)
     }
 
 
@@ -79,8 +79,8 @@ const Profile = () => {
 
     try {
       const { data } = await API.patch(`/api/profile/password`, {
-        currentPssword: curPwd,
-        newPssword: newPwd
+        currentPassword: curPwd,
+        newPassword: newPwd
       })
       setPwdMsg('Password changed successfully')
       setCurPwd('')
@@ -102,7 +102,7 @@ const Profile = () => {
     try {
       const { data } = await API.delete(`/api/profile/delete`)
       await logout()
-      Navigate("/")
+      navigate("/")
     } catch {
       setDeleting(false)
       setShowDelete(false)

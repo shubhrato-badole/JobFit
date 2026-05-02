@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
 import authRoutes from "./routes/auth.js"
 import Resume from "./routes/resume.js"
-import db from "./database.js"
+import helmet from "helmet"
 import Analyzse from "./routes/jobanalysze.js"
 import Tracker from "./routes/tracker.js"
 import Dashboard from "./routes/dashboard.js" 
@@ -17,6 +17,8 @@ import Profile from "./routes/profile.js"
 
 dotenv.config()
 const app = express();
+app.use(helmet())
+
 const PORT = 3000
 app.use(passport.initialize())
 app.use(cors ({

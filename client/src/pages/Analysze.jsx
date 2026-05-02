@@ -202,7 +202,7 @@ const Analysze = () => {
                   :
                   <div className="flex flex-wrap gap-1.5">
                     {Result?.missingSkill?.map(s => (
-                      <div key={s} className="text-xs text-red-600 border border-red-100 font-medium bg-red-100 px-2.5 py-1 rounded-xl ">{s}
+                      <div key={s} className="text-xs text-red-600 border border-red-100 font-medium bg-red-40 px-2.5 py-1 rounded-xl ">{s}
                       </div>
                     ))} </div>}
               </div>

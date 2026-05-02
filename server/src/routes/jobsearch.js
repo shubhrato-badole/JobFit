@@ -18,7 +18,7 @@ router.get("/search", Authorization, async (req, res) => {
     try {
         const query = ` ${q.trim()} ${location?.trim() || ''}`.trim()
 
-        const url = `https://jsearch.p.rapidapi.com/search?query=${encodeURIComponent(query)}&num_pages=1&country=us&date_posted=all`;
+        const url = `https://jsearch.p.rapidapi.com/search?query=${encodeURIComponent(query)}&num_pages=2&country=us&date_posted=all`;
 
         const response = await fetch(url, {
             headers: {
@@ -59,6 +59,7 @@ router.get("/search", Authorization, async (req, res) => {
         res.json({ jobs, total: jobs.length })
 
     } catch (err) {
+        
         console.log("REAL API ERROR:", err.message)
         return res.status(response.status).json({
             error: data?.message || 'External API failed'
@@ -103,7 +104,10 @@ router.post("/saved", Authorization, async (req, res) => {
 
 
     } catch (err) {
-
+  
+        if (err.code === "23505") { // PostgreSQL duplicate key
+    return res.status(409).json({ message: "Job already saved" });
+  }
         console.error(err)
         return res.status(500).json({ error: 'Internal server error' })
     }

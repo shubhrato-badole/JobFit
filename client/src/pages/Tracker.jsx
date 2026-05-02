@@ -47,8 +47,9 @@ const AppModal = ({ app, onClose, onStatusChange, onDelete }) => {
     setDeleting(true)
     try {
       await API.delete(`/api/tracker/${app.id}`)
-      onDelete(app.id)
-      onClose()
+       onClose()
+      return onDelete(app.id)
+     
     } catch {
 
     } finally {

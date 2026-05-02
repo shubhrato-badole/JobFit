@@ -1,8 +1,8 @@
 
-import { Link , Navigate , useLocation, useNavigate} from "react-router-dom"
+import { Link , useLocation, useNavigate} from "react-router-dom"
 import { useState , useRef, useEffect } from "react"
 import {useAuth} from "../pages/AuthContext"
-import axios from "axios"
+
 
 
 const Navebar = ()=>{
@@ -12,8 +12,10 @@ const location = useLocation();
 const [open , setopen] = useState(false)
  const menuRef = useRef(null)
 
-const Activelocation = (path) => location.pathname === path 
+const Activelocation = (path) => location.pathname.startsWith(path)
 const pathname = location.pathname;
+
+
 
 const HandleLogout = async () =>{
     await logout();
@@ -21,9 +23,15 @@ const HandleLogout = async () =>{
 
 }
 
+
+const handleProfileClick=() => {
+        navigate("/profile")
+        setopen(false)
+      }
+
 useEffect(()=>{
   const handleClickOutside = (e) => {
-    if (!menuRef.current.contains(e.target)) {
+    if (menuRef.current && !menuRef.current.contains(e.target)) {
         setopen(false)
       }
     }
@@ -33,8 +41,8 @@ useEffect(()=>{
       document.removeEventListener("mousedown", handleClickOutside)
     }
   
- 
 } , [])
+
 
 
   const appLinks = [
@@ -44,6 +52,8 @@ useEffect(()=>{
     { path: '/tracker', label: 'Tracker' },
     { path: '/saved', label: 'Saved' },
   ]
+
+
 
   const initials = user?.name
     ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
@@ -56,11 +66,11 @@ if (user){
     return(
         <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
 <div className="w-full h-16 flex  items-center px-8 gap-4">
-   <Link to= "/" className="textgray-900 text-xl font-semibold">Job<span 
+   <Link to= "/" className="text-gray-900 text-xl font-semibold">Job<span 
    className="text-blue-600">Fit </span>
    </Link>
 
-<div className="flex item-flex gap-2 flex-1">
+<div className="flex items-center gap-2 flex-1">
    {appLinks.map(link => (
     <Link 
     key={link.path} 
@@ -76,21 +86,28 @@ if (user){
    }
    </div>
 
-   <div className="flex item-flex gap-3">
-    <div className="relative" ref={menuRef}>
-    <button onClick={()=> setopen(prev => !prev)} className="text-ms text-gray-600 font-semibold bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 ">{initials}</button>
+   <div className="flex items-center gap-3">
+    <div className="relative" ref={menuRef} 
+            >
+    <button 
+     type="button"
+    onClick={()=> setopen(prev => !prev)} className={`text-sm text-gray-600 font-semibold bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200  `}>{initials}</button>
       
      
       {open &&     <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
-        <button onClick={() => {
-        navigate("/profile")
-        setopen(false)
-      }} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 rounded-lg">profile</button>    </div>
+        <button 
+        type="button"
+        onClick={handleProfileClick} className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 rounded-lg transition ease-out duration-100
+              ${
+    open
+      ? "opacity-100 scale-100"
+      : "opacity-0 scale-95 pointer-events-none"
+  }`} >Profile</button>    </div>
 }
       </div>
 
 
- <button
+ <button type="button"
               onClick={HandleLogout}
               className="px-4 py-1.5 text-sm text-red-600 hover:bg-red-100 rounded-full"
             >
@@ -106,18 +123,18 @@ return (
 
     <nav className="sticky flex top-0 z-50 bg-white border-b border-gray-200">
    <div className=" w-full flex items-center px-10 h-20 gap-6">
-    <Link to="/" className="text-gary-900 text-xl font-semibold">Job<span className="text-blue-600">Fit</span></Link>
+    <Link to="/" className="text-gray-900 text-xl font-semibold">Job<span className="text-blue-600">Fit</span></Link>
    <div className="flex items-center gap-6 flex-1">
 <div className="flex items-center gap-6 flex-1">
-          <a href= { pathname === "/login"? "/" : "#how"} className="text-ml text-gray-500 hover:text-gray-900">
+          <a href= { pathname === "/login"? "/" : "#how"} className="text-sm text-gray-500 hover:text-gray-900">
             How it works
           </a>
           
-          <a href={ pathname === "/login"? "/" :"#features"} className="text-ml text-gray-500 hover:text-gray-900">
+          <a href={ pathname === "/login"? "/" :"#features"} className="text-sm text-gray-500 hover:text-gray-900">
             Features
           </a>
         
-          <a href={ pathname === "/login"? "/" :"#faq" }className="text-ml text-gray-500 hover:text-gray-900">
+          <a href={ pathname === "/login"? "/" :"#faq" }className="text-sm text-gray-500 hover:text-gray-900">
             FAQ
           </a>
         </div>

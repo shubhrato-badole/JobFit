@@ -2,10 +2,12 @@ import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import API from "../Components/Api"
 import { useEffect } from "react";
+import { useAuth } from "./AuthContext"
 
 
 
 const ScoreRing = ({score}) =>{
+    const safeScore = typeof score === 'number' ? score : 0;
   const color = score >=75 ? '#16a34a' :  score >= 50 ? '#d97706' : '#dc2626'
   const label = score >=75 ?' Strong resume' : score >=50 ?  'Decent resume' : 'Needs work'
 return(
@@ -39,14 +41,15 @@ return(
 
 const OnBoarding = () => {
   
-
+const { refetchUser } = useAuth()
   const navigate = useNavigate();
   const fileInputRef = useRef();
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [Dragging, setDragging] = useState(false);
-  const [Status, setStatus] = useState('ideal');
+  const [status, setStatus] = useState('ideal');
   const [result, setResult] = useState(null);
+  const [initialLoading, setInitialLoading] = useState(true);
 
 
 useEffect(()=>{
@@ -64,7 +67,10 @@ useEffect(()=>{
     }
     }catch(err){
 
+    } finally {
+      setInitialLoading(false)
     }
+
   }
   checkExisting()
 },[])
@@ -113,7 +119,10 @@ useEffect(()=>{
       const {data} = await API.post("/api/resume/upload", formData, {
         headers: { "Content-Type": 'multipart/form-data' }
       })
-     clearTimeout(analyzeTimer)
+      if (data.hasResume) {
+      await refetchUser()   // <-- refresh user context
+    }
+    
       setStatus('done')
       setResult({
         score: data.score ,
@@ -123,12 +132,18 @@ useEffect(()=>{
       })
     }
     catch (err) {
+      console.error("Upload error:", err)
       setStatus('error')
       setError(err.response?.data?.error || 'Upload failed. Please try again.')
 
+    } finally{
+       clearTimeout(analyzeTimer)
     }
   }
 
+  if (initialLoading) {
+  return <div className="min-h-screen flex items-center justify-center">Loading...</div>
+}
 
 
   return (
@@ -139,7 +154,7 @@ useEffect(()=>{
         Job<span className="text-blue-600">Fit</span>
       </div>
 
-        {Status !== 'done' && 
+        {status !== 'done' && 
       <div className="flex items-center gap-2 mb-10 ">
         {[
           { n: 1, label: 'Account', state: 'done' },
@@ -168,11 +183,11 @@ useEffect(()=>{
 }
 
 
-{Status !== 'done' &&  <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 p-8">
+{status !== 'done' &&  <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 p-8">
     
      
 
-      { Status === 'uploading' &&
+      { status === 'uploading' &&
       ( <div> <h2>Uploading your resume</h2>
            <p className="mb-5">Extracting your skills and experience — this takes a few seconds.</p>
            
@@ -193,7 +208,7 @@ useEffect(()=>{
        </div> ) }
 
 
-{Status === 'analyzing' &&  (
+{status === 'analyzing' &&  (
                 <div>
               <div>
                <h1 className="text-xl text-gray-900 font-semibold mb-1 ">Analyzing your resume</h1>
@@ -237,7 +252,7 @@ useEffect(()=>{
 
 
 
-{Status === 'ideal' &&
+{status === 'ideal' &&
         <div >
           <div className="mb-8">
             <h2 className="text-[20px] font-semibold text-gray-900 mb-1 ">Upload your resume</h2>
@@ -306,7 +321,7 @@ useEffect(()=>{
           
           <button 
            onClick={handleSubmit}
-            disabled={!file} className="text-sm text-white font-semibold bg-gray-900 w-full px-4 py-2 rounded-xl
+           disabled={!file || status === 'uploading' || status === 'analyzing'}className="text-sm text-white font-semibold bg-gray-900 w-full px-4 py-2 rounded-xl
            hover:bg-gray-700 transition-colors   "> Upload resume→ </button>
           <p className="text-xs text-center mt-4 cursor-pointer hover:text-gray-600"> You can do this later —<span  onClick={() => navigate('/dashboard')}
            className="text-blue-600"> go to dashboard</span></p>
@@ -320,7 +335,7 @@ useEffect(()=>{
 
 
 
-{Status === 'done' && result && (
+{status === 'done' && result && (
        <div className="w-full max-w-lg">
         <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-4">
            <div className="flex items-center">
@@ -333,7 +348,7 @@ useEffect(()=>{
                 </h2>
                 <p className="text-sm text-gray-500">
                   {result?.score !== null
-                    ? 'Here is what our AI found about your resume'
+                    ? `You're now ready to analyze jobs based on your resume`
                     : 'Your resume has been saved. You can now analyze jobs.'}
                 </p>
               </div>
@@ -377,8 +392,7 @@ useEffect(()=>{
              (
              <ul> {result?.improve.map((s,i)=>
               <li key={i} className="text-xs text-gray-600 gap-2 leading-relaxed"><span 
-              className="text-amber-500 shrink-0 mt-0.5">•</span>
-              {s}</li>
+              className="text-amber-500 shrink-0 mt-0.5">•</span> {s}</li>
              )}</ul>
                ) } 
                </div>

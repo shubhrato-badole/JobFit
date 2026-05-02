@@ -1,5 +1,4 @@
-import{ React , useContext , useEffect , useState  , createContext } from "react"
-// import{  } from "react-router-dom"
+import{ useContext , useEffect , useState  , createContext } from "react"
 import API from "../Components/Api"
 
 
@@ -10,19 +9,24 @@ export const AuthProvider =   ({children}) => {
  const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-const checkAuth = async () => {
+ 
+ const checkAuth = async () => {
     try{
    const {data} = await API.get("/api/auth/me")
   setUser(data.user)
     } catch {
+        console.log("Auth check failed:", err)
         setUser(null)
     }finally{
         setLoading(false)
     }
     
 } 
-checkAuth();
+ 
+ 
+ 
+useEffect(() => {
+checkAuth()
   } , [])
 
 const Login = (userData) => setUser(userData)
@@ -30,6 +34,7 @@ const Login = (userData) => setUser(userData)
   const logout = async () =>{
     try{
 await API.post("/api/auth/logout")} catch {}
+navigate("/")
 setUser(null)
   }
 

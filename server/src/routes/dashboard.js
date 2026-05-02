@@ -34,12 +34,12 @@ router.get("/user", Authorization, async (req, res) => {
     const rejected = statusCounts['REJECTED'] || 0
 
 
-    const averageSccore = await db.query(` SELECT ROUND(AVG(match_score))
+    const averageScore = await db.query(` SELECT ROUND(AVG(match_score))
          as avg_score FROM applications WHERE user_id = $1
           AND match_score IS NOT NULL `, [userId])
     
 
-    const avgScore = parseInt(averageSccore.rows[0]?.avg_score) || 0
+    const avgScore = parseInt(averageScore.rows[0]?.avg_score) || 0
 
 
     const missingSkill = await db.query(`SELECT skill, COUNT(*) as

@@ -107,7 +107,7 @@ return(
                     </div>
                     <div  className="flex  items-center justify-between ">
                         <label className="text-sm font-medium text-gray-700">password</label>
-                       <a href="#"  className="text-end text-sm text-blue-600 hover:underline">foorget password</a>
+                       <a href="#"  className="text-end text-sm text-blue-600 hover:underline">Forgot password </a>
                        </div>
                         <input type="password"
                             name="password"

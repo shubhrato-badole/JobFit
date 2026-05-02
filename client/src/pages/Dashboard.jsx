@@ -1,7 +1,6 @@
-import react from "react"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import API from "../components/Api"
+import API from "../Components/Api"
 import { useAuth } from "../pages/AuthContext"
 
 
@@ -14,7 +13,7 @@ const statusColors = {
 }
 
 const Dashboard = () => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -30,6 +29,7 @@ const Dashboard = () => {
   
         
       } catch (err) {
+         console.error("Dashboard error:", err)
         setError('Could not load dashboard data')
       } finally {
         setLoading(false)
@@ -38,7 +38,7 @@ const Dashboard = () => {
     GetData()
   }, [])
 
-  const { stats, missingSkill, recentJobs } = data
+  const { stats, missingSkill, recentJobs } = data || {}
 
 
   const hour = new Date().getHours()
@@ -68,13 +68,13 @@ if (loading) {
 
       <div className="mb-10">
         <h1 className="text-2xl text-gray-900 font-semibold ">{greeting}, {user?.name}</h1>
-        <p className="text-sm mt-1 text-gray-500 "> {stats?.total === 0 ? "You have no applications waiting for updates" :
+        <p className="text-sm mt-1 text-gray-500 "> {stats?.total === 0 ? `You haven’t added any applications yet` :
           `You have ${stats?.total} applications waiting for updates`}</p>
       </div>
 
 
-  {!user?.hasResume && 
-  <div className="bg-amber-50 brder border-amber-200 rounded-lg rounded-xl px-5 py-4 flex items-center justify-between mb-7">
+  {user?.hasResume ? '' :
+  <div className="bg-amber-50 border border-amber-200 rounded-lg rounded-xl px-5 py-4 flex items-center justify-between mb-7">
     <div>
     <p className="text-sm text-amber-800 font-semibold">Resume not uploaded yet</p>
     <p className="text-sm text-amber-800 font-semibold">Upload your resume to start analyzing jobs</p>
@@ -87,7 +87,7 @@ if (loading) {
         {[
           { n: stats?.total, l: 'total applied' },
           { n: stats?.interview, l: 'interviews' },
-          { n: stats?.avgScore ? `${stats.avgScore}%` : '0', l: 'Avg match score' },
+          { n: stats?.avgScore ? `${stats.avgScore}%` : '0%', l: 'Avg match score' },
           { n: stats?.offer, l: 'Offers Keep going' },
         ].map(s => (
           <div key={s.l} className=" w-full bg-gray-50 p-3 rounded-xl border border-gray-100 ">
@@ -112,12 +112,12 @@ if (loading) {
 
     
 
-          {recentJobs?.length === 0 ? (<p className="text-sm text-gray-500">No application yet</p>) :
+          {recentJobs?.length === 0 ? (<p className="text-xs text-gray-500">You haven’t applied to any jobs yet. Start by analyzing one.</p>) :
             (<div>
 
               {recentJobs?.map(j => (
                
-                <div key={j} className="flex items-center gap-3 py-3 border-b border-gray-100 last:border-0">
+                <div key={j.id} className="flex items-center gap-3 py-3 border-b border-gray-100 last:border-0">
                   <div className="flex-1">
                     <p className="text-sm text-gray-900 font-medium truncate ">{j.company}</p>
                     <p className="text-xs text-gray-500 truncate">{j.role}</p>
@@ -131,7 +131,7 @@ if (loading) {
                 }
 
                   <span className={`text-sm font-medium  px-2 py-0.5  rounded-full border border-green-100
-                    ${statusColors[j.status]}`}>{j.status.charAt(0) + j.status.slice(1).toLowerCase()}</span>
+                    ${statusColors[j.status]|| 'bg-gray-100 text-gray-600'}`}>{j.status.charAt(0) + j.status.slice(1).toLowerCase()}</span>
                 </div>
               ))}
             </div>

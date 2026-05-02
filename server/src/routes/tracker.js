@@ -54,7 +54,7 @@ const {id} = req.params
 
 try{
 
-    const {rows} = await db.query ("DELETE FROM application where id =$1 and user_id =$2 RETURNING *" , [id , req.user.id])
+    const {rows} = await db.query("DELETE FROM applications WHERE id =$1 and user_id =$2 RETURNING *" , [id , req.user.id])
     
      if (rows.length === 0) {
       return res.status(404).json({ error: 'Application not found' })

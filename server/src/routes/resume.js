@@ -60,7 +60,11 @@ try{
         })
      }
 
-    
+    if (resumeText.length > 50000) {
+  return res.status(400).json({
+    error: 'Resume text exceeds maximum allowed length (50,000 characters). Please upload a shorter resume or remove unnecessary content.'
+  })
+}
 
      await db.query (`UPDATE users
        SET resume_text = $1, resume_uploaded_at = NOW()
@@ -69,6 +73,7 @@ try{
 
      
        let aiResult = null
+       let aiError = null
 
     try{
         aiResult = await analyszeResume(resumeText)
@@ -81,7 +86,8 @@ try{
         ])
 
     } catch(aiErr){
-     console.error('AI resume analysis failed:', aiErr.message)
+    console.error('AI resume analysis failed:', aiErr.message)
+     aiError = 'AI analysis temporarily unavailable, we will retry later.'
     }
 
     res.json({
@@ -91,6 +97,7 @@ try{
           strong: aiResult?.strong ?? [] ,
          improve:aiResult?.improve ?? [],
          targetRoles: aiResult?.targetRoles ?? [],
+         aiError: aiError, 
     })
 
 

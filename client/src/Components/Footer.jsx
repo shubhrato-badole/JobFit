@@ -9,7 +9,7 @@ return (
 <footer className="bg-white border-t border-gray-100">
      <div className="w-full px-8 py-12">
     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
-        <div className="grid-span-2 md:grid-sapn-1">
+        <div className="grid-span-2 md:grid-span-1">
             <div className="text-lg text-gray-900 mb-4 font-semibold tracking-tight">
                 Job<span className="text-blue-600">Fit</span>
             </div>
@@ -17,9 +17,9 @@ return (
         </div>
 
 
-        <div className=" grid-span-2 md:grid-sapn-1">
+        <div className=" grid-span-2 md:grid-span-1">
             
-            <p className="text-gray-400 text-sm tracking-wider mb-3 hover:text-gray-900 transition-colors">PRODUCT</p>
+            <p className="text-gray-400 text-sm tracking-wider mb-3  ">PRODUCT</p>
             <div className="flex flex-col gap-2">
              <a href="#features" className="text-gray-600 text-sm  ">Features </a>
               <a href="#how" className="text-gray-600 text-sm  ">How it works</a>
@@ -29,18 +29,18 @@ return (
            </div>
         </div>
 
-         <div className="grid-sapn-2 md:grid-span-1 "> 
-            <p className="text-gray-400 text-sm tracking-wider mb-3 hover:text-gray-900 transition-colors" >RESOURCES</p>
+         <div className="grid-span-2 md:grid-span-1 "> 
+            <p className="text-gray-400 text-sm tracking-wider mb-3 " >RESOURCES</p>
             <div className="flex flex-col gap-3">
-                <a href="#" className="text-sm text-gray-600">Blog</a>
+                <a href="#"  className="text-sm text-gray-600">Blog</a>
                 <a href="#" className="text-sm text-gray-600">Resume tips</a>
-                <a href="#faq" className="text-sm text-gray-600">FAO</a>
+                <a href="#faq" className="text-sm text-gray-600">FAQ</a>
             </div>
          </div>
 
 
-        <div className="grid-sapn-2 md:grid-span-1 "> 
-            <p className="text-gray-400 text-sm tracking-wider mb-3 hover:text-gray-900 transition-colors" >LEGAL
+        <div className="grid-span-2 md:grid-span-1 "> 
+            <p className="text-gray-400 text-sm tracking-wider mb-3 " >LEGAL
 </p>
             <div className="flex flex-col gap-3">
                 <a href="#" className="text-sm text-gray-600">Privacy policy</a>

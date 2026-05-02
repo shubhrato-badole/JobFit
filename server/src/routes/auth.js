@@ -158,7 +158,12 @@ router.get("/me", Authorization, async (req, res) => {
 })
 
 
-router.post("/logout", (req, res) => {
+router.post("/logout", async  (req, res) => {
+  const { refreshtoken } = req.cookies;
+  if (refreshtoken) {
+    // Remove the token from the database
+    await db.query("UPDATE users SET refreshtoken = NULL WHERE refreshtoken = $1", [refreshtoken]);
+  }
   res.clearCookie("accessToken")
   res.clearCookie("refreshtoken")
   res.json({
@@ -197,9 +202,8 @@ passport.use(new GoogleStrategy({
       }
 
       const { rows } = await db.query(`INSERT INTO users 
-        (email ,name, password) VALUES( $1, $2 , $3) RETURNING id , name 
-         email , role , created_at` , [email.toLowerCase()
-        , name.trim(), 'GOOGLE_OAUTH_NO_PASSWORD'])
+        (email ,name, password) VALUES( $1, $2 , $3) RETURNING id, name,
+         email, role, created_at` , [email.toLowerCase() , name.trim(), 'GOOGLE_OAUTH_NO_PASSWORD'])
 
       return done(null, {
         ...rows[0],
@@ -250,7 +254,7 @@ router.get("/google/callback",
     res.cookie('refreshtoken', refreshtoken,
       cookies_options_refreshToken
     )
-    console.log("ACCESS:", process.env.JWT_SECRET_ACESSTOKEN)
+   
     // Redirect to frontend — onboarding if new user, dashboard if returning
     if (user.isNewUser) {
       return res.redirect(`${process.env.CLIENT_URL}/onboarding`)

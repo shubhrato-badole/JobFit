@@ -5,18 +5,27 @@ const ScoreCard = () => {
   const [score, setScore] = useState(0)
   const [barsLoaded, setBarsLoaded] = useState(false)
 
-  useEffect(() => {
-    const t = setTimeout(() => {
-      let n = 0
-      const iv = setInterval(() => {
-        n += 2
-        if (n >= 75) { setScore(75); clearInterval(iv) }
-        else setScore(n)
-      }, 18)
-      setBarsLoaded(true)
-    }, 500)
-    return () => clearTimeout(t)
-  }, [])
+ useEffect(() => {
+  let iv;
+  const t = setTimeout(() => {
+    let n = 0
+    iv = setInterval(() => {
+      n += 2
+      if (n >= 75) {
+        setScore(75)
+        clearInterval(iv)
+      } else {
+        setScore(n)
+      }
+    }, 18)
+    setBarsLoaded(true)
+  }, 500)
+
+  return () => {
+    clearTimeout(t)
+    if (iv) clearInterval(iv)
+  }
+}, [])
 
   return (
     <div
@@ -78,7 +87,7 @@ const Home = () => (
   <div className="bg-white">
 
    
-    <section   className="max-w-6xl mx-auto px-8 pt-15 pb-25 min-h-[80vh] flex flex-col md:flex-row items-center gap-16">
+    <section   className="max-w-6xl mx-auto px-8 pt-16 pb-24 min-h-[80vh] flex flex-col md:flex-row items-center gap-16">
       <div className="flex-1">
         <div className="inline-flex items-center gap-2 text-xs text-gray-500 border border-gray-200 rounded-full px-3 py-1.5 mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
