@@ -105,11 +105,11 @@ const JobCard = ({ job, onSave, savedIds }) => {
         </button>
         <button onClick={handleSave}
           disabled={saving || alreadySaved}
-          className={`text-xs font-semibold  px-3 py-1.5 rounded-xl transition-colors ${alreadySaved ? 'bg-green-100 border border-green-300 text-green-500 ' : `bg-gray-100 border border-gray-300 text-gray-500`} `}>
-          {alreadySaved ? '✓ Saved' : saving ? 'saving...' : 'saved'}
+          className={`text-xs font-semibold  px-3 py-1.5 rounded-xl transition-colors hover:bg-gray-200 ${alreadySaved ? 'bg-green-100 border border-green-300 text-green-500 ' : `bg-gray-100 border border-gray-300 text-gray-500`} `}>
+          {alreadySaved ? '✓ Saved' : saving ? 'saving...' : 'save'}
         </button>
 
-        <a href={job.applyUrl} className="text-xs bg-white border rounded-xl border-gray-300 px-2 py-1"> Apply ↗</a>
+        <a href={job.applyUrl} className="text-xs bg-white border rounded-xl border-gray-300 px-2 py-1 hover:bg-gray-50"> Apply ↗</a>
 
       </div>
 
@@ -310,7 +310,7 @@ const Jobsearch = () => {
 
 
       {searched && !loading && jobs.length > 0 && (
-        <p className="text-sm text-gray-900 my-5 ">
+        <p className="text-sm text-gray-600 font-medium my-5 ">
           Found <span>{jobs.length}</span> jobs for {query}
           {location ? ` in ${location}` : ''}
         </p>

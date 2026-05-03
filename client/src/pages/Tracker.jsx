@@ -53,14 +53,17 @@ const AppModal = ({ app, onClose, onStatusChange, onDelete }) => {
     } catch {
 
     } finally {
-      setDeleting()
+      setDeleting(false)
     }
   }
    const missing = typeof app.missing_skills === 'string'
       ? JSON.parse(app.missing_skills) : (app.missing_skills || [])
+
+
    const strengths = typeof app.strengths === 'string'
-     ? JSON.parse(app.strengths) : (app.styrengths || [])
-     const suggestions = typeof app.suggestions ? 
+     ? JSON.parse(app.strengths) : (app.strengths || [])
+
+     const suggestions = typeof app.suggestions === 'string' ? 
       app.suggestions?.split('\n').filter(Boolean) :[]
        
 
@@ -164,8 +167,9 @@ const Tracker = () => {
 
   useEffect(() => {
     const fetchApp = async () => {
+      setLoading(true)
       try {
-        const { data } = await API.get("api/tracker")
+        const { data } = await API.get("/api/tracker")
         setApp(data.application)
       } catch (err) {
         console.error(err)
@@ -239,10 +243,10 @@ const Tracker = () => {
 
       {app.length > 0 && 
 
-      <div className="grid grid-cols-1 md-grd-cols-2 grid-cols-4 gap-4 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grd-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
         {COLUMNS.map(col => (
           <div key={col.key} className="bg-gray-50 rounded-2xl p-3 min-h-48">
-            <div className="flex items-center justify-between mb-3 px-1"> <span className={`text-sm font-semibold ${statusColors} `}>{col.label}</span>
+            <div className="flex items-center justify-between mb-3 px-1"> <span className={`text-sm font-semibold ${statusColors[col.key]} `}>{col.label}</span>
               <span className="text-xs bg-white border border-gray-200 text-gray-500 px-2 py-0.5 rounded-full"> {appByStatus(col.key).length}</span></div>
 
 
