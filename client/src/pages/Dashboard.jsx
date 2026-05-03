@@ -88,7 +88,7 @@ if (loading) {
           { n: stats?.total, l: 'total applied' },
           { n: stats?.interview, l: 'interviews' },
           { n: stats?.avgScore ? `${stats.avgScore}%` : '0%', l: 'Avg match score' },
-          { n: stats?.offer, l: 'Offers Keep going' },
+          { n: stats?.offer, l: 'Offers' },
         ].map(s => (
           <div key={s.l} className=" w-full bg-gray-50 p-3 rounded-xl border border-gray-100 ">
             <div className="text-xl font-semibold text-gray-900 ">{s.n}</div>
@@ -159,7 +159,7 @@ if (loading) {
                       <div key={i} className="flex items-center gap-6 mb-3">
                         <p className="text-xs text-gray-500 w-24 shrink-0 truncate">{s.skill}</p>
                         <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-red-400 rounded-full"
+                          <div className="h-full bg-red-500 rounded-full"
                           style={{width: `${(s.count / missingSkill[0]?.count) * 100}%`}}></div>
                         </div>
                         <span className="text-xs text-gray-500 w-10 text-right shrink-0">{s.count} job{s.count > 1 ?'s':''}</span>

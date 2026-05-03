@@ -1,4 +1,5 @@
 import{ useContext , useEffect , useState  , createContext } from "react"
+
 import API from "../Components/Api"
 
 
@@ -34,7 +35,6 @@ const Login = (userData) => setUser(userData)
   const logout = async () =>{
     try{
 await API.post("/api/auth/logout")} catch {}
-navigate("/")
 setUser(null)
   }
 

@@ -64,7 +64,7 @@ router.post("/register", RateLimit, inputValidation(RegisterSchema), async (req,
         email: user.email,
         role: user.role,
         createdAt: user.created_at,
-        hasResume: user.resume_text ? true : false
+        hasResume: !!user.resume_text
       }
     })
   } catch (err) {
@@ -117,6 +117,7 @@ router.post("/login", RateLimit, inputValidation(LoginSchema), async (req, res) 
         email: user.email,
         role: user.role,
         createdAt: user.created_at,
+        hasResume: !!user.resume_text
       }
     })
   } catch (err) {

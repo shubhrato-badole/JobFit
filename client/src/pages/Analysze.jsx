@@ -1,6 +1,6 @@
-import { React, useState } from "react";
+import {  useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import API from "../components/Api"
+import API from "../Components/Api"
 
 
 
@@ -35,7 +35,7 @@ const Analysze = () => {
 });
   const [saved, setSaved] = useState(false);
 
-  const handleChnage = (e) => {
+  const handleChange = (e) => {
     setForm(prev => 
       ({ ...prev, [e.target.name]: e.target.value }))
     setError('')
@@ -67,16 +67,26 @@ const Analysze = () => {
     }
   }
 
-  const hnadleReAnalyzing = () => {
+  const handleReAnalyzing = () => {
     setError('')
     setForm({ company: '', role: '', jobDesc: '' })
     setResult(null)
-    setSaved('false')
+    setSaved(false)
     setStatus('ideal')
 
   }
-   const handleSave = () =>{
+   const handleSave = async () =>{
     setSaved(true)
+    try{
+      await API.post("/api/ai/tracker", { ...form , 
+   matchScore: Result.matchScore,
+  missingSkills: Result.missingSkill,
+  strengths: Result.strengths,
+  suggestions: Result.suggestion } ) 
+    }catch(err){
+       console.log(err)
+        setError("Failed to save job");
+    }
    }
 
   return (
@@ -98,7 +108,7 @@ const Analysze = () => {
                 <input type="text"
                   name="company"
                   placeholder="compnay"
-                  onChange={handleChnage}
+                  onChange={handleChange}
                   value={form.company}
                   className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-blue-400 transition-colors" />
               </div>
@@ -107,7 +117,7 @@ const Analysze = () => {
                 <input type="text"
                   name="role"
                   placeholder="Frontend Developer"
-                  onChange={handleChnage}
+                  onChange={handleChange}
                   value={form.role}
                   className=" w-full placeholder-gray-400 
          text-xs border border-gray-200 text-gray-900 
@@ -121,7 +131,7 @@ const Analysze = () => {
               <textarea
                 name="jobDesc"
                 placeholder="Paste the full job description here..."
-                onChange={handleChnage}
+                onChange={handleChange}
                 value={form.jobDesc}
                 rows={8}
                 className="border border-gray-200 w-full rounded-xl px-4 py-2" />
@@ -140,7 +150,7 @@ const Analysze = () => {
 
             <button
               onClick={handleSubmit}
-              disabled={status === 'loading'}
+              disabled={status === 'uploading'}
               className="bg-gray-900 w-full text-white text-sm font-medium px-5 py-2 rounded-xl my-4
              hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" >
               {status === 'uploading' ? (
@@ -165,7 +175,7 @@ const Analysze = () => {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-4 flex items-center gap-5">
               <div >
                 <p className="text-xs text-gray-600 mb-2">Match score </p>
-                <span className={`text-5xl font-semibold tabular-nums ${scoreColor(Result?.matchScore)}`}>{75}</span>
+                <span className={`text-5xl font-semibold tabular-nums ${scoreColor(Result?.matchScore)}`}>{Result?.matchScore}</span>
                 <span className="text-xl text-gray-500 ml-1">/100</span>
 
               </div>
@@ -187,7 +197,7 @@ const Analysze = () => {
                 <p className="text-xs text-gray-500 mt-1.5">
                   {Result?.matchScore >= 75 ? 'Strong match — apply with confidence' :
                     Result?.matchScore >= 50 ? 'Decent match — close some skill gaps first' :
-                      'Weak match — significant skills missing'}
+                      'Focus on improving these key skills before applying'}
                 </p>
               </div>
             </div>
@@ -201,7 +211,7 @@ const Analysze = () => {
                 {Result?.missingSkill?.length === 0 ? <p className="text-xs text-gray-400">No critical gaps found</p>
                   :
                   <div className="flex flex-wrap gap-1.5">
-                    {Result?.missingSkill?.map(s => (
+                    {(Result?.missingSkill || []).map(s => (
                       <div key={s} className="text-xs text-red-600 border border-red-100 font-medium bg-red-40 px-2.5 py-1 rounded-xl ">{s}
                       </div>
                     ))} </div>}
@@ -213,7 +223,7 @@ const Analysze = () => {
                 {Result?.strengths?.length === 0 ? 'No matches found' :
                   <div className="flex flex-wrap gap-1.5">
                     {Result?.strengths?.map(s => (
-                      <div className="text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-xl fotn-medium border border-green-100" key={s}>{s}</div>
+                      <div className="text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-xl font-medium border border-green-100" key={s}>{s}</div>
                     ))}
                   </div>
                 }
@@ -234,19 +244,19 @@ const Analysze = () => {
               <div> {error}</div>}
 
             {saved ?
-              <div className="text-center bg-gray-200 px-5 py-3 rounded-xl">
-                <div className="inline-flex items-center justify- gap-2 px-5 py-3 bg-green-50 border border-green-200 rounded-sm text-xl text-green-700 font-medium mb-3 ">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8l4 4 6-6" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  Saved to tracker as Applied
-                </div>
+              <div className="text-center bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+               <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full text-sm text-green-700 font-medium shadow-sm mb-3">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M3 8l4 4 6-6" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+  Saved to tracker as Applied
+</div>
 
                 <div className="flex gap-3">
-                  <button className="bg-gray-900 flex-1 px-5 py-3 text-white font-medium rounded-xl hover:bg-gray-700 transition-colors "
+                  <button className=" text-sm bg-gray-900 flex-1 px-3 py-2 text-white font-medium rounded-xl hover:bg-gray-700 transition-colors "
                     onClick={() => navigate('/tracker')}>View tracker</button>
-                  <button onClick={hnadleReAnalyzing}
-                  className="flex-1 bg-gray-900 px-5 py-3 text-white 
+                  <button onClick={handleReAnalyzing}
+                  className="flex-1 text-sm bg-gray-900 px-3 py-2 text-white 
                   font-medium rounded-xl hover:bg-gray-700 transition-colors"
                   >Analyze another</button>
                 </div>
@@ -256,7 +266,7 @@ const Analysze = () => {
                 <button   onClick={handleSave}
                 className="flex-1 text-sm bg-gray-900 px-3 py-2 rounded-xl text-white font-semibold 
   hover:bg-gray-700 transition-colors "> Save to tracker</button>
-                <button onClick={hnadleReAnalyzing}
+                <button onClick={handleReAnalyzing}
                  className="flex-1 text-sm bg-gray-900 px-3 py-2 rounded-xl text-white font-semibold 
    hover:bg-gray-700 transition-colors">Analyze another</button>
 

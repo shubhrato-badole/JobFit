@@ -20,7 +20,7 @@ const {company , role , jobDesc} =req.body
     const userResult = await db.query("SELECT resume_text FROM users WHERE id=$1", [req.user.id]);
 
      const resumeText = userResult.rows[0]?.resume_text
-     console.log(resumeText)
+  
 
      if(!resumeText || resumeText.trim().length === 0){
         return res.status(400).json({
@@ -68,20 +68,9 @@ try {
       return res.status(500).json({ error: 'AI response was incomplete. Please try again.' })
     }
 
-  const { rows } = await db.query(`INSERT INTO applications  (user_id ,company , role, job_desc, match_score ,missing_skills , strengths , suggestions) VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )
-       RETURNING id`,[ 
-        req.user.id,
-        company.trim(),
-        role.trim(),
-        jobDesc.trim(),
-        result.matchScore,
-        JSON.stringify(result.missingSkills),
-        JSON.stringify(result.strengths),
-        result.suggestions.join('\n'),
-      ])
+  
 
        res.json({
-      applicationId: rows[0].id,
       matchScore:    result.matchScore,
       missingSkills: result.missingSkills,
       strengths:     result.strengths,
@@ -92,6 +81,39 @@ try {
      console.error("ANALYZE ERROR:", err);
     res.status(500).json({ error: 'Analysis failed. Please try again.' })
   }
+})
+
+
+
+router.post("/tracker" , Authorization , async(req ,res )=>{
+
+ const { company, role, jobDesc, matchScore, missingSkills, strengths, suggestions } = req.body;
+
+if (!company || !role || !jobDesc) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+ 
+try{
+const { rows } = await db.query(`INSERT INTO applications  (user_id ,company , role, job_desc, match_score ,missing_skills , strengths , suggestions) VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )
+       RETURNING id`,[ 
+        req.user.id,
+        company.trim(),
+        role.trim(),
+        jobDesc.trim(),
+        matchScore,
+        JSON.stringify(missingSkills),
+        JSON.stringify(strengths),
+        suggestions.join('\n'),
+      ])
+
+      res.json({
+      message: "Saved successfully",
+      id: rows[0].id,
+    });
+    }catch(err){
+   console.error("TRACKER ERROR:", err);
+    res.status(500).json({ error: "Failed to save job" });
+    }
 })
 
 export default router
