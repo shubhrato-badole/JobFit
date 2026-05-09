@@ -17,14 +17,14 @@ const router = express.Router();
 const cookies_options = ({
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: 'lax',
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
 })
 
 
 const cookies_options_refreshToken = ({
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: 'lax',
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   maxAge: 7 * 24 * 60 * 60 * 1000,
 })
 
@@ -61,7 +61,7 @@ router.post("/register", RateLimit, inputValidation(RegisterSchema), async (req,
             SET 
         
             verify_token = $1,
-                verify_token_expiry = $2
+                verify_token_expiry = $2,
                 password = $3
             WHERE id = $4
             `,
@@ -221,7 +221,7 @@ router.post("/reset-password" , async (req, res ) =>{
 
    await db.query(`UPDATE users SET password=$1 , 
       verify_token        = NULL,
-     verify_token_expiry = NULL
+     verify_token_expiry = NULL,
      refreshtoken=NULL
      WHERE id= $2`,[hashedPassword, userId])
 
@@ -265,6 +265,8 @@ router.post('/resend-verification' , resendEmail)
 
 
 router.post("/login", RateLimit, inputValidation(LoginSchema), async (req, res) => {
+ 
+   try {
   const { email, password } = req.body;
 
   const existing = await db.query("SELECT * FROM users WHERE email=$1", [email.toLowerCase().trim()])
@@ -274,7 +276,7 @@ router.post("/login", RateLimit, inputValidation(LoginSchema), async (req, res) 
       error: "user does not exist"
     })
   }
-  try {
+
     const user = existing.rows[0]
 
     if (!user.is_verified) {
