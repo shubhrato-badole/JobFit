@@ -384,6 +384,7 @@ router.post("/logout", async  (req, res) => {
 
 
    // google login aouth 
+console.log("Google strategy loaded")
 console.log(process.env.GOOGLE_CALLBACK_URL)
 
 passport.use(new GoogleStrategy({
