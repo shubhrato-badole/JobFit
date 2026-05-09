@@ -118,3 +118,9 @@ CREATE OR REPLACE TRIGGER trigger_applications_updated_at
 ADD COLUMN IF NOT EXISTS resume_score    INTEGER,
 ADD COLUMN IF NOT EXISTS resume_feedback JSONB,
 ADD COLUMN IF NOT EXISTS target_roles    JSONB;
+
+
+ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS is_verified          BOOLEAN   DEFAULT false,
+  ADD COLUMN IF NOT EXISTS verify_token         TEXT,
+  ADD COLUMN IF NOT EXISTS verify_token_expiry  TIMESTAMP;

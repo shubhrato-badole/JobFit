@@ -15,16 +15,29 @@ import Profile from "./routes/profile.js"
 
 
 
+
+
 dotenv.config()
+
 const app = express();
+
 app.use(helmet())
 
 const PORT = 3000
+
 app.use(passport.initialize())
+
 app.use(cors ({
-    origin:"http://localhost:5173",
+    origin:process.env.CLIENT_URL,
     credentials: true
 }))
+
+
+
+
+
+
+
 app.use(express.json())
 app.use(cookieParser())
 

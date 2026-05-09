@@ -10,7 +10,7 @@ user: process.env.DB_USER,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: Number(process.env.DB_PORT),
-  ssl: isProduction ? { rejectUnauthorized: false } : false
+  ssl: false
  })
 
 db.connect();
