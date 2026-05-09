@@ -54,7 +54,7 @@ Contact</a>
 
 
     <div className="pt-6 flex flex-col md:flex-row justify-between gap-3 border-t border-gray-200 px-7 py-10">
-        <p className="text-xs text-gray-400 ">© {new Date().getFullYear()} JobFit. Built with React, Node.js &amp; Gemini AI.</p>
+        <p className="text-xs text-gray-400 ">© {new Date().getFullYear()} Powered by AI-driven career intelligence.</p>
     <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-green-400" />
             <span className="text-xs text-gray-400">All systems operational</span>

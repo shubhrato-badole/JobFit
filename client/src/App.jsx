@@ -1,4 +1,3 @@
-import React from "react"
 import {BrowserRouter, Routes, Route,} from "react-router-dom"
 import {AuthProvider, useAuth} from "./pages/AuthContext"
 import ProtectedRoute from "./pages/protectedRoutes"
@@ -12,21 +11,25 @@ import Analysze from "./pages/Analysze"
 import Tracker from "./pages/Tracker"
 import Profile from "./pages/Profile"
 import Footer from "./components/Footer"
-import Navebar from "./components/Navebar"
+import Navbar from "./components/Navbar"
 import Saved from "./pages/saved"
+import VerifyEmail from "./pages/verifyEmail"
+import ResetPassword from "./pages/forgotPassword"
 
 
 
 
 const Layout = ({ children }) => (
   <div className="min-h-screen flex flex-col">
-    <Navebar />
+    <Navbar />
     <main className="flex-1">{children}</main>
     <Footer />
   </div>
 )
 
 const AppRoutes = () =>{
+  const auth = useAuth();
+  if (!auth) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 const {user} = useAuth();
 
 return(
@@ -37,6 +40,8 @@ return(
       <Route path="/" element={ <Home /> }></Route>
       <Route path="/login" element={ user ? <Dashboard/> : <Login/> }></Route>
       <Route path="/register" element={user ?  <Dashboard/> :<Register/>}></Route>
+      <Route path="/forgot-password" element={ <ResetPassword/>}> </Route>
+     <Route path="/verify-email" element={ <VerifyEmail/>}> </Route>
       <Route path="/onboarding" element= {<ProtectedRoute> <Onboarding/> </ProtectedRoute> }/>
       <Route path="/Dashboard" element= {<ProtectedRoute> <Dashboard/> </ProtectedRoute> }/>
       <Route path="/Jobs" element= {<ProtectedRoute> <JobSearch/> </ProtectedRoute> }/>
