@@ -384,13 +384,15 @@ router.post("/logout", async  (req, res) => {
 
 
    // google login aouth 
+console.log(process.env.GOOGLE_CALLBACK_URL)
 
 passport.use(new GoogleStrategy({
 
 
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL
+  callbackURL: process.env.GOOGLE_CALLBACK_URL,
+  
 
 },
 
@@ -398,6 +400,7 @@ passport.use(new GoogleStrategy({
     try {
       const email = profile.emails[0].value
       const name = profile.displayName
+
 
 
       const existing = await db.query("SELECT * FROM users WHERE email=$1", [email.toLowerCase()])
