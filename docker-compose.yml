@@ -1,0 +1,92 @@
+
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: resumatch-nginx
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+    depends_on:
+      - client
+      - server
+
+    restart: unless-stopped
+
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+
+    container_name: resumatch-client
+
+    restart: unless-stopped
+
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+
+    container_name: resumatch-server
+
+    env_file:
+      - ./server/.env
+
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/jobfit
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - postgres
+      - redis
+
+    restart: unless-stopped
+
+
+  postgres:
+    image: postgres:15-alpine
+
+    container_name: resumatch-postgres
+
+    environment:
+      - POSTGRES_DB=jobfit
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+
+  redis:
+    image: redis:7-alpine
+
+    container_name: resumatch-redis
+
+    ports:
+      - "6380:6379"
+
+    volumes:
+      - redis_data:/data
+
+    restart: unless-stopped
+
+
+volumes:
+  postgres_data:
+  redis_data:
+
