@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext"
-import API from "../Components/Api"
+import API from "../components/Api"
 
 const Profile = () => {
 
@@ -31,11 +31,13 @@ const Profile = () => {
 
   const [showDelete, setShowDelete] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
 
 
 
   useEffect(() => {
     const fetchProfile = async () => {
+      setLoading(true)
       try {
         const { data } = await API.get("/api/profile")
         setProfile(data.user)
@@ -101,16 +103,17 @@ const Profile = () => {
 
     try {
       const { data } = await API.delete(`/api/profile/delete`)
-      await logout()
+         logout()
       navigate("/")
-    } catch {
+    } catch (err){
+       setDeleteError(err.response?.data?.error || 'Deletion failed');
       setDeleting(false)
       setShowDelete(false)
     }
   }
 
 
-const formatData = (date) =>{
+const formatDate = (date) =>{
    if(!date) return '' ;
   return new Date(date).toLocaleDateString("en-IN" , {
     day: "numeric",
@@ -145,12 +148,12 @@ const formatData = (date) =>{
           {profile?.name?.[0]?.toUpperCase()} 
         </div>
         <div className="flex-1 flex-col ">
-          <p className="text-lg text-gray-900 font-semibold truncate">{profile.name}</p>
-          <p className="text-sm text-gray-500 truncate mb-0.5">{profile.email}</p>
-          <p className="text-xs text-gray-500">Member since {formatData(profile.createdAt)}</p>
+          <p className="text-lg text-gray-900 font-semibold truncate">{profile?.name}</p>
+          <p className="text-sm text-gray-500 truncate mb-0.5">{profile?.email}</p>
+          <p className="text-xs text-gray-500">Member since {formatDate(profile?.createdAt)}</p>
         </div>
         <div className=" text-right shrink-0">
-          <p className="text-2xl text-gray-900 font-semibold px-2 ">{profile.total}</p>
+          <p className="text-2xl text-gray-900 font-semibold px-2 ">{profile?.total}</p>
           <p className="text-xs text-gray-400">applications</p>
         </div>
       </div>
@@ -171,7 +174,7 @@ const formatData = (date) =>{
 
             <div className="flex-1 items-center" >
               <p className="text-sm text-gray-900 font-semibold">Resume uploaded</p>
-              <p className="text-xs text-gray-500 ">Last uploaded {formatData(profile.resumeUploadedAt)} </p>
+              <p className="text-xs text-gray-500 ">Last uploaded {formatDate(profile?.resumeUploadedAt)} </p>
             </div>
            <button onClick={()=> navigate("/onboarding")}
             className="text-xs text-gray-900 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
@@ -204,8 +207,8 @@ const formatData = (date) =>{
               <p className="text-xs font-medium text-gray-500 mb-2">AI recommended roles</p>
                 <div className="flex flex-wrap gap-2">
                  {profile?.targetRoles?.map((t ,i) => (
-                 <span key={i} className=" text-xs px-2.5 py-1 rounded-xl bg-blue 
-                 text-blue-600 border border-blue-blue-200 font-medium">
+                 <span key={i} className=" text-xs px-2.5 py-1 rounded-xl bg-blue-50
+                 text-blue-600 border border-blue-200 font-medium">
                       {t}
                 </span>
                   
@@ -263,7 +266,7 @@ const formatData = (date) =>{
               <label className=" block text-sm text-gray-700 mb-1.5"> Current password</label>
               <input 
               onChange={(e)=>  { setCurPwd(e.target.value); setPwdMsg(''); setPwdErr('') }}
-              type="text" value={curPwd} required
+              type="password" value={curPwd} required
               placeholder="Your current password"
               className="w-full px-3 py-2.5 border border-gray-200 rounded-xl 
               text-sm text-gray-900 outline-none focus:border-blue-400 transition-colors"/>
@@ -272,7 +275,7 @@ const formatData = (date) =>{
                <label className=" block text-sm text-gray-700 mb-1.5"> New password</label>
               <input 
               onChange={(e)=>  { setNewPwd(e.target.value); setPwdMsg(''); setPwdErr('') }}
-              type="text" value={newPwd} required
+              type="password" value={newPwd} required
               placeholder="Minimum 8 characters"
               className="w-full px-3 py-2.5 border border-gray-200 rounded-xl 
               text-sm text-gray-900 outline-none focus:border-blue-400 transition-colors"/>
@@ -292,7 +295,7 @@ const formatData = (date) =>{
               <button  type="submit"
                   disabled={savingPwd || !curPwd || !newPwd}
             className="text-sm text-white border border-gray-200 bg-gray-900 px-5 py-2.5 rounded-lg hover:bg-gray-700 transition-colors">
-            { saving ? 'Updating...' : 'Update password'}
+            { savingPwd ? 'Updating...' : 'Update password'}
            </button>
 
                </form>

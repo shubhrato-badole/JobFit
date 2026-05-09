@@ -2,7 +2,7 @@ import express from "express"
 import bcrypt from "bcrypt"
 import Authorization from "../middleware/authmiddelware.js"
 import db from "../database.js"
-
+import RateLimit from "../middleware/RateLimit.js"
 
 const router = express.Router();
 
@@ -125,7 +125,7 @@ if (newPassword.length < 8) {
 
 })
 
-router.delete("/delete" , Authorization , async (req , res) => {
+router.delete("/delete" , Authorization ,RateLimit, async (req , res) => {
 
 try{
     await db.query("DELETE FROM users WHERE id=$1" ,[ req.user.id])

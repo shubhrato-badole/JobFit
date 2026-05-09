@@ -73,7 +73,8 @@ const ScoreCard = () => {
 const FAQItem = ({ q, a }) => {
   const [open, setOpen] = useState(false)
   return (
-    <button onClick={() => setOpen(!open)} className="w-full text-left border-b border-gray-100 py-4">
+    <button type="button"
+    onClick={() => setOpen(!open)} className="w-full text-left border-b border-gray-100 py-4">
       <div className="flex justify-between items-center gap-4">
         <span className="text-sm font-medium text-gray-900">{q}</span>
         <span className={`text-gray-400 text-lg transition-transform duration-200 ${open ? 'rotate-45' : ''}`}>+</span>

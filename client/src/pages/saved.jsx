@@ -20,20 +20,21 @@ const getColor = (text) => {
     for (let i = 0; i < text.length; i++) {
         hash = text.charCodeAt(i) + hash * 31;
     }
-     return colors[Math.abs(hash) % colors.length];
+    return colors[Math.abs(hash) % colors.length];
 }
 
 
 
 const SavedJobs = () => {
 
-    const [jobs, setJobs] = useState();
+    const [jobs, setJobs] = useState([]);
     const [loading, setloading] = useState(false);
     const [error, setError] = useState('');
-    const [delte, setDelete] = useState(false)
+    const [deleting, setDelete] = useState(false)
 
 
 
+ 
 
     const navigate = useNavigate();
 
@@ -46,6 +47,7 @@ const SavedJobs = () => {
             try {
                 const { data } = await API.get("/api/jobs/saved")
                 setJobs(data.jobs)
+                
 
             } catch (err) {
                 setError(err.response?.data?.error || 'error accured while fetching data')
@@ -66,11 +68,9 @@ const SavedJobs = () => {
     const deleteJobs = async (id) => {
         setDelete(true)
 
-        console.log(id)
-        setJobs(prev => prev.filter(a => a.id !== id))
-
         try {
-            const { data } = await API.delete(`/api/jobs/delete/${id}`)
+            const { data } = await API.delete(`/api/jobs/${id}`)
+             setJobs(prev => prev.filter(a => a.id !== id))
             setError('')
         } catch (err) {
             setError(err.response?.data?.error || 'errro while deleting ')
@@ -82,22 +82,29 @@ const SavedJobs = () => {
 
     const formatDate = (date) => {
         if (!date) return '';
+        try{
         return new Date(date).toLocaleDateString("en-us", {
             month: "short",
             day: "numeric"
+        })} catch{
+            { return ''; }
+        }
+    }
+
+    const handleAnalyze = (j) => {
+
+        navigate('/analyze', {
+            state: {
+                company: j.company,
+                title: j.title,
+                jobDesc: j.job_desc
+            }
         })
     }
 
-    const handleAnalyze = () => {
-
-        navigate('/analyze', {
-              state: {    
-            compnay: jobs.company,
-            title: jobs.title,
-            description: jobs.description,
-    }})
-    }
-
+    if (loading) {
+  return <div className="min-h-screen flex items-center justify-center">Loading...</div>
+}
 
     return (
         <div className="max-w-7xl mx-auto px-7 py-8 ">
@@ -147,7 +154,7 @@ const SavedJobs = () => {
 
                                 <div className="flex items-center gap-3">
 
-                                    <button className="text-sm text-white px-4 py-2 bg-gray-900 rounded-xl hover:bg-gray-700" onClick={handleAnalyze} >
+                                    <button className="text-sm text-white px-4 py-2 bg-gray-900 rounded-xl hover:bg-gray-700" onClick={() => handleAnalyze(j)} >
                                         Analyze job →
                                     </button>
 
@@ -163,6 +170,7 @@ const SavedJobs = () => {
                                     </button>
 
                                 </div>
+                    
                             </div>
 
                         ))}
@@ -175,7 +183,7 @@ const SavedJobs = () => {
                     <Link to={"/jobs"} className="text-sm text-white bg-gray-900 rounded-xl px-5 py-2 mt-2 hover:bg-gray-700 ">Search Jobs</Link>
                 </div>}
 
-            {jobs && !delte ? <p className="text-xs text-gray-500 mt-4 text-center ">
+            {jobs && !deleting ? <p className="text-xs text-gray-500 mt-4 text-center ">
                 {jobs.length} saved job{jobs.length > 1 ? 's' : ''} • Click Analyze now to check your match score</p> : ''}
 
             {/* {error &&  <p className="text-xs text-red-600 bg-red-50 px-4 py-1.5 rounded-xl border border-red-200 font-semibold ">{error}</p>} */}

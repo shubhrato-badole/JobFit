@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../components/Api"
-import axios from "axios"
+
 
 
 
@@ -189,8 +189,8 @@ const Tracker = () => {
     setApp(prev => prev.filter(a => a.id !== id))
   }
 
-  const appByStatus = (staus) =>
-    app.filter(a => a.status === staus)
+  const appByStatus = (status) =>
+    app.filter(a => a.status === status)
 
 
   if (loading) {
@@ -212,7 +212,7 @@ const Tracker = () => {
         </div>
 
         <Link to='/analyze'
-          className="text-lg text-white font-semibld bg-gray-900 px-4 py-2
+          className="text-lg text-white font-semibold bg-gray-900 px-4 py-2
      rounded-xl hover:bg-gray-700 transition-colors">
           Analyze new job
         </Link>
@@ -243,7 +243,7 @@ const Tracker = () => {
 
       {app.length > 0 && 
 
-      <div className="grid grid-cols-1 md:grd-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
         {COLUMNS.map(col => (
           <div key={col.key} className="bg-gray-50 rounded-2xl p-3 min-h-48">
             <div className="flex items-center justify-between mb-3 px-1"> <span className={`text-sm font-semibold ${statusColors[col.key]} `}>{col.label}</span>

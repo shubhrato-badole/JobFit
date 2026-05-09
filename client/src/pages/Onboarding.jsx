@@ -1,6 +1,6 @@
 import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import API from "../Components/Api"
+import API from "../components/Api"
 import { useEffect } from "react";
 import { useAuth } from "./AuthContext"
 
@@ -41,7 +41,7 @@ return(
 
 const OnBoarding = () => {
   
-const { refetchUser } = useAuth()
+const { refetch } = useAuth()
   const navigate = useNavigate();
   const fileInputRef = useRef();
   const [file, setFile] = useState(null);
@@ -66,7 +66,7 @@ useEffect(()=>{
            setStatus('done')
     }
     }catch(err){
-
+     console.error("Resume status check failed", err)
     } finally {
       setInitialLoading(false)
     }
@@ -113,14 +113,15 @@ useEffect(()=>{
     const formData = new FormData()
     formData.append('resume', file)
 
+ let analyzeTimer
 
     try {
-      const analyzeTimer = setTimeout(()=> setStatus('analyzing'), 1500)
+      analyzeTimer = setTimeout(()=> { setStatus('analyzing')}, 1500)
       const {data} = await API.post("/api/resume/upload", formData, {
         headers: { "Content-Type": 'multipart/form-data' }
       })
       if (data.hasResume) {
-      await refetchUser()   // <-- refresh user context
+      await refetch()   // <-- refresh user context
     }
     
       setStatus('done')
@@ -322,7 +323,8 @@ useEffect(()=>{
           <button 
            onClick={handleSubmit}
            disabled={!file || status === 'uploading' || status === 'analyzing'}className="text-sm text-white font-semibold bg-gray-900 w-full px-4 py-2 rounded-xl
-           hover:bg-gray-700 transition-colors   "> Upload resume→ </button>
+           hover:bg-gray-700 transition-colors  "> {status === 'uploading' || status === 'analyzing'
+             ? 'Processing...': 'Upload resume →'} </button>
           <p className="text-xs text-center mt-4 cursor-pointer hover:text-gray-600"> You can do this later —<span  onClick={() => navigate('/dashboard')}
            className="text-blue-600"> go to dashboard</span></p>
         
@@ -416,11 +418,13 @@ useEffect(()=>{
                 )}
 
                 <div className="flex gap-3">
-                  <button  onClick={() => navigate('/dashboard')}
+                  <button  type="button"
+                  onClick={() => navigate('/dashboard')}
                     className="flex-1 bg-gray-900 py-3 rounded-xl text-sm font-semibold text-white hover:bg-gray-700 transition-colors">
                     Go to dashboard →
                   </button>
-                  <button  onClick={() => navigate('/analyze')}
+                  <button type="button"
+                   onClick={() => navigate('/analyze')}
                       className="flex-1 bg-gray-900 py-3 rounded-xl text-sm font-semibold text-white hover:bg-gray-700 transition-colors">
                      Analyze a job
                   </button>
