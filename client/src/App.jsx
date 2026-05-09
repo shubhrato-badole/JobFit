@@ -43,11 +43,11 @@ return(
       <Route path="/forgot-password" element={ <ResetPassword/>}> </Route>
      <Route path="/verify-email" element={ <VerifyEmail/>}> </Route>
       <Route path="/onboarding" element= {<ProtectedRoute> <Onboarding/> </ProtectedRoute> }/>
-      <Route path="/Dashboard" element= {<ProtectedRoute> <Dashboard/> </ProtectedRoute> }/>
-      <Route path="/Jobs" element= {<ProtectedRoute> <JobSearch/> </ProtectedRoute> }/>
+      <Route path="/dashboard" element= {<ProtectedRoute> <Dashboard/> </ProtectedRoute> }/>
+      <Route path="/jobs" element= {<ProtectedRoute> <JobSearch/> </ProtectedRoute> }/>
       <Route path="/analyze" element= {<ProtectedRoute> <Analysze/> </ProtectedRoute> }/>
-     <Route path="/Tracker" element= {<ProtectedRoute> <Tracker/> </ProtectedRoute> }/>
-      <Route path="/Profile" element= {<ProtectedRoute> <Profile/> </ProtectedRoute> }/>
+     <Route path="/tracker" element= {<ProtectedRoute> <Tracker/> </ProtectedRoute> }/>
+      <Route path="/profile" element= {<ProtectedRoute> <Profile/> </ProtectedRoute> }/>
       <Route path="/saved" element= {<ProtectedRoute> <Saved/> </ProtectedRoute> }/>
     </Routes>
     </Layout>

@@ -4,7 +4,7 @@ import db from "../database.js"
 
 const cookiesOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
+  secure: true,
   sameSite: 'lax',
 }
 
