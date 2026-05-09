@@ -28,7 +28,7 @@ const PORT = 3000
 app.use(passport.initialize())
 
 app.use(cors ({
-    origin:process.env.CLIENT_URL,
+    origin:"https://job-fit-murex.vercel.app",
     credentials: true
 }))
 
