@@ -1,7 +1,7 @@
 import {React ,  useState }from "react"
 import { Link,   useNavigate  } from "react-router-dom"
 import {useAuth} from "./AuthContext"
-import API from "../Components/Api"
+import API from "../components/Api"
 
 
 const Register = () => {
@@ -36,7 +36,7 @@ try {
     const {data} = await API.post("/api/auth/register" , user)
      Login(data.user)
      console.log(data.user)
-      navigate('/onboarding')
+      navigate('/verify-email' , { state: { email: user.email } });
          } catch (err){
     // Backend sends specific messages like:
       // "Email already in use"
@@ -49,7 +49,7 @@ try {
 
 
 const handleGoogleLogin = () => {
-  window.location.href = "http://localhost:3000/api/auth/google"
+  window.location.href = "/api/auth/google"
 }
 
 
@@ -120,6 +120,7 @@ return (
           <input type ="password"
           name ="password"
            value={user.password}
+           minLength={8}
           placeholder="Minimum 8 character"
           onChange={handleChange}
           className=" w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 "
@@ -135,7 +136,7 @@ return (
                                 <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
                                     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="30 70" />
                                 </svg>
-                                Logging in...
+                                Registering...
                             </>
                             : 'Register'
                         }

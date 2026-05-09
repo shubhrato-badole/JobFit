@@ -1,13 +1,11 @@
-import React from "react"
 import { useState  } from "react"
-import { Link , useNavigate, useLocation} from "react-router-dom";
+import { Link , useNavigate, useLocation  } from "react-router-dom";
 import { useAuth } from './AuthContext'
-import axios  from 'axios'
 import API from "../components/Api"
 
 
 const Login = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
     const location = useLocation();
     const { Login } = useAuth();
 
@@ -47,7 +45,7 @@ const Login = () => {
     }
 
 const handleGoogleLogin = () => {
-  window.location.href = "http://localhost:3000/api/auth/google"
+  window.location.href = "/api/auth/google"
 }
 
 
@@ -65,6 +63,7 @@ return(
  
             <button
             onClick={handleGoogleLogin}
+
                 type="button"
                 className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors mb-5"
             >
@@ -107,7 +106,7 @@ return(
                     </div>
                     <div  className="flex  items-center justify-between ">
                         <label className="text-sm font-medium text-gray-700">password</label>
-                       <a href="#"  className="text-end text-sm text-blue-600 hover:underline">Forgot password </a>
+                       <Link to={'/forgot-password'}  className="text-end text-sm text-blue-600 hover:underline">Forgot password </Link>
                        </div>
                         <input type="password"
                             name="password"
@@ -118,8 +117,10 @@ return(
                             />
 
                    
-                    <button type="submit" className="w-full py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" >
-
+                    <button type="submit" disabled={loading} className="w-full py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-700 transition-colors 
+                    disabled:opacity-50 disabled:cursor-not-allowed 
+                    flex items-center justify-center gap-2" >
+                        
                         {loading
                             ? <>
                                 <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
