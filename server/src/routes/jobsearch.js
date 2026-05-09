@@ -1,7 +1,7 @@
 import express from "express";
 import db from "../database.js";
 import Authorization from "../middleware/authmiddelware.js";
-
+import redis from "../lib/redies.js"
 
 const router = express.Router();
 
@@ -9,14 +9,37 @@ const router = express.Router();
 router.get("/search", Authorization, async (req, res) => {
     const { q, location } = req.query
 
+  
+    
     if (!q || q.trim().length < 2) {
         return res.status(400).json({
             error: 'Please enter a search term'
         })
     }
 
+
     try {
-        const query = ` ${q.trim()} ${location?.trim() || ''}`.trim()
+
+
+     const query = 
+            `${q?.trim() || ""} ${location?.trim() || ''}`.trim()
+            .toLowerCase()
+
+    
+      const cacheKey = `job:${query}`
+
+       const cached =  await redis.get(cacheKey)
+
+        if (cached) {
+
+            console.log("✅ JOB CACHE HIT")
+
+            return res.json(JSON.parse(cached))
+        }
+
+        console.log("❌ JOB CACHE MISS")
+
+
 
         const url = `https://jsearch.p.rapidapi.com/search?query=${encodeURIComponent(query)}&num_pages=2&country=us&date_posted=all`;
 
@@ -57,7 +80,18 @@ router.get("/search", Authorization, async (req, res) => {
             salaryPeriod: job.job_salary_period,
         }))
 
-        res.json({ jobs, total: jobs.length })
+        const responseData = {
+       jobs, total: jobs.length 
+        }
+
+          await redis.set(cacheKey , JSON.stringify(responseData) ,'EX', 1800)
+        console.log("✅ JOBS SAVED IN REDIS")
+
+
+         res.json(responseData)
+
+
+
 
     } catch (err) {
         
@@ -70,7 +104,7 @@ router.get("/search", Authorization, async (req, res) => {
 router.post("/saved", Authorization, async (req, res) => {
     const { title, company, jobUrl, jobDescription, location } = req.body
 
-    console.log(title, company, jobUrl, jobDescription, location)
+  
     if (!title || !company || !jobUrl) {
         return res.status(400).json({ error: 'Title, company and job URL are required' })
     }
@@ -119,15 +153,16 @@ router.post("/saved", Authorization, async (req, res) => {
 router.get("/saved", Authorization, async (req, res) => {
 
     try {
-        const { rows } = await db.query(`SELECT  id ,title , company , location , created_at ,source_url
-         FROM saved_jobs WHERE user_id=$1 `, [req.user.id])
+        const { rows } = await db.query(`SELECT  id, title ,company ,location ,created_at ,source_url, job_desc
+         FROM saved_jobs WHERE user_id=$1 
+         ORDER BY created_at DESC `, [req.user.id])
        
-        if (rows.length === 0) {
-            return res.status(400).json({
-                error: "you havent saved any jobs"
-            })
-        }
+        
+        
         res.json({ jobs: rows })
+      
+       
+
     } catch (err) {
         res.status(500).json({ error: 'Server error' })
     }
@@ -141,9 +176,8 @@ router.get("/saved", Authorization, async (req, res) => {
 
 
 
-router.delete('/delete/:id', Authorization, async (req, res) => {
+router.delete('/:id', Authorization, async (req, res) => {
     const { id } = req.params
-    console.log(id)
     try {
 
 

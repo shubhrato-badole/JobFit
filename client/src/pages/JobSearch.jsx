@@ -109,7 +109,10 @@ const JobCard = ({ job, onSave, savedIds }) => {
           {alreadySaved ? '✓ Saved' : saving ? 'saving...' : 'save'}
         </button>
 
-        <a href={job.applyUrl} className="text-xs bg-white border rounded-xl border-gray-300 px-2 py-1 hover:bg-gray-50"> Apply ↗</a>
+        <a href={job.applyUrl} 
+         target="_blank"
+      rel="noopener noreferrer"
+  className="text-xs bg-white border rounded-xl border-gray-300 px-2 py-1 hover:bg-gray-50"> Apply ↗</a>
 
       </div>
 
@@ -240,7 +243,7 @@ const Jobsearch = () => {
       </div>
       <div>
         <form onSubmit={handleSearch} className="border bg-white border-gray-200 px-6 py-5 rounded-2xl">
-          <div className="flex gap-3 ">
+          <div className="flex flex-col lg:flex-row gap-3 ">
             <div className="flex-1">
               <label className=" block text-sm text-gray-900 font-medium mb-1.5">Job title or skill</label>
               <input

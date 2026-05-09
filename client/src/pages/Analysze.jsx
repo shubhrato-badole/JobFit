@@ -1,6 +1,6 @@
 import {  useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import API from "../Components/Api"
+import API from "../components/Api"
 
 
 
@@ -17,7 +17,6 @@ const Analysze = () => {
 
 
   const jobData = location.state || {}
-  console.log(jobData)
   const [form, setForm] = useState({
     company: jobData.company || '',
     role: jobData.title || '',

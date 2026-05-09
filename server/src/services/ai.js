@@ -28,7 +28,8 @@ console.log("AI FULL RESPONSE:", JSON.stringify(data, null, 2));
     return text;
   }catch (err) {
     console.error("AI ERROR:", err.message);
-    return "";
+throw err ;
+
   }
 
 }

@@ -1,11 +1,15 @@
-import express from "express"
+import express, { response } from "express"
 import db from "../database.js"
 import Authorization from "../middleware/authmiddelware.js"
 import callAi from "../services/ai.js"
+import crypto from "crypto"
+import redis from "../lib/redies.js"
 
 const router = express.Router();
 
 router.post("/analyze", Authorization , async (req , res) =>{
+
+  console
 
 const {company , role , jobDesc} =req.body
 
@@ -28,7 +32,33 @@ const {company , role , jobDesc} =req.body
       })
      }
 
-    
+  const cacheKey = 
+  'ai:' + 
+    crypto 
+         .createHash('md5')
+         .update(
+          JSON.stringify({
+            resumeText,
+            company,
+            role,
+            jobDesc,
+          })
+         )
+         .digest('hex')
+
+ const cached = await redis.get(cacheKey)
+
+
+
+    if (cached) {
+
+      console.log("✅ AI CACHE HIT")
+
+      return res.json(JSON.parse(cached))
+    }
+
+    console.log("❌ AI CACHE MISS")
+
 
  const prompt = `You are a resume analysis expert. Compare this resume against the job description.
  
@@ -69,13 +99,19 @@ try {
     }
 
   
+const responseData = {
 
-       res.json({
       matchScore:    result.matchScore,
       missingSkills: result.missingSkills,
       strengths:     result.strengths,
       suggestions:   result.suggestions,
-    })
+    }
+  
+  await redis.set( cacheKey , JSON.stringify(responseData), 'EX' , 3600)
+
+  console.log("AI RESPONSE SAVED IN REDIS ")
+
+res.json(responseData)
 
 }catch(err){
      console.error("ANALYZE ERROR:", err);
