@@ -6,7 +6,7 @@ max:10,
 handler:(req, res ) =>{
     res.status(429).json({
             success: false,                 
-    message: "Too many requests from this IP, please try again later."
+    error: "Too many requests from this IP, please try again later."
     })
 }
 })

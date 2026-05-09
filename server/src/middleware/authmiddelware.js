@@ -4,7 +4,7 @@ import db from "../database.js"
 
 const cookiesOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
+  secure: process.env.NODE_ENV === "production",
   sameSite: 'lax',
 }
 
@@ -16,9 +16,10 @@ const refreshTokenCookieOptions = {
 
  const Authorization = async (req , res , next) =>{
 
-const {accessToken , refreshtoken} = req.cookies;
+const {accessToken , refreshToken} = req.cookies || {};
 
-     if(!accessToken && !refreshtoken){
+
+     if(!accessToken && !refreshToken){
    return res.status(401).json({
     error: 'Not authenticated'
    })
@@ -35,7 +36,7 @@ const {accessToken , refreshtoken} = req.cookies;
 
       
     
-           if(!refreshtoken){
+           if(!refreshToken){
            return res.status(401).json({
             success: false,
             error: 'Not authenticated'
@@ -43,15 +44,15 @@ const {accessToken , refreshtoken} = req.cookies;
          }
 
      try{
-        const decoded = jwt.verify(refreshtoken , process.env.JWT_SECRET_REFRESHTOKEN)
+        const decoded = jwt.verify(refreshToken , process.env.JWT_SECRET_REFRESHTOKEN)
         
         const result = await db.query("SELECT * FROM users WHERE id= $1 "  ,[decoded.id])
         const user = result.rows[0]
         
-        if(!user || user.refreshtoken  !== refreshtoken){
+        if(!user || user.refreshtoken  !== refreshToken){
          await db.query("UPDATE users SET refreshtoken = NULL WHERE id = $1", [decoded.id])
-         res.clearCookie("accessToken")
-        res.clearCookie("refreshtoken")
+         res.clearCookie("accessToken" , cookiesOptions)
+        res.clearCookie("refreshToken" , refreshTokenCookieOptions)
       return res.status(401).json({ error: 'Session invalid. Please log in again.' })
         }
         
@@ -74,17 +75,17 @@ const {accessToken , refreshtoken} = req.cookies;
     await db.query("UPDATE users SET refreshtoken = $1 WHERE id = $2", [newRefreshToken, user.id])
      
      res.cookie("accessToken", newaccessToken, cookiesOptions)
-    res.cookie("refreshtoken", newRefreshToken, refreshTokenCookieOptions)
+    res.cookie("refreshToken", newRefreshToken, refreshTokenCookieOptions)
 
         req.user = {id: user.id,
         email: user.email,
          }; 
-        next();
+       return next();
 
       } catch(err){
         console.error('Refresh token error:', err)
-    res.clearCookie("accessToken")
-    res.clearCookie("refreshtoken")
+    res.clearCookie("accessToken" , cookiesOptions)
+    res.clearCookie("refreshToken" , refreshTokenCookieOptions)
     return res.status(401).json({ error: 'Session expired. Please log in again.' })
 
       }
