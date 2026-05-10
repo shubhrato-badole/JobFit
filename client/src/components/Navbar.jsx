@@ -5,7 +5,7 @@ import {useAuth} from "../pages/AuthContext"
 
 
 
-const Navebar = ()=>{
+const Navbar = ()=>{
 const {logout , user} = useAuth()
 const navigate = useNavigate();
 const location = useLocation();
@@ -240,4 +240,5 @@ return (
     </nav>
 )
 }
-export default Navebar
+
+export default Navbar
