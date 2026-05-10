@@ -1,5 +1,4 @@
-import { Routes, Route,} from "react-router-dom"
-import { HashRouter } from "react-router-dom"
+import {BrowserRouter, Routes, Route,} from "react-router-dom"
 import {AuthProvider, useAuth} from "./pages/AuthContext"
 import ProtectedRoute from "./pages/protectedRoutes"
 import Home from "./pages/Home"
@@ -58,11 +57,11 @@ return(
  
 
 const App = () => (
-  <HashRouter>
+  <BrowserRouter>
     <AuthProvider>
       <AppRoutes />
     </AuthProvider>
-  </HashRouter>
+  </BrowserRouter>
 )
  
 
