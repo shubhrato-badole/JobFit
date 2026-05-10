@@ -1,4 +1,4 @@
-import express, { response } from "express"
+import express from "express"
 import db from "../database.js"
 import Authorization from "../middleware/authmiddelware.js"
 import callAi from "../services/ai.js"
@@ -32,6 +32,7 @@ const {company , role , jobDesc} =req.body
       })
      }
 
+  
   const cacheKey = 
   'ai:' + 
     crypto 
@@ -46,6 +47,7 @@ const {company , role , jobDesc} =req.body
          )
          .digest('hex')
 
+     try{
  const cached = await redis.get(cacheKey)
 
 
@@ -56,9 +58,9 @@ const {company , role , jobDesc} =req.body
 
       return res.json(JSON.parse(cached))
     }
-
+  }catch(err){
     console.log("❌ AI CACHE MISS")
-
+  }
 
  const prompt = `You are a resume analysis expert. Compare this resume against the job description.
  

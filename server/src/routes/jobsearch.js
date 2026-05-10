@@ -25,7 +25,7 @@ router.get("/search", Authorization, async (req, res) => {
             `${q?.trim() || ""} ${location?.trim() || ''}`.trim()
             .toLowerCase()
 
-    
+    try{
       const cacheKey = `job:${query}`
 
        const cached =  await redis.get(cacheKey)
@@ -36,9 +36,9 @@ router.get("/search", Authorization, async (req, res) => {
 
             return res.json(JSON.parse(cached))
         }
-
+    }catch(err){
         console.log("❌ JOB CACHE MISS")
-
+    }
 
 
         const url = `https://jsearch.p.rapidapi.com/search?query=${encodeURIComponent(query)}&num_pages=2&country=us&date_posted=all`;

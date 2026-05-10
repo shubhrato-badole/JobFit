@@ -10,7 +10,9 @@ const {logout , user} = useAuth()
 const navigate = useNavigate();
 const location = useLocation();
 const [open , setopen] = useState(false)
- const menuRef = useRef(null)
+const menuRef = useRef(null)
+const [mobileMenu, setMobileMenu] = useState(false)
+
 
 const Activelocation = (path) => location.pathname.startsWith(path)
 const pathname = location.pathname;
@@ -65,12 +67,12 @@ useEffect(()=>{
 if (user){
     return(
         <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-<div className="w-full h-16 flex  items-center px-8 gap-4">
+<div className="w-full h-16 flex  items-center px-4 md:px-8 gap-4">
    <Link to= "/" className="text-gray-900 text-xl font-semibold">Job<span 
    className="text-blue-600">Fit </span>
    </Link>
 
-<div className="flex items-center gap-2 flex-1">
+<div className="hidden md:flex items-center gap-2 flex-1">
    {appLinks.map(link => (
     <Link 
     key={link.path} 
@@ -86,7 +88,7 @@ if (user){
    }
    </div>
 
-   <div className="flex items-center gap-3">
+   <div className="hidden md:flex items-center gap-3">
     <div className="relative" ref={menuRef} 
             >
     <button 
@@ -114,7 +116,46 @@ if (user){
               Logout
             </button>
    </div>
+   <button
+  onClick={() => setMobileMenu(prev => !prev)}
+  className="md:hidden text-2xl"
+>
+  ☰
+</button>
 </div>
+{mobileMenu && (
+
+  <div className="md:hidden border-t bg-white px-4 py-4 space-y-3">
+
+    {appLinks.map(link => (
+
+      <Link
+        key={link.path}
+        to={link.path}
+        onClick={() => setMobileMenu(false)}
+        className={`block px-4 py-3 rounded-lg text-sm ${
+          Activelocation(link.path)
+            ? 'bg-gray-100 text-gray-900 font-medium'
+            : 'text-gray-500 hover:text-gray-900'
+        }`}
+      >
+        {link.label}
+      </Link>
+
+    ))}
+
+    <button
+      type="button"
+      onClick={HandleLogout}
+      className="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-100 rounded-lg"
+    >
+      Logout
+    </button>
+
+  </div>
+
+  )}
+
 </nav>
    ) 
 }
@@ -122,10 +163,10 @@ if (user){
 return (
 
     <nav className="sticky flex top-0 z-50 bg-white border-b border-gray-200">
-   <div className=" w-full flex items-center px-10 h-20 gap-6">
+   <div className=" w-full flex items-center  px-4 md:px-10 h-20 gap-6">
     <Link to="/" className="text-gray-900 text-xl font-semibold">Job<span className="text-blue-600">Fit</span></Link>
-   <div className="flex items-center gap-6 flex-1">
-<div className="flex items-center gap-6 flex-1">
+   <div className="hidden md:flex  items-center gap-6 flex-1">
+<div className="hidden md:flex  items-center gap-6 flex-1">
           <a href= { pathname === "/login"? "/" : "#how"} className="text-sm text-gray-500 hover:text-gray-900">
             How it works
           </a>
@@ -156,7 +197,46 @@ return (
         </div>
 
    </div>
+   <button
+  onClick={() => setMobileMenu(prev => !prev)}
+  className="md:hidden text-2xl"
+>
+  ☰
+</button>
    </div>
+   {mobileMenu && (
+
+  <div className="md:hidden border-t bg-white px-4 py-4 space-y-3">
+
+    <a href="#how" className="block text-sm text-gray-600">
+      How it works
+    </a>
+
+    <a href="#features" className="block text-sm text-gray-600">
+      Features
+    </a>
+
+    <a href="#faq" className="block text-sm text-gray-600">
+      FAQ
+    </a>
+
+    <Link
+      to="/login"
+      className="block px-4 py-3 border rounded-lg text-sm"
+    >
+      Login
+    </Link>
+
+    <Link
+      to="/register"
+      className="block px-4 py-3 bg-gray-900 text-white rounded-lg text-sm"
+    >
+      Get started
+    </Link>
+
+  </div>
+
+)}
     </nav>
 )
 }
