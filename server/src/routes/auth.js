@@ -475,9 +475,9 @@ router.get("/google/callback",
    
     // Redirect to frontend — onboarding if new user, dashboard if returning
     if (user.isNewUser) {
-      return res.redirect(`${process.env.CLIENT_URL}/onboarding`)
+      return res.redirect(`${process.env.CLIENT_URL}/#/onboarding`)
     }else {
-      res.redirect(`${process.env.CLIENT_URL}/dashboard`)
+      res.redirect(`${process.env.CLIENT_URL}/#/dashboard`)
     }
 
   }
