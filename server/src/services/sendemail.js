@@ -22,7 +22,7 @@ const sendEmail = async({to , subject , html })=>{
 
     }catch(err){
     console.error('Email send  failed', err )
-    throw new Error('Email could not be sent ')
+    return true
     }
 
 }
@@ -75,15 +75,15 @@ const sendVerificationEmail = async( user,  token) => {
  
       </div> 
   ` ;
-return sendEmail({
+await sendEmail({
     to: user.email,
     subject: 'Verify your JobFit account',
     html,
 })
-
+  return true
 }
 
-const sendEmailResetPassword = (user , token) => {
+const sendEmailResetPassword = async (user , token) => {
  const resetUrl = `${process.env.CLIENT_URL}/forgot-password?token=${token}`
 
  const html = `
@@ -110,11 +110,12 @@ const sendEmailResetPassword = (user , token) => {
       ` ;
 
 
-return sendEmail({
+await sendEmail({
     to: user.email,
     subject: 'Reset your JobFit password',
     html,
 })
+return true
 
 }
 

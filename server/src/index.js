@@ -21,6 +21,9 @@ dotenv.config()
 
 const app = express();
 
+
+app.set('trust proxy', 1)
+
 app.use(helmet())
 
 const PORT = 3000
@@ -28,7 +31,7 @@ const PORT = 3000
 app.use(passport.initialize())
 
 app.use(cors ({
-    origin:"https://job-fit-murex.vercel.app",
+    origin: process.env.CLIENT_URL,
     credentials: true
 }))
 
