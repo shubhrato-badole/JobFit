@@ -17,14 +17,16 @@ const router = express.Router();
 const cookies_options = ({
   httpOnly: true,
   secure: true,
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  sameSite: 'none',
+  path: '/',
 })
 
 
 const cookies_options_refreshToken = ({
   httpOnly: true,
   secure: true,
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  sameSite:'none',
+  path: '/',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 })
 

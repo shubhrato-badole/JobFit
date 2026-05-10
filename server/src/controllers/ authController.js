@@ -7,14 +7,16 @@ import { sendVerificationEmail } from "../services/sendemail.js"
 const cookies_options = ({
   httpOnly: true,
   secure:  true,
-  sameSite: 'lax',
+  sameSite: 'none',
+   path: '/',
 })
 
 
 const cookies_options_refreshToken = ({
   httpOnly: true,
   secure:  true,
-  sameSite: 'lax',
+  sameSite: 'none',
+   path: '/',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 })
 

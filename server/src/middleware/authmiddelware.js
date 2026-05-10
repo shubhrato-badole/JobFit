@@ -5,7 +5,8 @@ import db from "../database.js"
 const cookiesOptions = {
   httpOnly: true,
   secure: true,
-  sameSite: 'lax',
+  sameSite: 'none',
+   path: '/',
 }
 
 const refreshTokenCookieOptions = {
