@@ -15,3 +15,5 @@ redis.on('error', (err) => {
   console.error('Redis error:', err.message)
   // just log it — don't crash the server
 })
+
+export default redis
