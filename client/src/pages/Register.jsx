@@ -1,4 +1,4 @@
-import {React ,  useState }from "react"
+import { useState }from "react"
 import { Link,   useNavigate  } from "react-router-dom"
 import {useAuth} from "./AuthContext"
 import API from "../components/Api"
@@ -49,7 +49,7 @@ try {
 
 
 const handleGoogleLogin = () => {
-  window.location.href = "/api/auth/google"
+  window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`
 }
 
 
