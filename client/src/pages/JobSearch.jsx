@@ -48,7 +48,9 @@ const JobCard = ({ job, onSave, savedIds }) => {
   }
 
   return (
-    <div className="w-full overflow-x-hidden min-w-0 border border-gray-200 rounded-2xl bg-white p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-200">
+    <div className="w-full h-full overflow-hidden min-w-0 border border-gray-200 rounded-2xl bg-white p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col">
+     
+     <div className="flex-1">
       <div className="flex items-start gap-3 mb-3">
 
         {job.logo ?
@@ -64,7 +66,7 @@ const JobCard = ({ job, onSave, savedIds }) => {
 
       </div>
 
-
+</div>
       <div className="flex flex-wrap gap-2 mb-4 ">
         {job.location &&
           <span className="text-xs text-gray-500 flex items-center gap-1">
@@ -96,7 +98,7 @@ const JobCard = ({ job, onSave, savedIds }) => {
 
       <div>
         {job.jobDesc &&
-          <p className="text-sm text-gray-600 leading-relaxed line-clamp-3 "> {job.jobDesc.slice(0, 160)}... </p>}
+          <p className="text-sm text-gray-600 leading-relaxed line-clamp-4 min-h-[96px]"> {job.jobDesc.slice(0, 160)}... </p>}
       </div>
 
       <div className="flex flex-wrap gap-3 mt-5">

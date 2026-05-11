@@ -137,7 +137,7 @@ const SavedJobs = () => {
                                         {j.company?.charAt(0).toUpperCase()}
                                     </div>
                                     <div className="flex flex-col min-w-0">
-                                        <h2 className="text-base sm:text-lg text-gray-900 font-semibold line-clamp-2 ">{j.title}</h2>
+                                        <h2 className="text-base text-sm sm:text-lg text-gray-900 font-semibold line-clamp-2 ">{j.title}</h2>
 
                                         <div className="flex flex-wrap gap-2 text-xs text-gray-500 mt-1">
                                             <p>{j.company}</p>
