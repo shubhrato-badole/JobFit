@@ -48,7 +48,7 @@ const JobCard = ({ job, onSave, savedIds }) => {
   }
 
   return (
-    <div className="w-full border border-gray-200 rounded-2xl bg-white p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-200">
+    <div className="w-full overflow-x-hidden min-w-0 border border-gray-200 rounded-2xl bg-white p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-200">
       <div className="flex items-start gap-3 mb-3">
 
         {job.logo ?
