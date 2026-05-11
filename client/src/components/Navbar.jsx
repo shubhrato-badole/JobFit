@@ -118,7 +118,7 @@ if (user){
    </div>
 
 
-<div className="md:hidden flex items-center justify-between gap-3">
+<div className="md:hidden ml-auto flex items-center gap-4">
   <div className="relative" ref={menuRef}>
    <button
     type="button"
@@ -127,20 +127,28 @@ if (user){
   >
     {initials}
   </button>
-
-{open && (
-  <div className="md:hidden absolute right-4 top-16 w-40 bg-white border rounded-xl shadow-lg z-50">
-
-    <button
-      type="button"
-      onClick={handleProfileClick}
-      className="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100"
+{open && ( <div
+      className={`absolute left-0 top-12 w-44 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden transition-all duration-200 origin-top-left ${
+        open
+          ? "opacity-100 scale-100 visible"
+          : "opacity-0 scale-95 invisible"
+      }`}
     >
-      Profile
-    </button>
 
-    </div>)}
-    </div>
+      <button
+        type="button"
+        onClick={() => {
+          handleProfileClick()
+          setopen(false)
+        }}
+        className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Profile
+      </button>
+                  
+    </div> )}
+
+  </div>
 
 
    <button
