@@ -127,8 +127,8 @@ const SavedJobs = () => {
                     <div>
                         {jobs?.map(j => (
                             <div key={j.id} className="w-full flex flex-col lg:flex-row 
-                            lg:items-center lg:justify-between gap-5 border border-gray-300
-                             px-4 sm:px-5 py-4 rounded-2xl mt-7 hover:shadow-sm transition">
+                            lg:items-center lg:justify-between gap-4 border border-gray-200 px-5 py-5 rounded-2xl 
+                            mt-6 hover:shadow-md transition-all duration-200 bg-white">
 
                                 <div className="flex gap-4 min-w-0">
                                     <div className={`h-12 w-12  border 
@@ -136,10 +136,10 @@ const SavedJobs = () => {
                  justify-center rounded-xl ${getColor(j.company)} `}>
                                         {j.company?.charAt(0).toUpperCase()}
                                     </div>
-                                    <div className="flex flex-col min-w-0">
-                                        <h2 className="text-base text-sm sm:text-lg text-gray-900 font-semibold line-clamp-2 ">{j.title}</h2>
+                                    <div className="flex flex-col min-w-0 max-w-3xl">
+                                        <h2 className="text-base font-semibold text-gray-900 leading-snug line-clamp-2 max-w-4xl ">{j.title}</h2>
 
-                                        <div className="flex flex-wrap gap-2 text-xs text-gray-500 mt-1">
+                                        <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mt-1">
                                             <p>{j.company}</p>
 
                                             {j.location &&

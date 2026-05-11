@@ -101,20 +101,20 @@ const JobCard = ({ job, onSave, savedIds }) => {
           <p className="text-sm text-gray-600 leading-relaxed line-clamp-4 min-h-[96px]"> {job.jobDesc.slice(0, 160)}... </p>}
       </div>
 
-      <div className="flex flex-wrap gap-3 mt-5">
-        <button onClick={handleAnalyze} className="text-white  text-xs font-semibold bg-gray-900 px-3 py-1.5 rounded-xl hover:bg-gray-700 transiction-color ">
+      <div className="flex flex-wrap lg:flex-nowrap gap-2 mt-5">
+        <button onClick={handleAnalyze} className="whitespace-nowrap text-white text-xs font-semibold bg-gray-900 px-3 py-2 rounded-xl hover:bg-gray-700 transition-colors">
           Analyze match →
         </button>
         <button onClick={handleSave}
           disabled={saving || alreadySaved}
-          className={`flex-1 sm:flex-none text-sm font-medium px-4 py-2.5 rounded-xl transition-colors ${alreadySaved ? 'bg-green-100 border border-green-300 text-green-500 ' : `bg-gray-100 border border-gray-300 text-gray-500`} `}>
+          className={`whitespace-nowrap text-xs font-semibold px-3 py-2 rounded-xl transition-colors ${alreadySaved ? 'bg-green-100 border border-green-300 text-green-500 ' : `bg-gray-100 border border-gray-300 text-gray-500`} `}>
           {alreadySaved ? '✓ Saved' : saving ? 'saving...' : 'save'}
         </button>
 
         <a href={job.applyUrl} 
          target="_blank"
       rel="noopener noreferrer"
-  className="flex-1 sm:flex-none text-center text-sm font-medium bg-white border border-gray-300 rounded-xl px-4 py-2.5 hover:bg-gray-50 transition-colors"> Apply ↗</a>
+  className="whitespace-nowrap text-center text-xs font-medium bg-white border border-gray-300 rounded-xl px-3 py-2 hover:bg-gray-50 transition-colors"> Apply ↗</a>
 
       </div>
 
