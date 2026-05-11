@@ -27,6 +27,7 @@ router.get("/search", Authorization, async (req, res) => {
 
     try{
       const cacheKey = `job:${query}`
+      console.log(cacheKey)
 
        const cached =  await redis.get(cacheKey)
 
