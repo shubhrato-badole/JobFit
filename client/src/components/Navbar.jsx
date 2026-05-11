@@ -206,30 +206,30 @@ return (
    </div>
    {mobileMenu && (
 
-  <div className="md:hidden border-t bg-white px-4 py-4 space-y-3">
+  <div className="block md:hidden border-t bg-white px-4 py-4 space-y-3">
 
-    <a href="#how" className="block text-sm text-gray-600">
+    <a href="#how" className=" text-sm text-gray-600">
       How it works
     </a>
 
-    <a href="#features" className="block text-sm text-gray-600">
+    <a href="#features" className=" text-sm text-gray-600">
       Features
     </a>
 
-    <a href="#faq" className="block text-sm text-gray-600">
+    <a href="#faq" className=" text-sm text-gray-600">
       FAQ
     </a>
 
     <Link
       to="/login"
-      className="block px-4 py-3 border rounded-lg text-sm"
+      className=" px-4 py-3 border rounded-lg text-sm"
     >
       Login
     </Link>
 
     <Link
       to="/register"
-      className="block px-4 py-3 bg-gray-900 text-white rounded-lg text-sm"
+      className=" px-4 py-3 bg-gray-900 text-white rounded-lg text-sm"
     >
       Get started
     </Link>

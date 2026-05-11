@@ -47,6 +47,8 @@ const {company , role , jobDesc} =req.body
          )
          .digest('hex')
 
+
+
      try{
  const cached = await redis.get(cacheKey)
 
