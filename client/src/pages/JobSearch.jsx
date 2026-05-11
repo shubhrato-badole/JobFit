@@ -48,7 +48,7 @@ const JobCard = ({ job, onSave, savedIds }) => {
   }
 
   return (
-    <div className=" border rounded-xl p-4 py-2.5 border-gray-200 ">
+    <div className="w-full border border-gray-200 rounded-2xl bg-white p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-200">
       <div className="flex items-start gap-3 mb-3">
 
         {job.logo ?
@@ -58,7 +58,7 @@ const JobCard = ({ job, onSave, savedIds }) => {
 
 
         <div className="flex-1 min-w-0 ">
-          <h3 className="text-sm text-gray-900 font-semibold truncate  ">{job.title}</h3>
+          <h3 className="text-sm sm:text-base text-gray-900 font-semibold line-clamp-2"  >{job.title}</h3>
           <p className="text-xs text-gray-500 truncate">{job.company}</p>
         </div>
 
@@ -96,23 +96,23 @@ const JobCard = ({ job, onSave, savedIds }) => {
 
       <div>
         {job.jobDesc &&
-          <p className="text-xs text-gray-500 "> {job.jobDesc.slice(0, 160)}... </p>}
+          <p className="text-sm text-gray-600 leading-relaxed line-clamp-3 "> {job.jobDesc.slice(0, 160)}... </p>}
       </div>
 
-      <div className="flex gap-3 mt-4">
+      <div className="flex flex-wrap gap-3 mt-5">
         <button onClick={handleAnalyze} className="text-white  text-xs font-semibold bg-gray-900 px-3 py-1.5 rounded-xl hover:bg-gray-700 transiction-color ">
           Analyze match →
         </button>
         <button onClick={handleSave}
           disabled={saving || alreadySaved}
-          className={`text-xs font-semibold  px-3 py-1.5 rounded-xl transition-colors hover:bg-gray-200 ${alreadySaved ? 'bg-green-100 border border-green-300 text-green-500 ' : `bg-gray-100 border border-gray-300 text-gray-500`} `}>
+          className={`flex-1 sm:flex-none text-sm font-medium px-4 py-2.5 rounded-xl transition-colors ${alreadySaved ? 'bg-green-100 border border-green-300 text-green-500 ' : `bg-gray-100 border border-gray-300 text-gray-500`} `}>
           {alreadySaved ? '✓ Saved' : saving ? 'saving...' : 'save'}
         </button>
 
         <a href={job.applyUrl} 
          target="_blank"
       rel="noopener noreferrer"
-  className="text-xs bg-white border rounded-xl border-gray-300 px-2 py-1 hover:bg-gray-50"> Apply ↗</a>
+  className="flex-1 sm:flex-none text-center text-sm font-medium bg-white border border-gray-300 rounded-xl px-4 py-2.5 hover:bg-gray-50 transition-colors"> Apply ↗</a>
 
       </div>
 
