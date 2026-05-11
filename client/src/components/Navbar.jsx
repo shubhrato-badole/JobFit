@@ -116,12 +116,41 @@ if (user){
               Logout
             </button>
    </div>
+
+
+<div className="md:hidden flex items-center gap-3">
+   <button
+    type="button"
+    onClick={() => setopen(prev => !prev)}
+    className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 font-semibold flex items-center justify-center"
+  >
+    {initials}
+  </button>
+
+{open && (
+  <div className="md:hidden absolute right-4 top-16 w-40 bg-white border rounded-xl shadow-lg z-50 relative" ref={menuRef} >
+
+    <button
+      type="button"
+      onClick={handleProfileClick}
+      className="block w-full text-left px-4 py-3 text-sm hover:bg-gray-100"
+    >
+      Profile
+    </button>
+
+    </div>)}
+
+
    <button
   onClick={() => setMobileMenu(prev => !prev)}
   className="md:hidden text-2xl"
 >
   ☰
 </button>
+</div>
+
+
+
 </div>
 {mobileMenu && (
 
