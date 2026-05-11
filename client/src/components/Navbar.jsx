@@ -206,34 +206,38 @@ return (
    </div>
    {mobileMenu && (
 
-  <div className="block md:hidden border-t bg-white px-4 py-4 space-y-3">
+  <div className="md:hidden absolute top-16 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
 
-    <a href="#how" className=" text-sm text-gray-600">
+<div className="flex flex-col px-6 py-6 space-y-5">
+    <a href="#how" className=" text-base font-medium text-gray-700 hover:text-black transition">
       How it works
     </a>
 
-    <a href="#features" className=" text-sm text-gray-600">
+    <a href="#features" className=" text-base font-medium text-gray-700 hover:text-black transition">
       Features
     </a>
 
-    <a href="#faq" className=" text-sm text-gray-600">
+    <a href="#faq" className=" text-base font-medium text-gray-700 hover:text-black transition">
       FAQ
     </a>
-
+     <div className="flex flex-col gap-3 pt-2">
     <Link
       to="/login"
-      className=" px-4 py-3 border rounded-lg text-sm"
+             className="w-full text-center border 
+             border-gray-300 py-3 rounded-xl text-sm font-medium hover:bg-gray-100 transition"
     >
       Login
     </Link>
 
     <Link
       to="/register"
-      className=" px-4 py-3 bg-gray-900 text-white rounded-lg text-sm"
+              className="w-full text-center border border-gray-300 py-3
+               rounded-xl text-sm font-medium hover:bg-gray-100 transition"
     >
       Get started
     </Link>
-
+    </div>
+</div>
   </div>
 
 )}
