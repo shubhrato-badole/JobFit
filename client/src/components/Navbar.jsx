@@ -128,7 +128,7 @@ if (user){
     {initials}
   </button>
 {open && ( <div
-      className={`absolute left-0 top-12 w-44 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden transition-all duration-200 origin-top-left ${
+      className={`absolute right-0 top-12 w-44 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden transition-all duration-200 origin-top-left ${
         open
           ? "opacity-100 scale-100 visible"
           : "opacity-0 scale-95 invisible"
