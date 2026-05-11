@@ -34,6 +34,7 @@ const Login = () => {
         try {
             const { data } = await API.post("/api/auth/login", Form ,{ withCredentials: "include"} )
             Login(data.user)
+            console.log(data.user)
             navigate(from)
         } catch (err) {
             setServerError(
