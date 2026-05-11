@@ -118,7 +118,8 @@ if (user){
    </div>
 
 
-<div className="md:hidden flex items-center gap-3">
+<div className="md:hidden flex items-center justify-between gap-3">
+  <div className="relative" ref={menuRef}>
    <button
     type="button"
     onClick={() => setopen(prev => !prev)}
@@ -128,7 +129,7 @@ if (user){
   </button>
 
 {open && (
-  <div className="md:hidden absolute right-4 top-16 w-40 bg-white border rounded-xl shadow-lg z-50 relative" ref={menuRef} >
+  <div className="md:hidden absolute right-4 top-16 w-40 bg-white border rounded-xl shadow-lg z-50">
 
     <button
       type="button"
@@ -139,6 +140,7 @@ if (user){
     </button>
 
     </div>)}
+    </div>
 
 
    <button
