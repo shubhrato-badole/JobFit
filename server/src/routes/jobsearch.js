@@ -25,8 +25,11 @@ router.get("/search", Authorization, async (req, res) => {
             `${q?.trim() || ""} ${location?.trim() || ''}`.trim()
             .toLowerCase()
 
+
+    let cacheKey;
+
     try{
-      const cacheKey = `job:${query}`
+       cacheKey = `job:${query}`
       console.log(cacheKey)
 
        const cached =  await redis.get(cacheKey)
@@ -85,10 +88,11 @@ router.get("/search", Authorization, async (req, res) => {
        jobs, total: jobs.length 
         }
 
+        if(cacheKey){
           await redis.set(cacheKey , JSON.stringify(responseData) ,'EX', 1800)
         console.log("✅ JOBS SAVED IN REDIS")
-
-
+        }
+        
          res.json(responseData)
 
 
