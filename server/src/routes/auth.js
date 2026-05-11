@@ -474,9 +474,11 @@ router.get("/google/callback",
     res.cookie('refreshToken', refreshToken,
       cookies_options_refreshToken
     )
-   console.log("Redirecting to:", `${process.env.CLIENT_URL}/dashboard`);
-   console.log("Redirecting to:", `${process.env.CLIENT_URL}/onboarding`);
-   
+
+    
+   console.log(refreshToken)
+   console.log(accessToken)
+
     if (user.isNewUser) {
       return res.redirect(`${process.env.CLIENT_URL}/onboarding`)
       
