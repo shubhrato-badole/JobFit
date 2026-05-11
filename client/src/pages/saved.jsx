@@ -108,7 +108,7 @@ const SavedJobs = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-7 py-8 ">
-            <div className="flex  justify-between items-center">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex flex-col gap-0.5">
                     <h1 className="text-2xl text-gray-900 font-semibold ">Saved jobs</h1>
                     <p className=" text-sm text-gray-500 "> {jobs ? 'Jobs you book marked to analyze later' :
@@ -126,20 +126,20 @@ const SavedJobs = () => {
                 <div>
                     <div>
                         {jobs?.map(j => (
-                            <div key={j.id} className="w-full flex border 
-            border-gray-300 px-4 py-3 justify-between rounded-xl 
-            mt-7 hover:shadow-sm transition">
+                            <div key={j.id} className="w-full flex flex-col lg:flex-row 
+                            lg:items-center lg:justify-between gap-5 border border-gray-300
+                             px-4 sm:px-5 py-4 rounded-2xl mt-7 hover:shadow-sm transition">
 
-                                <div className="flex gap-4 ">
+                                <div className="flex gap-4 min-w-0">
                                     <div className={`h-12 w-12  border 
                   font-semibold flex items-center
                  justify-center rounded-xl ${getColor(j.company)} `}>
                                         {j.company?.charAt(0).toUpperCase()}
                                     </div>
-                                    <div className="flex flex-col">
-                                        <h2 className="text-base text-gray-900 font-semibold ">{j.title}</h2>
+                                    <div className="flex flex-col min-w-0">
+                                        <h2 className="text-base sm:text-lg text-gray-900 font-semibold line-clamp-2 ">{j.title}</h2>
 
-                                        <div className="flex gap-2 text-xs text-gray-500 mt-0.5">
+                                        <div className="flex flex-wrap gap-2 text-xs text-gray-500 mt-1">
                                             <p>{j.company}</p>
 
                                             {j.location &&
@@ -152,19 +152,19 @@ const SavedJobs = () => {
                                 </div>
 
 
-                                <div className="flex items-center gap-3">
+                                <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
 
-                                    <button className="text-sm text-white px-4 py-2 bg-gray-900 rounded-xl hover:bg-gray-700" onClick={() => handleAnalyze(j)} >
+                                    <button className="flex-1 sm:flex-none text-sm text-center text-white px-4 py-2.5 bg-gray-900 rounded-xl hover:bg-gray-700 transition" onClick={() => handleAnalyze(j)} >
                                         Analyze job →
                                     </button>
 
-                                    <a className="text-sm text-gray-500 border border-gray-300 
-                     rounded-xl px-4 py-2 hover:bg-gray-100" href={j.source_url}>
+                                    <a className="flex-1 sm:flex-none text-sm text-center text-gray-600 border border-gray-300 rounded-xl px-4 py-2.5 hover:bg-gray-100 transition" href={j.source_url}>
                                         Apply  ↗
                                     </a>
 
-                                    <button className="text-sm text-gray-500 border
-                 border-gray-300 px-4 py-2 rounded-xl hover:bg-red-50 hover:text-red-600 hover:border-red-300 "
+                                    <button className="text-sm text-gray-500 border 
+                                    border-gray-300 px-4 py-2.5 rounded-xl 
+                                    hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition "
                                         onClick={() => deleteJobs(j.id)}>
                                         x
                                     </button>
