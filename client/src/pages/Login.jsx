@@ -32,7 +32,7 @@ const Login = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            const { data } = await API.post("/api/auth/login", Form)
+            const { data } = await API.post("/api/auth/login", Form ,{ withCredentials: "include"} )
             Login(data.user)
             navigate(from)
         } catch (err) {
