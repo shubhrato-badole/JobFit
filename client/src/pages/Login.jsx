@@ -32,9 +32,8 @@ const Login = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            const { data } = await API.post("/api/auth/login", Form ,{ withCredentials: "include"} )
+            const { data } = await API.post("/api/auth/login", Form)
             Login(data.user)
-            console.log(data.user)
             navigate(from)
         } catch (err) {
             setServerError(
