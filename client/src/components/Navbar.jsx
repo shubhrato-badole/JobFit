@@ -153,7 +153,7 @@ if (user){
 
    <button
   onClick={() => setMobileMenu(prev => !prev)}
-  className="md:hidden text-2xl"
+  className="md:hidden text-2xl justify-end"
 >
   ☰
 </button>
