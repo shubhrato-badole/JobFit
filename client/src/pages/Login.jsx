@@ -34,6 +34,7 @@ const Login = () => {
         try {
             const { data } = await API.post("/api/auth/login", Form)
             Login(data.user)
+            console.log(res.data)
             navigate(from)
         } catch (err) {
             setServerError(

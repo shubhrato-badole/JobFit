@@ -476,9 +476,6 @@ router.get("/google/callback",
     )
 
     
-   console.log(refreshToken)
-   console.log(accessToken)
-
     if (user.isNewUser) {
       return res.redirect(`${process.env.CLIENT_URL}/onboarding`)
       
