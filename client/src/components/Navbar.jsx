@@ -67,7 +67,7 @@ useEffect(()=>{
 if (user){
     return(
         <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-<div className="w-full h-16 flex  items-center px-4 md:px-8 gap-4">
+<div className="w-full h-16 flex  items-center px-4 md:px-8 gap-4 ">
    <Link to= "/" className="text-gray-900 text-xl font-semibold">Job<span 
    className="text-blue-600">Fit </span>
    </Link>
@@ -153,7 +153,7 @@ if (user){
 
    <button
   onClick={() => setMobileMenu(prev => !prev)}
-  className="md:hidden text-2xl justify-end"
+  className="md:hidden text-2xl "
 >
   ☰
 </button>
@@ -202,7 +202,7 @@ if (user){
 return (
 
     <nav className="sticky flex top-0 z-50 bg-white border-b border-gray-200">
-   <div className=" w-full flex items-center  px-4 md:px-10 h-20 gap-6">
+   <div className=" w-full flex items-center justify-between md:justify-start px-4 md:px-10 h-20 gap-6">
     <Link to="/" className="text-gray-900 text-xl font-semibold">Job<span className="text-blue-600">Fit</span></Link>
    <div className="hidden md:flex  items-center gap-6 flex-1">
 <div className="hidden md:flex  items-center gap-6 flex-1">

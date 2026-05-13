@@ -466,7 +466,7 @@ router.get("/google/callback",
     )
 
     await db.query("UPDATE users SET refreshtoken = $1 WHERE id = $2", [refreshToken, user.id])
-    // Set httpOnly cookie
+   
     res.cookie('accessToken', accessToken,
       cookies_options
     )

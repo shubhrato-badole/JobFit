@@ -102,7 +102,7 @@ if (loading) {
 
 
 
-      <div className="grid grid-cols-2 gap-4 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
         <div className=" bg-white border border-gray-200 rounded-2xl p-5" >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm text-gray-900 font-semibold truncate ">Recent applications</h2>
