@@ -43,8 +43,8 @@ const Profile = () => {
         setProfile(data.user)
         setName(data.user.name)
         setEmail(data.user.email)
-      } catch (err) {
-
+      } catch(err) {
+         console.log(err)
       } finally {
         setLoading(false)
       }
@@ -80,7 +80,7 @@ const Profile = () => {
     setPwdMsg('')
 
     try {
-      const { data } = await API.patch(`/api/profile/password`, {
+       await API.patch(`/api/profile/password`, {
         currentPassword: curPwd,
         newPassword: newPwd
       })
@@ -102,7 +102,7 @@ const Profile = () => {
     setDeleting(true)
 
     try {
-      const { data } = await API.delete(`/api/profile/delete`)
+          await API.delete(`/api/profile/delete`)
          logout()
       navigate("/")
     } catch (err){

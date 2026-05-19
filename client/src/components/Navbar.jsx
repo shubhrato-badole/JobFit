@@ -66,8 +66,8 @@ useEffect(()=>{
 
 if (user){
     return(
-        <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-<div className="w-full h-16 flex  items-center px-4 md:px-8 gap-4 ">
+        <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 overflow-visible">
+<div className="w-full h-16 flex  items-center px-4 md:px-8 gap-4 overflow-visible">
    <Link to= "/" className="text-gray-900 text-xl font-semibold">Job<span 
    className="text-blue-600">Fit </span>
    </Link>
