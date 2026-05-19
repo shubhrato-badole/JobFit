@@ -10,7 +10,8 @@ const {logout , user} = useAuth()
 const navigate = useNavigate();
 const location = useLocation();
 const [open , setopen] = useState(false)
-const menuRef = useRef(null)
+const desktopMenuRef = useRef(null)
+const mobileMenuRef = useRef(null)
 const [mobileMenu, setMobileMenu] = useState(false)
 
 
@@ -33,9 +34,14 @@ const handleProfileClick=() => {
 
 useEffect(()=>{
   const handleClickOutside = (e) => {
-    if (menuRef.current && !menuRef.current.contains(e.target)) {
+    if (desktopMenuRef.current && !desktopMenuRef.current.contains(e.target)) {
         setopen(false)
       }
+
+   if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setopen(false)
+      }
+
     }
       document.addEventListener("mousedown", handleClickOutside)
 
@@ -89,7 +95,7 @@ if (user){
    </div>
 
    <div className="hidden md:flex items-center gap-3">
-    <div className="relative" ref={menuRef} 
+    <div className="relative" ref={desktopMenuRef} 
             >
     <button 
      type="button"
@@ -119,7 +125,7 @@ if (user){
 
 
 <div className="md:hidden ml-auto flex items-center gap-4">
-  <div className="relative" >
+  <div className="relative" ref={mobileMenuRef} >
    <button
     type="button"
     onClick={() => setopen(prev => !prev)}
