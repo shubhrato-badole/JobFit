@@ -9,11 +9,9 @@ host: "smtp-relay.brevo.com",
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  tls: {
-    rejectUnauthorized: false,
-  },
 })
-
+console.log(process.env.EMAIL_USER)
+console.log(process.env.EMAIL_PASS?.slice(0, 10))
 
 transporter.verify((error, success) => {
   if (error) {
@@ -27,7 +25,7 @@ const sendEmail = async({to , subject , html })=>{
 
     try{
         await transporter.sendMail ({
-          from : `"JobFit" <${process.env.EMAIL_USER}>`,
+          from : `"JobFit" <jobfit.noreply@gmail.com>>`,
           to,
           subject,
           html
