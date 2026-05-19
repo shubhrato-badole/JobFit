@@ -119,7 +119,7 @@ if (user){
 
 
 <div className="md:hidden ml-auto flex items-center gap-4">
-  <div className="relative" ref={menuRef}>
+  <div className="relative" >
    <button
     type="button"
     onClick={() => setopen(prev => !prev)}
