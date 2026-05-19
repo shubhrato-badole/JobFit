@@ -14,6 +14,9 @@ host: "smtp.gmail.com",
   },
 })
 
+console.log("EMAIL_USER:", process.env.EMAIL_USER);
+console.log("EMAIL_PASS EXISTS:", !!process.env.EMAIL_PASS);
+
 transporter.verify((error, success) => {
   if (error) {
     console.log("SMTP ERROR:", error);
