@@ -9,7 +9,8 @@ const Navbar = ()=>{
 const {logout , user} = useAuth()
 const navigate = useNavigate();
 const location = useLocation();
-const [open , setopen] = useState(false)
+const [desktopOpen, setDesktopOpen] = useState(false)
+const [mobileOpen, setMobileOpen] = useState(false)
 const desktopMenuRef = useRef(null)
 const mobileMenuRef = useRef(null)
 const [mobileMenu, setMobileMenu] = useState(false)
@@ -29,17 +30,18 @@ const HandleLogout = async () =>{
 
 const handleProfileClick=() => {
         navigate("/profile")
-        setopen(false)
+        setDesktopOpen(false)
+        setMobileOpen(false)
       }
 
 useEffect(()=>{
   const handleClickOutside = (e) => {
     if (desktopMenuRef.current && !desktopMenuRef.current.contains(e.target)) {
-        setopen(false)
+        setDesktopOpen(false)
       }
 
    if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
-        setopen(false)
+        setMobileOpen(false)
       }
 
     }
@@ -99,15 +101,15 @@ if (user){
             >
     <button 
      type="button"
-    onClick={()=> setopen(prev => !prev)} className={`text-sm text-gray-600 font-semibold bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200  `}>{initials}</button>
+    onClick={()=> setDesktopOpen(prev => !prev)} className={`text-sm text-gray-600 font-semibold bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200  `}>{initials}</button>
       
      
-      {open &&     <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
+      {desktopOpen &&     <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
         <button 
         type="button"
         onClick={handleProfileClick} className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 rounded-lg transition ease-out duration-100
               ${
-    open
+    desktopOpen
       ? "opacity-100 scale-100"
       : "opacity-0 scale-95 pointer-events-none"
   }`} >Profile</button>    </div>
@@ -128,14 +130,14 @@ if (user){
   <div className="relative" ref={mobileMenuRef} >
    <button
     type="button"
-    onClick={() => setopen(prev => !prev)}
+    onClick={() => setMobileOpen(prev => !prev)}
     className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 font-semibold flex items-center justify-center"
   >
     {initials}
   </button>
-{open && ( <div
+{mobileOpen && ( <div
       className={`absolute right-0 top-12 w-44 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden transition-all duration-200 origin-top-left ${
-        open
+        mobileOpen
           ? "opacity-100 scale-100 visible"
           : "opacity-0 scale-95 invisible"
       }`}
@@ -145,7 +147,7 @@ if (user){
         type="button"
         onClick={() => {
           handleProfileClick()
-          setopen(false)
+          setMobileOpen(false)
         }}
         className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
       >
