@@ -2,7 +2,7 @@ import nodemailer from "nodemailer"
 
 
 const transporter = nodemailer.createTransport({
-host: "smtp.gmail.com",
+host: "smtp-relay.brevo.com",
   port: 587,
   secure: false,
   auth: {
@@ -14,8 +14,6 @@ host: "smtp.gmail.com",
   },
 })
 
-console.log("EMAIL_USER:", process.env.EMAIL_USER);
-console.log("EMAIL_PASS EXISTS:", !!process.env.EMAIL_PASS);
 
 transporter.verify((error, success) => {
   if (error) {
