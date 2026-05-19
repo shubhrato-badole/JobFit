@@ -26,14 +26,16 @@ transporter.verify((error, success) => {
 
 const sendEmail = async({to , subject , html })=>{
 
+   console.log("Sending email to:", to);
     try{
         await transporter.sendMail ({
-          from : `"JobFit" <jobfit.noreply@gmail.com>>`,
+          from : `"JobFit" <jobfit.noreply@gmail.com>`,
           to,
           subject,
           html
         })
 
+console.log("EMAIL SENT:", info.messageId);
         return true 
 
     }catch(err){
