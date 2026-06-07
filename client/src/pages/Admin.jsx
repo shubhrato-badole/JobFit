@@ -195,7 +195,7 @@ if (loading) {
                 Recent Users
               </h2>
               {recentUsers.slice(0, 5).map(u => (
-                  <div key={u.id} className="flex items-center gap-3">
+                  <div key={u.id} className="flex items-center gap-3 mb-2">
                     <div className=" w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-600">
                       {u.name?.[0]?.toUpperCase()}
                     </div>
@@ -280,8 +280,8 @@ if (loading) {
 
 {tab === 'skills' && (
     <div>
-        <h1 className="text-lg font-semibold text-gray-900 mb-2">Platform-wide skill gaps</h1>
-        <p className="text-gray-500 text-sm mb-4 ">Most common missing skills across all {stats.totalUsers} users</p>
+        <h1 className="text-lg font-semibold text-gray-900 mb-1">Platform-wide skill gaps</h1>
+        <p className="text-gray-500 text-sm mb-5 ">Most common missing skills across all {stats.totalUsers} users</p>
 
    
 

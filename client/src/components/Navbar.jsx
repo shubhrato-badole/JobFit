@@ -99,9 +99,9 @@ const Navbar = () => {
             {user.role === 'admin' && (
               <Link
                 to="/admin"
-                className={`px-4 py-2 rounded-lg text-sm border border-gray-200 bg-gray-100  ${Activelocation("/admin")
+                className={`px-4 py-2 rounded-lg text-sm border border-gray-200 bg-gray-100 text-gray-600 font-medium ${Activelocation("/admin")
                     ? 'bg-gray-100 text-gray-900 font-medium'
-                    : 'text-gray-500 hover:text-gray-900'
+                    : 'text-gray-500 hover:text-gray-900 bg-gray-200'
                   }`}
               >Admin</Link>
             )}
