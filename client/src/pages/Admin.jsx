@@ -59,12 +59,10 @@ function Admin(){
   const [search,  setSearch]  = useState('')
 
     useEffect(() => {
-    // Redirect non-admins immediately
     if (user && user.role !== 'admin') {
       navigate('/dashboard', { replace: true })
       return
     }
- 
     const fetchStats = async () => {
       try {
         const { data: res } = await api.get('/api/admin/stats')
