@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar"
 import Saved from "./pages/saved"
 import VerifyEmail from "./pages/verifyEmail"
 import ResetPassword from "./pages/forgotPassword"
+import Admin from "./pages/Admin"
 
 
 
@@ -49,6 +50,7 @@ return(
      <Route path="/tracker" element= {<ProtectedRoute> <Tracker/> </ProtectedRoute> }/>
       <Route path="/profile" element= {<ProtectedRoute> <Profile/> </ProtectedRoute> }/>
       <Route path="/saved" element= {<ProtectedRoute> <Saved/> </ProtectedRoute> }/>
+      <Route path="/admin" element= {<ProtectedRoute> <Admin/> </ProtectedRoute> }/>
     </Routes>
     </Layout>
 )
