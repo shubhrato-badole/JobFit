@@ -11,6 +11,7 @@ import Dashboard from "./routes/dashboard.js"
 import passport from "passport"
 import Jobsearch from "./routes/jobsearch.js"
 import Profile from "./routes/profile.js"
+import Admin from './routes/admin.js'
 
 
 
@@ -49,6 +50,7 @@ app.use("/api/tracker" , Tracker )
 app.use("/api/dashboard" , Dashboard )
 app.use("/api/jobs" , Jobsearch )
 app.use("/api/profile" , Profile )
+app.use("/api/admin" , Admin)
 
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err)
