@@ -23,7 +23,10 @@ router.get('/stats', Authorization, adminOnly, async (req, res) => {
 try{
     const userCountResult = await db.query("SELECT COUNT(*) FROM users");
 
-    
+      const missingSkill = await db.query(`SELECT skill, COUNT(*) as count FROM applications  jsonb_array_elements_text(missing_skills) AS skill
+WHERE missing_skills IS NOT NULL GROUP BY skill
+ORDER BY count DESC
+LIMIT 8`)
 
 }catch(err){
     console.error("Database error:", err);
