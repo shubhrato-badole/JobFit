@@ -96,10 +96,10 @@ const Navbar = () => {
           </div>
           
           <div>
-            
+
               <Link
                 to="/admin/stats"
-                className={`px-4 py-2 rounded-lg text-sm ${Activelocation("/admin/stats")
+                className={`px-4 py-2 rounded-lg text-sm border border-gray-300 bg-gray-100 ${Activelocation("/admin/stats")
                     ? 'bg-gray-100 text-gray-900 font-medium'
                     : 'text-gray-500 hover:text-gray-900'
                   }`}
