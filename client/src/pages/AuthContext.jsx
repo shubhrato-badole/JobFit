@@ -21,7 +21,7 @@ export const AuthProvider =   ({children}) => {
     try{
    const {data} = await API.get("/api/auth/me")
   setUser(data.user)
-    } catch(err) {
+    } catch{
         console.log("Auth check failed:")
      
         setUser(null)
@@ -42,7 +42,7 @@ const Login = async (userData) => {setUser(userData)
 }
   const logout = async () =>{
     try{
-await API.post("/api/auth/logout")} catch {}
+await API.post("/api/auth/logout")} catch{}
 setUser(null)
   }
 

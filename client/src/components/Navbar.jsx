@@ -96,7 +96,7 @@ const Navbar = () => {
           </div>
           
           <div>
-            {user.is_admin && (
+            
               <Link
                 to="/admin/stats"
                 className={`px-4 py-2 rounded-lg text-sm ${Activelocation("/admin/stats")
@@ -104,7 +104,7 @@ const Navbar = () => {
                     : 'text-gray-500 hover:text-gray-900'
                   }`}
               >Admin</Link>
-            )}
+            
           </div>
 
           <div className="hidden md:flex items-center gap-3">
