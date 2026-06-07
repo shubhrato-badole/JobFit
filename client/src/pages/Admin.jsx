@@ -104,13 +104,15 @@ if (loading) {
    const { stats, topMissingSkills, recentUsers } = data
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8" >
-     <div className="flex items-center justify-between mb-7">
+    <div className=" w-full max-w-7xl mx-auto px-6 py-8" >
+     <div className="flex items-center justify-between mb-10">
         <div>
-        <div classNaame="flex items-center gap-2">
-           <div className="w-2 h-2 rounded-full bg-green-400" />
-            <span className="text-xs text-gray-500 font-medium">Admin panel</span>
-          </div>
+        <div className="flex items-center gap-2 mb-1">
+  <div className="w-2 h-2 rounded-full bg-green-400" />
+  <span className="text-xs text-gray-500 font-medium">
+    Admin Panel
+  </span>
+</div>
           <h1 className="text-2xl font-bold text-gray-900">JobFit Dashboard</h1>
         </div>
          <p className="text-xs text-gray-400">
@@ -171,7 +173,7 @@ if (loading) {
           
 
        <div className="grid grid-cols-2 gap-5">
-       <div calssName="bg-white border border-gray-200 rounded-xl p-5">
+       <div className="bg-white border border-gray-200 rounded-xl p-5">
         <h2 className="text-sm font-semibold text-gray-900 mb-4">
                 Top missing skills platform-wide
               </h2>
@@ -194,7 +196,7 @@ if (loading) {
               </h2>
               {recentUsers.slice(0, 5).map(u => (
                   <div key={u.id} className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-600 shrink-0">
+                    <div className="flex items-center gap-3 py-3 border-b border-gray-100 last:border-0">
                       {u.name?.[0]?.toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -214,7 +216,7 @@ if (loading) {
 
 {tab === 'users' && ( 
     <div>
-        <div calssName="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4">
         <h1 className = "text-lg font-semibold text-gray-900">All users ({stats.totalUsers}) </h1>
           <input type="text" 
           placeholder="Search users..."
@@ -223,7 +225,7 @@ if (loading) {
             className="px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none w-56 placeholder-gray-400 focus:border-blue-400 transition-colors"
           />
         </div>
-        <div>
+        <div  className="bg-white border border-gray-200 rounded-xl overflow-hidden">
             <table>
                 <thead>
                     <tr>
@@ -237,7 +239,7 @@ if (loading) {
                 <tbody>
                       {filteredUsers.map(u => (
                   <tr key={u.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3">
+                    <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-600">
                           {u.name?.[0]?.toUpperCase()}
