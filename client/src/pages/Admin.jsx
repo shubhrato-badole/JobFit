@@ -196,7 +196,7 @@ if (loading) {
               </h2>
               {recentUsers.slice(0, 5).map(u => (
                   <div key={u.id} className="flex items-center gap-3">
-                    <div className="flex items-center gap-3 py-3 border-b border-gray-100 last:border-0">
+                    <div className=" w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-600">
                       {u.name?.[0]?.toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -226,10 +226,10 @@ if (loading) {
           />
         </div>
         <div  className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-            <table>
+            <table className="w-full ">
                 <thead>
                     <tr>
-                       <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">User</th>
+                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">User</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">Email</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">Resume</th>
                   <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">Role</th>
@@ -241,7 +241,7 @@ if (loading) {
                   <tr key={u.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-600">
+                        <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-600">
                           {u.name?.[0]?.toUpperCase()}
                         </div>
                         <span className="font-medium text-gray-900">{u.name}</span>
@@ -280,8 +280,8 @@ if (loading) {
 
 {tab === 'skills' && (
     <div>
-        <h1 className="text-lg font-semibold text-gray-900 mb-4">Platform-wide skill gaps</h1>
-        <p className="text-gray-500 text-sm">Most common missing skills across all {stats.totalUsers} users</p>
+        <h1 className="text-lg font-semibold text-gray-900 mb-2">Platform-wide skill gaps</h1>
+        <p className="text-gray-500 text-sm mb-4 ">Most common missing skills across all {stats.totalUsers} users</p>
 
    
 
