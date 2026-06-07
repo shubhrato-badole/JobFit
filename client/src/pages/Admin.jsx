@@ -282,11 +282,32 @@ if (loading) {
     <div>
         <h1 className="text-lg font-semibold text-gray-900 mb-4">Platform-wide skill gaps</h1>
         <p className="text-gray-500 text-sm">Most common missing skills across all {stats.totalUsers} users</p>
-        
-    </div>
+
+   
+
+<div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+   {topMissingSkills.map((s, i) =>{
+     const pct = Math.round((parseInt(s.count) / stats.totalUsers) * 100)
+     return(
+     <div key={i} className="bg-white border border-gray-200 rounded-lg p-4">
+         <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-900">{s.skill}</span>
+                    <span className="text-sm font-semibold text-gray-600">{s.count} users</span>
+                  </div>
+              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${BAR_COLORS[i] || 'bg-gray-400'}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1.5">{pct}% of all users missing this</p>
+     </div>
+  ) })}
+
+</div>
+ </div>
+
 )}
-
-
 
 
 
@@ -294,8 +315,7 @@ if (loading) {
 
       
 
-  )
-}
+  )}
 
 
 export default Admin
