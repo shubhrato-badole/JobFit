@@ -19,7 +19,7 @@ const adminOnly = async (req, res, next) => {
 }
 
 router.get('/stats', Authorization, adminOnly, async (req, res) => {
-
+                 console.log("Admin routes loaded");
     try {
         const userCountResult = await db.query("SELECT COUNT(*) FROM users");
 

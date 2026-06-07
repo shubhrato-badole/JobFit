@@ -11,8 +11,7 @@ import Dashboard from "./routes/dashboard.js"
 import passport from "passport"
 import Jobsearch from "./routes/jobsearch.js"
 import Profile from "./routes/profile.js"
-import Admin from './routes/admin.js'
-
+import Admin from "./routes/admin.js"
 
 
 
