@@ -4,7 +4,6 @@ import API from "../components/Api"
 
 
 
-
 const scoreColor = (s) =>
   s >= 75 ? 'text-green-600' :
     s >= 50 ? 'text-amber-600' :
@@ -92,7 +91,6 @@ const Analysze = () => {
     <div className="max-w-2xl mx-auto px-6 py-10 ">  {/* main div for screen */}
 
       <div className="bg-white ">
-        {/* div for card */}
         <div className="mb-7">
           <h2 className="text-xl font-semibold text-gray-900 mb-1 ">Analyze a job</h2>
           <p className="text-sm text-gray-500">Paste any job description and get your AI match score instantly.</p>
@@ -279,12 +277,11 @@ const Analysze = () => {
           Uses your uploaded resume · AI-powered by Gemini
         </p>
 
-      </div>     {/* div for card */}
+      </div>     
 
 
 
-
-    </div> /* main div for screen */
+    </div> 
 
 
 

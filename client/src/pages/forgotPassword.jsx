@@ -26,7 +26,7 @@ const ResetPassword = () => {
             if (!token) return
             setStatus('verifying')
             try {
-                const { data } = await API.post(`/api/auth/verify-password?token=${token}`)
+               await API.post(`/api/auth/verify-password?token=${token}`)
                 setStatus('verified')
             } catch (err) {
             setError(err.response?.data?.message || 'Verification failed')
@@ -75,7 +75,7 @@ const handleResetPwd = async (e) =>{
      setError('')
 
      try{
-    const {data } = await API.post("/api/auth/reset-password" ,{ newPassword:newPwd , token:token})
+       await API.post("/api/auth/reset-password" ,{ newPassword:newPwd , token:token})
     setResetPwd(true)
        setTimeout(() => {
        navigate("/login")
