@@ -1,4 +1,4 @@
-// server/src/routes/chat.js
+
 import express from 'express'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import db from '../database.js'
