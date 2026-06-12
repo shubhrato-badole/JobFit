@@ -98,6 +98,7 @@ const AiChat = ({ jobDesc, analysisResult }) => {
                 jobDesc: jobDesc,
                 analysisResult: analysisResult,
             })
+            console.log(data)
 
             setMessages(prev => [...prev, { role: 'model', content: data.reply }])
         } catch (err) {
@@ -107,6 +108,7 @@ const AiChat = ({ jobDesc, analysisResult }) => {
         }
     }
 
+    
     const handleKey = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault()
