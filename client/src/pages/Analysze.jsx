@@ -245,7 +245,8 @@ const Analysze = () => {
 
             <AiChat 
             jobDesc={form.jobDesc}
-            analysisResult={Result}/>
+            analysisResult={Result}
+            className="mb-3"/>
 
 
             {error &&
