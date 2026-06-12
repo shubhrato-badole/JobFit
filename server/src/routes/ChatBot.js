@@ -17,7 +17,13 @@ const callGemini = async (contents) => {
     }
   )
   const data = await res.json()
-   console.log('Gemini response:', JSON.stringify(data, null, 2))
+  if (data.error) {
+    const status = data.error.code
+    if (status === 429) {
+      throw new Error('AI is busy right now. Please wait a moment and try again.')
+    }
+    throw new Error(data.error.message)
+  }
   return data.candidates?.[0]?.content?.parts?.[0]?.text || ''
 }
 
@@ -42,14 +48,14 @@ router.post('/', Authorization, async (req, res) => {
         error: 'Please upload your resume first before using chat.'
       })
     }
+const shortResume = resumeText.slice(0, 1000)
 
-  
     const systemPrompt = `You are a career coach inside JobFit. You have already analyzed this candidate's resume against a job description.
 
 Here is everything you know:
 
 === CANDIDATE RESUME ===
-${resumeText}
+${shortResume}
 
 === JOB DESCRIPTION ===
 ${jobDesc || 'Not provided'}
