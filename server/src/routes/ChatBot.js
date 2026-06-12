@@ -93,7 +93,7 @@ Suggestions: ${analysisResult?.suggestions ?? 'None'}
      const reply = await callGemini(contents)
      res.json({ reply })
 
-    res.json({ reply })
+    return res.json({ reply })
 
   } catch (err) {
     console.error('Chat error:', err)

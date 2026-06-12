@@ -242,12 +242,12 @@ const Analysze = () => {
             </div>
 
 
-
+              <div className="mb-6">
             <AiChat 
             jobDesc={form.jobDesc}
             analysisResult={Result}
-            className="mb-3"/>
-
+            />
+           </div>
 
             {error &&
               <div> {error}</div>}
