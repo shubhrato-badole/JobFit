@@ -17,7 +17,6 @@ import ChatBot from "./routes/ChatBot.js"
 
 
 
-
 dotenv.config()
 
 const app = express();
@@ -51,7 +50,7 @@ app.use("/api/dashboard" , Dashboard )
 app.use("/api/jobs" , Jobsearch )
 app.use("/api/profile" , Profile )
 app.use("/api/admin" , Admin)
-app.use("/api")
+app.use("/api/chat" , ChatBot)
 
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err)
