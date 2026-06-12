@@ -12,6 +12,7 @@ import passport from "passport"
 import Jobsearch from "./routes/jobsearch.js"
 import Profile from "./routes/profile.js"
 import Admin from "./routes/admin.js"
+import ChatBot from "./routes/ChatBot.js"
 
 
 
@@ -50,6 +51,7 @@ app.use("/api/dashboard" , Dashboard )
 app.use("/api/jobs" , Jobsearch )
 app.use("/api/profile" , Profile )
 app.use("/api/admin" , Admin)
+app.use("/api")
 
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err)
