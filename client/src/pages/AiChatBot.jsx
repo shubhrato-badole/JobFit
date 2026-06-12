@@ -74,7 +74,7 @@ const AiChat = ({ jobDesc, analysisResult }) => {
         setStarted(true)
         setMessages([{
             role: 'model',
-            content: `I have read your resume and this job. You scored ${analysisResult?.match_score ?? 'N/A'}/100. Ask me anything about the gap, what to learn, or whether to apply.`
+            content: `I have read your resume and this job. You scored ${analysisResult?.matchScore ?? 'N/A'}/100. Ask me anything about the gap, what to learn, or whether to apply.`
         }])
         setTimeout(() => inputRef.current?.focus(), 100)
     }
@@ -169,15 +169,18 @@ const AiChat = ({ jobDesc, analysisResult }) => {
 
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
 
-                        <path d="M6 1a5 5 0 100 10A5 5 0 006 1zM4 6h4M6 4v4" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+                        <path d="M6 1a5 5 0 100 10A5 5 0
+                         006 1zM4 6h4M6 4v4" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
 
                     </svg>
 
                 </div>
 
-                <h3 className="text-sm font-semibold text-gray-900">Chat with AI about this job</h3>
+                <h3 className="text-sm font-semibold 
+                text-gray-900">Chat with AI about this job</h3>
 
-                <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full">
+                <span className="text-xs px-2 py-0.5 bg-blue-50
+                 text-blue-600 border border-blue-100 rounded-full">
 
                     Knows your resume + this JD
 
@@ -230,7 +233,9 @@ const AiChat = ({ jobDesc, analysisResult }) => {
 
                     placeholder={loading ? 'AI is thinking...' : 'Ask anything about this job or your resume...'}
 
-                    className="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-blue-400 transition-colors disabled:bg-gray-50 disabled:cursor-not-allowed"
+                    className="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none 
+                    focus:border-blue-400 transition-colors disabled:bg-gray-50
+                     disabled:cursor-not-allowed"
 
                 />
 
@@ -240,7 +245,9 @@ const AiChat = ({ jobDesc, analysisResult }) => {
 
                     disabled={loading || !input.trim()}
 
-                    className="px-4 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2.5 bg-gray-900 text-white text-sm font-medium 
+                    rounded-xl hover:bg-gray-700 transition-colors disabled:opacity-50 
+                    disabled:cursor-not-allowed"
 
                 >
 
@@ -250,7 +257,7 @@ const AiChat = ({ jobDesc, analysisResult }) => {
 
             </div>
 
-            <p className="text-xs text-gray-400 mt-2">Press Enter to send</p>
+            <p className="text-xs text-gray-400 mt-2 mb-5">Press Enter to send</p>
 
         </div>
 
