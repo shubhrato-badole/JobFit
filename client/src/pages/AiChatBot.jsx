@@ -114,4 +114,57 @@ const AiChat = ({ jobDesc, analysisResult }) => {
       sendMessage()
     }
   }
+
+
+if (!started) {
+    return (
+      <div className="border-t border-gray-100 pt-6 mt-2">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-6 h-6 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M6 1a5 5 0 100 10A5 5 0 006 1zM4 6h4M6 4v4" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <h3 className="text-sm font-semibold text-gray-900">Chat with AI about this job</h3>
+          <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full">
+            Knows your resume + this JD
+          </span>
+        </div>
+        <p className="text-xs text-gray-500 mb-4">
+          Ask why you scored this, what to learn, whether to apply, or get your resume rewritten for this role.
+        </p>
+ 
+        {/* Suggestion chips */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {SUGGESTIONS.map(s => (
+            <button
+              key={s}
+              onClick={() => { startChat(); setTimeout(() => sendMessage(s), 300) }}
+              className="text-xs px-3 py-1.5 border border-gray-200 rounded-full text-gray-600 hover:bg-gray-50 transition-colors"
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+ 
+        <button
+          onClick={startChat}
+          className="px-4 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-700 transition-colors"
+        >
+          Start chatting →
+        </button>
+      </div>
+    )
+  }
+
+
+
+
+
+
+
+
+
+
+  
 }
