@@ -17,6 +17,7 @@ const callGemini = async (contents) => {
     }
   )
   const data = await res.json()
+   console.log('Gemini response:', JSON.stringify(data, null, 2))
   return data.candidates?.[0]?.content?.parts?.[0]?.text || ''
 }
 

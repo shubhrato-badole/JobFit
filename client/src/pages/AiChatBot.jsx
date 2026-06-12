@@ -98,7 +98,8 @@ const AiChat = ({ jobDesc, analysisResult }) => {
                 jobDesc: jobDesc,
                 analysisResult: analysisResult,
             })
-            console.log(data)
+
+            console.log(data.reply)
 
             setMessages(prev => [...prev, { role: 'model', content: data.reply }])
         } catch (err) {
