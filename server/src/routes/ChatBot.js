@@ -1,12 +1,24 @@
 
 import express from 'express'
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import db from '../database.js'
 import Authorization from '../middleware/authmiddelware.js'
 
 const router  = express.Router()
-const genAI   = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-const model   = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' })
+const callGemini = async (contents) => {
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents,
+        generationConfig: { temperature: 0.3 },
+      }),
+    }
+  )
+  const data = await res.json()
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || ''
+}
 
 
 router.post('/', Authorization, async (req, res) => {
@@ -78,8 +90,8 @@ Suggestions: ${analysisResult?.suggestions ?? 'None'}
       }
     ]
 
-    const result = await model.generateContent({ contents })
-    const reply  = result.response.text()
+     const reply = await callGemini(contents)
+     res.json({ reply })
 
     res.json({ reply })
 

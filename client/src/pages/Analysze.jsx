@@ -252,7 +252,7 @@ const Analysze = () => {
               <div> {error}</div>}
 
             {saved ?
-              <div className="text-center bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+              <div className="text-center bg-white border border-gray-200 rounded-2xl p-6 shadow-sm mt-3">
                 <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full text-sm text-green-700 font-medium shadow-sm mb-3">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M3 8l4 4 6-6" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -270,7 +270,7 @@ const Analysze = () => {
                 </div>
               </div>
               :
-              <div className="flex gap-3">
+              <div className="flex gap-3 mt-3">
                 <button onClick={handleSave}
                   className="flex-1 text-sm bg-gray-900 px-3 py-2 rounded-xl text-white font-semibold 
   hover:bg-gray-700 transition-colors "> Save to tracker</button>
