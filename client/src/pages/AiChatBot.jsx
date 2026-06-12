@@ -56,3 +56,62 @@ const TypingIndicator = () => (
 )
 
 
+
+const AiChat = ({ jobDesc, analysisResult }) => {
+  const [messages,  setMessages]  = useState([])
+  const [input,     setInput]     = useState('')
+  const [loading,   setLoading]   = useState(false)
+  const [error,     setError]     = useState('')
+  const [started,   setStarted]   = useState(false)
+  const bottomRef = useRef(null)
+  const inputRef  = useRef(null)
+ 
+  // Scroll to bottom when new message arrives
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, loading])
+ 
+  const startChat = () => {
+    setStarted(true)
+    setMessages([{
+      role:    'model',
+      content: `I have read your resume and this job. You scored ${analysisResult?.match_score ?? 'N/A'}/100. Ask me anything about the gap, what to learn, or whether to apply.`
+    }])
+    setTimeout(() => inputRef.current?.focus(), 100)
+  }
+ 
+  const sendMessage = async (text) => {
+    const msg = (text || input).trim()
+    if (!msg || loading) return
+ 
+    setInput('')
+    setError('')
+ 
+    const userMessage = { role: 'user', content: msg }
+    const newMessages = [...messages, userMessage]
+    setMessages(newMessages)
+    setLoading(true)
+ 
+    try {
+      const { data } = await api.post('/api/chat', {
+        message:        msg,
+        history:        messages, // send full history (excluding initial AI greeting)
+        jobDesc:        jobDesc,
+        analysisResult: analysisResult,
+      })
+ 
+      setMessages(prev => [...prev, { role: 'model', content: data.reply }])
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to get response. Try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+ 
+  const handleKey = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      sendMessage()
+    }
+  }
+}
