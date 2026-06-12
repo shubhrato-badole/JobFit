@@ -1,6 +1,7 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import API from "../components/Api"
+import AiChat from "./AiChatBot";
 
 
 
@@ -19,22 +20,22 @@ const Analysze = () => {
   const [form, setForm] = useState({
     company: jobData.company || '',
     role: jobData.title || '',
-    jobDesc: jobData.jobDesc|| ''
+    jobDesc: jobData.jobDesc || ''
 
   })
 
   const [error, setError] = useState('');
   const [status, setStatus] = useState('ideal');
   const [Result, setResult] = useState({
-  matchScore: 0,
-  missingSkill: [],
-  strengths: [],
-  suggestion: []
-});
+    matchScore: 0,
+    missingSkill: [],
+    strengths: [],
+    suggestion: []
+  });
   const [saved, setSaved] = useState(false);
 
   const handleChange = (e) => {
-    setForm(prev => 
+    setForm(prev =>
       ({ ...prev, [e.target.name]: e.target.value }))
     setError('')
   }
@@ -53,11 +54,12 @@ const Analysze = () => {
 
     try {
       const { data } = await API.post("/api/ai/analyze", form)
-      setResult( {matchScore: data.matchScore,
-  missingSkill: data.missingSkills || [],
-  strengths: data.strengths       || [],
-  suggestion: data.suggestions    ||[]
-})
+      setResult({
+        matchScore: data.matchScore,
+        missingSkill: data.missingSkills || [],
+        strengths: data.strengths || [],
+        suggestion: data.suggestions || []
+      })
       setStatus('done')
     } catch (err) {
       setError(err.response?.data?.error || 'Analysis failed. Please try again.')
@@ -73,19 +75,21 @@ const Analysze = () => {
     setStatus('ideal')
 
   }
-   const handleSave = async () =>{
+  const handleSave = async () => {
     setSaved(true)
-    try{
-      await API.post("/api/ai/tracker", { ...form , 
-   matchScore: Result.matchScore,
-  missingSkills: Result.missingSkill,
-  strengths: Result.strengths,
-  suggestions: Result.suggestion } ) 
-    }catch(err){
-       console.log(err)
-        setError("Failed to save job");
+    try {
+      await API.post("/api/ai/tracker", {
+        ...form,
+        matchScore: Result.matchScore,
+        missingSkills: Result.missingSkill,
+        strengths: Result.strengths,
+        suggestions: Result.suggestion
+      })
+    } catch (err) {
+      console.log(err)
+      setError("Failed to save job");
     }
-   }
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-10 ">  {/* main div for screen */}
@@ -134,11 +138,11 @@ const Analysze = () => {
                 className="border border-gray-200 w-full rounded-xl px-4 py-2" />
 
               <p className="text-xs text-gray-400 mt-1">
-              {form.jobDesc.length} characters
-              {form.jobDesc.length > 0 && form.jobDesc.length < 50 && (
-                <span className="text-amber-500"> — paste more of the JD for accurate results</span>
-              )}
-            </p>
+                {form.jobDesc.length} characters
+                {form.jobDesc.length > 0 && form.jobDesc.length < 50 && (
+                  <span className="text-amber-500"> — paste more of the JD for accurate results</span>
+                )}
+              </p>
 
             </div>
             {error &&
@@ -185,8 +189,8 @@ const Analysze = () => {
 
                   <div
                     className={`h-full rounded-full transition-all duration-700 ${Result?.matchScore >= 75 ? 'bg-green-500' :
-                        Result?.matchScore >= 50 ? 'bg-amber-400' :
-                          'bg-red-400'
+                      Result?.matchScore >= 50 ? 'bg-amber-400' :
+                        'bg-red-400'
                       }`}
                     style={{ width: `${Result?.matchScore}%` }}
                   />
@@ -237,34 +241,40 @@ const Analysze = () => {
               ))}
             </div>
 
+
+
+            <AiChat 
+            />
+
+
             {error &&
               <div> {error}</div>}
 
             {saved ?
               <div className="text-center bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-               <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full text-sm text-green-700 font-medium shadow-sm mb-3">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M3 8l4 4 6-6" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-  Saved to tracker as Applied
-</div>
+                <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full text-sm text-green-700 font-medium shadow-sm mb-3">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8l4 4 6-6" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  Saved to tracker as Applied
+                </div>
 
                 <div className="flex gap-3">
                   <button className=" text-sm bg-gray-900 flex-1 px-3 py-2 text-white font-medium rounded-xl hover:bg-gray-700 transition-colors "
                     onClick={() => navigate('/tracker')}>View tracker</button>
                   <button onClick={handleReAnalyzing}
-                  className="flex-1 text-sm bg-gray-900 px-3 py-2 text-white 
+                    className="flex-1 text-sm bg-gray-900 px-3 py-2 text-white 
                   font-medium rounded-xl hover:bg-gray-700 transition-colors"
                   >Analyze another</button>
                 </div>
               </div>
               :
               <div className="flex gap-3">
-                <button   onClick={handleSave}
-                className="flex-1 text-sm bg-gray-900 px-3 py-2 rounded-xl text-white font-semibold 
+                <button onClick={handleSave}
+                  className="flex-1 text-sm bg-gray-900 px-3 py-2 rounded-xl text-white font-semibold 
   hover:bg-gray-700 transition-colors "> Save to tracker</button>
                 <button onClick={handleReAnalyzing}
-                 className="flex-1 text-sm bg-gray-900 px-3 py-2 rounded-xl text-white font-semibold 
+                  className="flex-1 text-sm bg-gray-900 px-3 py-2 rounded-xl text-white font-semibold 
    hover:bg-gray-700 transition-colors">Analyze another</button>
 
               </div>}
@@ -277,11 +287,11 @@ const Analysze = () => {
           Uses your uploaded resume · AI-powered by Gemini
         </p>
 
-      </div>     
+      </div>
 
 
 
-    </div> 
+    </div>
 
 
 
