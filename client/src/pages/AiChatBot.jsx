@@ -66,6 +66,9 @@ const AiChat = ({ jobDesc, analysisResult }) => {
     const inputRef = useRef(null)
 
 
+    console.log(analysisResult)
+    console.log(jobDesc)
+
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages, loading])
