@@ -225,17 +225,11 @@ const AiChat = ({ jobDesc, analysisResult }) => {
                 <input
 
                     ref={inputRef}
-
                     value={input}
-
                     onChange={e => setInput(e.target.value)}
-
                     onKeyDown={handleKey}
-
                     disabled={loading}
-
                     placeholder={loading ? 'AI is thinking...' : 'Ask anything about this job or your resume...'}
-
                     className="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none 
                     focus:border-blue-400 transition-colors disabled:bg-gray-50
                      disabled:cursor-not-allowed"
@@ -245,9 +239,7 @@ const AiChat = ({ jobDesc, analysisResult }) => {
                 <button
 
                     onClick={() => sendMessage()}
-
                     disabled={loading || !input.trim()}
-
                     className="px-4 py-2.5 bg-gray-900 text-white text-sm font-medium 
                     rounded-xl hover:bg-gray-700 transition-colors disabled:opacity-50 
                     disabled:cursor-not-allowed"
