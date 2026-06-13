@@ -23,6 +23,8 @@ const callGemini = async (contents) => {
       throw new Error('AI is busy right now. Please wait a moment and try again.')
     }
     throw new Error(data.error.message)
+    console.log(data.error)
+    console.log(data.error.message)
   }
   return data.candidates?.[0]?.content?.parts?.[0]?.text || ''
 }
