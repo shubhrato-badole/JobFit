@@ -86,13 +86,13 @@ const Analysze = () => {
     <div className="max-w-2xl mx-auto px-6 py-10">
       <div className="bg-white">
 
-        {/* Header */}
+        
         <div className="mb-7">
           <h2 className="text-xl font-semibold text-gray-900 mb-1">Analyze a job</h2>
           <p className="text-sm text-gray-500">Paste any job description and get your AI match score instantly.</p>
         </div>
 
-        {/* ── INPUT FORM ───────────────────────────────────── */}
+       
         {status !== 'done' && (
           <div className="bg-white border border-gray-200 rounded-2xl p-6">
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -161,11 +161,11 @@ const Analysze = () => {
           </div>
         )}
 
-        {/* ── RESULTS ──────────────────────────────────────── */}
+      
         {status === 'done' && Result && (
           <div>
 
-            {/* Score card — always visible above tabs */}
+           
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-5 flex items-center gap-5">
               <div>
                 <p className="text-xs text-gray-600 mb-2">Match score</p>
@@ -196,7 +196,7 @@ const Analysze = () => {
               </div>
             </div>
 
-            {/* Underline tabs */}
+           
             <div className="flex border-b border-gray-200 mb-5">
               <button
                 onClick={() => setActiveTab('analysis')}
@@ -220,11 +220,10 @@ const Analysze = () => {
               </button>
             </div>
 
-            {/* ── ANALYSIS TAB ─────────────────────────────── */}
             {activeTab === 'analysis' && (
               <div>
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  {/* Missing skills */}
+                  
                   <div className="bg-white border border-gray-200 rounded-xl p-4">
                     <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">
                       Missing skills
@@ -241,7 +240,7 @@ const Analysze = () => {
                     }
                   </div>
 
-                  {/* Strengths */}
+                 
                   <div className="bg-white border border-gray-200 rounded-xl p-4">
                     <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">
                       Your strengths
@@ -259,7 +258,7 @@ const Analysze = () => {
                   </div>
                 </div>
 
-                {/* How to improve */}
+              
                 <div className="bg-white border border-gray-200 p-5 rounded-xl mb-5">
                   <p className="mb-4 text-xs font-medium text-gray-400 uppercase tracking-wide">
                     How to improve
@@ -276,7 +275,7 @@ const Analysze = () => {
                   </div>
                 </div>
 
-                {/* Action buttons */}
+              
                 {error && (
                   <div className="text-red-500 text-center text-xs bg-red-50 border border-red-100 rounded-lg px-2 py-1 mb-3">
                     {error}
@@ -325,7 +324,7 @@ const Analysze = () => {
               </div>
             )}
 
-            {/* ── CHAT TAB ─────────────────────────────────── */}
+           
             {activeTab === 'chat' && (
               <div>
                 <AiChat
@@ -333,7 +332,7 @@ const Analysze = () => {
                   analysisResult={Result}
                 />
 
-                {/* Save buttons also in chat tab */}
+               
                 <div className="flex gap-3 mt-5">
                   {saved ? (
                     <>
