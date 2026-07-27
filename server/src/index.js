@@ -30,8 +30,9 @@ const PORT = 3000
 
 app.use(passport.initialize())
 
-const allowedOrigins = process.env.CLIENT_URLS.split(",");
+const allowedOrigins = process.env.CLIENT_URL?.split(",") || [];
 
+console.log("Allowed Origins:", allowedOrigins);
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
