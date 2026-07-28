@@ -104,7 +104,7 @@ if (loading) {
    const { stats, topMissingSkills, recentUsers } = data
 
   return (
-    <div className=" w-full max-w-7xl mx-auto px-6 py-8" >
+   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 sm:mb-10">
      <div className="flex items-center justify-between mb-10">
         <div>
         <div className="flex items-center gap-2 mb-1">
@@ -122,7 +122,7 @@ if (loading) {
 
 
 
- <div className="flex gap-2 mb-6">
+<div className="flex gap-2 mb-6 overflow-x-auto pb-1">
         {[
           { key: 'overview', label: 'Overview' },
           { key: 'users',    label: 'Users table' },
@@ -131,7 +131,7 @@ if (loading) {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+           className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
               tab === t.key
                 ? 'bg-gray-900 text-white'
                 : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
@@ -144,7 +144,7 @@ if (loading) {
 
         {tab === 'overview' && (
             <div>
-                  <div className="grid grid-cols-4 gap-4 mb-6">
+                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
                      <StatCard
                      label="Total Users" 
                      value={stats?.totalUsers || 0}
@@ -172,7 +172,7 @@ if (loading) {
                    </div>      
           
 
-       <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
        <div className="bg-white border border-gray-200 rounded-xl p-5">
         <h2 className="text-sm font-semibold text-gray-900 mb-4">
                 Top missing skills platform-wide
@@ -216,17 +216,17 @@ if (loading) {
 
 {tab === 'users' && ( 
     <div>
-        <div className="flex justify-between items-center mb-4">
-        <h1 className = "text-lg font-semibold text-gray-900">All users ({stats.totalUsers}) </h1>
+       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
+        <h1 className="text-lg font-semibold text-gray-900">All users ({stats.totalUsers}) </h1>
           <input type="text" 
           placeholder="Search users..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none w-56 placeholder-gray-400 focus:border-blue-400 transition-colors"
+            className="px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none w-full sm:w-56 placeholder-gray-400 focus:border-blue-400 transition-colors"
           />
         </div>
-        <div  className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-            <table className="w-full ">
+        <div className="bg-white border border-gray-200 rounded-xl overflow-x-auto">
+            <table className="w-full min-w-[600px]">
                 <thead>
                     <tr>
                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">User</th>
