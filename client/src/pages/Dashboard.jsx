@@ -75,13 +75,13 @@ if (loading) {
 
 
   {user?.hasResume ? '' :
-  <div className="bg-amber-50 border border-amber-200 rounded-lg rounded-xl px-5 py-4 flex items-center justify-between mb-7">
+  <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-7">
     <div>
     <p className="text-sm text-amber-800 font-semibold">Resume not uploaded yet</p>
     <p className="text-sm text-amber-800 font-semibold">Upload your resume to start analyzing jobs</p>
     </div>
-    <Link  to="/onboarding" className="bg-amber-700  rounded-lg  text-white text-sm font-semibold  px-4 py-2 hover:bg-amber-800 transition-colors shrink-0 "> Upload now</Link>
-  </div> 
+    <Link to="/onboarding" className="bg-amber-700 rounded-lg text-white text-sm font-semibold px-4 py-2 hover:bg-amber-800 transition-colors shrink-0 text-center"> Upload now</Link>
+  </div>
   }
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7 ">
 
@@ -118,21 +118,18 @@ if (loading) {
 
               {recentJobs?.map(j => (
                
-                <div key={j.id} className="flex items-center gap-3 py-3 border-b border-gray-100 last:border-0">
-                  <div className="flex-1">
-                    <p className="text-sm text-gray-900 font-medium truncate ">{j.company}</p>
+              <div key={j.id} className="flex flex-wrap items-center gap-2 sm:gap-3 py-3 border-b border-gray-100 last:border-0">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-900 font-medium truncate">{j.company}</p>
                     <p className="text-xs text-gray-500 truncate">{j.role}</p>
                   </div>
                   {j.match_score && (
                     <span className="text-xs font-medium text-gray-600 shrink-0">
                       {j.match_score}%
-                      
                     </span>
-                  ) 
-                }
-
-                  <span className={`text-sm font-medium  px-2 py-0.5  rounded-full border border-green-100
-                    ${statusColors[j.status]|| 'bg-gray-100 text-gray-600'}`}>{j.status.charAt(0) + j.status.slice(1).toLowerCase()}</span>
+                  )}
+                  <span className={`text-xs sm:text-sm font-medium px-2 py-0.5 rounded-full border border-green-100 shrink-0
+                    ${statusColors[j.status] || 'bg-gray-100 text-gray-600'}`}>{j.status.charAt(0) + j.status.slice(1).toLowerCase()}</span>
                 </div>
               ))}
             </div>
@@ -157,8 +154,8 @@ if (loading) {
                 ) : (
                   <div>
                     {missingSkill?.map((s,i) => (
-                      <div key={i} className="flex items-center gap-6 mb-3">
-                        <p className="text-xs text-gray-500 w-24 shrink-0 truncate">{s.skill}</p>
+                      <div key={i} className="flex items-center gap-3 sm:gap-6 mb-3">
+                        <p className="text-xs text-gray-500 w-16 sm:w-24 shrink-0 truncate">{s.skill}</p>
                         <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                           <div className="h-full bg-red-500 rounded-full"
                           style={{width: `${(s.count / missingSkill[0]?.count) * 100}%`}}></div>
@@ -191,22 +188,22 @@ if (loading) {
 
       </div>
 
- <div className="flex gap-3 mt-7  items-center">
+ <div className="flex flex-col sm:flex-row gap-3 mt-7 sm:items-center">
         <Link
           to="/analyze"
-          className="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-700 transition-colors"
+          className="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-700 transition-colors w-full sm:w-auto text-center"
         >
           Analyze a job →
         </Link>
         <Link
           to="/tracker"
-          className="px-5 py-2.5 border border-gray-200 text-gray-700 text-sm rounded-xl hover:bg-gray-50 transition-colors"
+          className="px-5 py-2.5 border border-gray-200 text-gray-700 text-sm rounded-xl hover:bg-gray-50 transition-colors w-full sm:w-auto text-center"
         >
           View tracker
         </Link>
         <Link
           to="/jobs"
-          className="px-5 py-2.5 border border-gray-200 text-gray-700 text-sm rounded-xl hover:bg-gray-50 transition-colors"
+          className="px-5 py-2.5 border border-gray-200 text-gray-700 text-sm rounded-xl hover:bg-gray-50 transition-colors w-full sm:w-auto text-center"
         >
           Search jobs
         </Link>
