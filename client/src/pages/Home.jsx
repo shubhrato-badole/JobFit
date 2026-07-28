@@ -29,7 +29,7 @@ const ScoreCard = () => {
 
   return (
     <div
-      className="bg-white border border-gray-200 rounded-2xl p-5 w-64 select-none"
+      className="bg-white border border-gray-200 rounded-2xl p-5 w-full max-w-xs sm:w-64 select-none"
       style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}
     >
       <p className="text-gray-400 text-xs mb-1">Match score</p>
