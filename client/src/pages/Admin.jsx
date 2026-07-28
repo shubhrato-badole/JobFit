@@ -7,7 +7,7 @@ import api from '../components/Api'
 
 
 const StatCard = ({ label , value , sub , subColor}) => (
-    <div className="bg-white border border-gray-200 rounded-xl p-4">
+    <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5">
          <p className="text-xs text-gray-500 mb-1">{label}</p>
          <p className="text-2xl font-semibold text-gray-900">{value}</p>
          <p className={`text-xs mt-1 ${subColor}`}>{sub}</p>
@@ -104,25 +104,25 @@ if (loading) {
    const { stats, topMissingSkills, recentUsers } = data
 
   return (
-   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 sm:mb-10">
-     <div className="flex items-center justify-between mb-10">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6 sm:mb-10 pt-1">
         <div>
-        <div className="flex items-center gap-2 mb-1">
-  <div className="w-2 h-2 rounded-full bg-green-400" />
-  <span className="text-xs text-gray-500 font-medium">
-    Admin Panel
-  </span>
-</div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full bg-green-400" />
+            <span className="text-xs text-gray-500 font-medium">
+              Admin Panel
+            </span>
+          </div>
           <h1 className="text-2xl font-bold text-gray-900">JobFit Dashboard</h1>
         </div>
-         <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-400">
           Last updated: {new Date().toLocaleTimeString('en-IN')}
         </p>
-          </div>
+      </div>
 
 
 
-<div className="flex gap-2 mb-6 overflow-x-auto pb-1">
+<div className="flex gap-2 mb-6 overflow-x-auto pb-1 justify-center sm:justify-start">
         {[
           { key: 'overview', label: 'Overview' },
           { key: 'users',    label: 'Users table' },
