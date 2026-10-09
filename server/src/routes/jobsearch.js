@@ -1,4 +1,3 @@
-
 import express from "express";
 import db from "../database.js";
 import Authorization from "../middleware/authmiddelware.js";
@@ -50,9 +49,9 @@ router.get("/search", Authorization, async (req, res) => {
 
         console.log("[JOB CACHE HIT]");
 
+        res.set("X-Cache", "HIT");
         return res.json(cachedData);
       } catch (parseError) {
-        // Invalid cached JSON should not break the search.
         console.error(
           "[JOB CACHE INVALID JSON]",
           parseError.message
@@ -71,8 +70,13 @@ router.get("/search", Authorization, async (req, res) => {
       }
     }
 
+    // Decide whether this is a cache miss or a Redis bypass.
+    const cacheStatus = cacheReadSucceeded ? "MISS" : "BYPASS";
+
     if (cacheReadSucceeded) {
       console.log("[JOB CACHE MISS]");
+    } else {
+      console.log("[JOB CACHE BYPASS]");
     }
 
     // Fetch from RapidAPI on a cache miss or Redis read failure.
@@ -92,6 +96,11 @@ router.get("/search", Authorization, async (req, res) => {
       console.error(
         "[JOB SEARCH UPSTREAM ERROR]",
         response.status
+      );
+
+      res.set(
+        "X-Cache",
+        cacheStatus === "BYPASS" ? "BYPASS" : "ERROR"
       );
 
       return res.status(502).json({
@@ -128,8 +137,7 @@ router.get("/search", Authorization, async (req, res) => {
       total: jobs.length,
     };
 
-    // Cache writes are best-effort. Successful search results should
-    // still be returned if Redis cannot store them.
+    // Cache writes are best-effort.
     try {
       await redis.set(
         cacheKey,
@@ -146,6 +154,8 @@ router.get("/search", Authorization, async (req, res) => {
       );
     }
 
+    // Tell the benchmark how this response was served.
+    res.set("X-Cache", cacheStatus);
     return res.json(responseData);
   } catch (err) {
     console.error("[JOB SEARCH ERROR]", err.message);
