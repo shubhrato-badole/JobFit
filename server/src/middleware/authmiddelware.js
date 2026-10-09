@@ -18,8 +18,6 @@ const refreshTokenCookieOptions = {
  const Authorization = async (req , res , next) =>{
 
 const {accessToken , refreshToken} = req.cookies || {};
-console.log(accessToken)
-console.log(refreshToken)
      if(!accessToken && !refreshToken){
    return res.status(401).json({
     error: 'Not authenticated'
@@ -58,7 +56,6 @@ console.log(refreshToken)
         }
         
 
-          console.log("Setting cookies for user:", user.id);
 
         const newaccessToken = jwt.sign({ id : user.id , email:user.email },
              process.env.JWT_SECRET_ACESSTOKEN,
