@@ -8,7 +8,7 @@ import RateLimit from "../middleware/RateLimit.js"
 import passport from "passport"
 import { Strategy as GoogleStrategy } from "passport-google-oauth20"
 import { hashToken , generateToken  } from "../middleware/token.js"
-import {verifyEmail , resendEmail , verifyEmailForgotPassword} from "../controllers/ authController.js"
+import {verifyEmail , resendEmail , verifyEmailForgotPassword} from "../controllers/authController.js"
 import {sendEmailResetPassword ,sendVerificationEmail } from "../services/sendemail.js"
 
 
