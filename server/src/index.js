@@ -6,8 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import passport from "passport";
-
-
+import authRoutes from "./routes/auth.js";
 import Resume from "./routes/resume.js";
 import Analyzse from "./routes/jobanalysze.js";
 import Tracker from "./routes/tracker.js";
