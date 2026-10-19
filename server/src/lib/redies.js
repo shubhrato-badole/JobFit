@@ -7,9 +7,8 @@ const redis = new Redis(process.env.REDIS_URL, {
     return Math.min(times * 200, 2000);
   },
      
-  tls: {
-    rejectUnauthorized: false  
-  }
+  // Managed Redis needs TLS; the local Docker Redis does not (REDIS_TLS=false).
+  ...(process.env.REDIS_TLS === 'false' ? {} : { tls: { rejectUnauthorized: false } }),
 })
 
 

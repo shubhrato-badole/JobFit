@@ -1,396 +1,369 @@
-# JobFit — AI-Powered Job Matching Platform
+<div align="center">
 
-> Know exactly why you are not getting callbacks.
+# JobFit
 
-**Live Demo → [job-fit-murex.vercel.app](https://job-fit-murex.vercel.app)**  
-**Backend API → [jobfit-guyz.onrender.com](https://jobfit-guyz.onrender.com)**  
-**Built by → [Shubhrato Badole](https://linkedin.com/in/shubhrato)**
+**Know exactly why you're not getting callbacks.**
 
----
+Upload your resume once, search real job listings, and get an AI match score that shows which skills you're missing and what to do about it. Track every application on a Kanban board.
 
-## The Problem
+![License: MIT](https://img.shields.io/badge/License-MIT-green)
+![Node 20](https://img.shields.io/badge/Node-20-339933?logo=nodedotjs&logoColor=white)
+![Express 5](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)
+![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-4169E1?logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-7-DC382D?logo=redis&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 
-Most developers apply to 50+ jobs and hear nothing back. They do not know if their resume is wrong, their skills do not match, or the job itself is unrealistic. Manually comparing your resume against 20 job descriptions takes 4–5 hours and you are still just guessing.
+[Live demo](https://job-fit-murex.vercel.app) · [Features](#features) · [How it works](#how-it-works) · [Quick start](#quick-start) · [API](#api-overview) · [Limitations](#limitations-and-roadmap)
 
-## The Solution
+</div>
 
-JobFit lets you upload your resume once. Search real job listings from LinkedIn and Indeed. Get an AI-generated match score from 0–100 with the **exact skills you are missing**, your **strengths for that specific role**, and **how to improve**. Track every application on a Kanban board. Chat with an AI coach that already knows your resume and the job description.
+<p align="center">
+  <img src="docs/images/demo-analyze.gif" alt="Pasting a job description and receiving a match score with missing skills, strengths and suggestions" width="88%" />
+  <br />
+  <sub>Paste a job description and get a match score, missing skills, strengths and next steps.
+  Full-quality MP4s: <a href="docs/videos/demo-analyze.mp4">analyze</a> · <a href="docs/videos/demo-search.mp4">job search</a>.</sub>
+</p>
 
----
+## Why JobFit?
+
+You send applications and hear nothing back, without knowing whether the problem is your resume, the role or the skills you lack. JobFit compares your resume with the actual job description and tells you.
+
+1. **Upload your resume** (PDF). It gets an AI review: a score, strengths, fixes and three target roles.
+2. **Find or paste a job.** Search live listings, or paste any job description.
+3. **Get a match score.** See the skills you're missing, the strengths you already have, and three concrete improvements. Then chat with an AI career coach about the result.
+4. **Track the outcome.** Move each application through Applied, Interview, Offer or Rejected, and watch your most common skill gaps on the dashboard.
+
+## Screenshots and demos
+
+<table>
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/images/demo-search.gif" alt="Searching for React developer jobs, scrolling through results and saving one" /><br />
+      <sub><b>Job search.</b> Search listings, then analyze, save or apply from each card.</sub>
+    </td>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/images/dashboard.png" alt="Dashboard with application totals, average match score, recent applications and top skill gaps" /><br />
+      <sub><b>Dashboard.</b> Totals, average match score, recent applications and your most frequent skill gaps.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/images/tracker.png" alt="Kanban application tracker with Applied, Interview, Offer and Rejected columns" /><br />
+      <sub><b>Application tracker.</b> A Kanban board with the match score stored on every card.</sub>
+    </td>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/images/saved-jobs.png" alt="List of saved jobs with Analyze job, Apply and remove buttons" /><br />
+      <sub><b>Saved jobs.</b> Bookmark listings now and analyze them later.</sub>
+    </td>
+  </tr>
+</table>
+
+## Table of contents
+
+- [Features](#features)
+- [How it works](#how-it-works)
+- [Tech stack](#tech-stack)
+- [Quick start](#quick-start)
+- [Configuration](#configuration)
+- [API overview](#api-overview)
+- [Database](#database)
+- [Performance and observability](#performance-and-observability)
+- [Deployment](#deployment)
+- [Limitations and roadmap](#limitations-and-roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
-| Feature | Description |
+### Match your resume to any job
+- **Resume review**: upload a PDF (up to 5 MB). Text is extracted, then Gemini returns a 0-100 score, strengths, specific fixes and exactly three target roles.
+- **Job match analysis**: paste a company, role and job description. You get a 0-100 match score, missing skills, matching strengths and three actionable suggestions.
+- **Chat with AI**: a career-coach chatbot that knows your resume, the job and the analysis, so you can ask follow-up questions.
+
+### Find and manage jobs
+- **Job search** through the JSearch API on RapidAPI, with quick-search chips and an optional location.
+- **Save jobs** to analyze later, or send an analysis straight to the tracker.
+- **Application tracker**: Applied, Interview, Offer and Rejected columns with the match score on each card.
+- **Dashboard**: total applications, interviews, offers, average match score, recent applications, and your top skill gaps counted across every analyzed job.
+
+### Accounts and administration
+- **Sign-up with email verification**, forgot and reset password, and **Google sign-in**.
+- **Sessions** use short-lived JWT access tokens and refresh tokens in HTTP-only cookies.
+- **Profile**: update your name, change your password, delete your account.
+- **Admin stats** endpoint and page, restricted to users with the `admin` role.
+
+### Built for responsiveness and safety
+- **Redis caching** for job searches (30 minutes) and AI analyses (1 hour).
+- **Input validation** with Zod, request-rate limiting, Helmet security headers and a CORS allowlist.
+- **Bcrypt** password hashing, and verification and reset tokens stored only as SHA-256 hashes.
+
+## How it works
+
+```mermaid
+flowchart LR
+    U["Browser"] --> FE["React + Vite SPA<br/>(Vercel or Nginx)"]
+    FE -->|"REST + HTTP-only cookies"| API["Express API"]
+    API --> PG[("PostgreSQL<br/>users, applications, saved jobs")]
+    API --> RD[("Redis<br/>job search + analysis cache")]
+    API --> GEM["Google Gemini<br/>resume review, match analysis, chat"]
+    API --> JS["JSearch (RapidAPI)<br/>job listings"]
+    API --> MAIL["Brevo SMTP<br/>verification + reset emails"]
+    API --> GO["Google OAuth<br/>sign-in"]
+```
+
+### Life of a match analysis
+
+```mermaid
+flowchart TD
+    A["POST /api/ai/analyze<br/>company, role, job description"] --> V{"Valid?<br/>description at least 50 characters"}
+    V -->|"no"| E1["400 error"]
+    V -->|"yes"| R{"Resume uploaded?"}
+    R -->|"no"| E2["400: upload a resume first"]
+    R -->|"yes"| K["Cache key = hash of resume + job"]
+    K --> C{"In Redis?"}
+    C -->|"hit"| OUT["Return cached analysis"]
+    C -->|"miss"| G["Gemini prompt<br/>JSON only, temperature 0.3"]
+    G --> S{"JSON shape valid?"}
+    S -->|"no"| E3["500: try again"]
+    S -->|"yes"| W["Cache for 1 hour"] --> OUT2["Return score, missing skills,<br/>strengths, suggestions"]
+```
+
+**Design decisions worth knowing**
+
+| Decision | Why |
 |---|---|
-| **AI Match Score** | Gemini AI analyzes your resume against any job description and returns a 0–100 score with skill gap analysis |
-| **Real Job Search** | Search live listings from LinkedIn, Indeed, and Glassdoor via JSearch API |
-| **Application Tracker** | Kanban board — Applied, Interview, Offer, Rejected — with full analysis on each card |
-| **AI Chat** | Chat with an AI career coach that knows your resume and the specific JD |
-| **Privacy Scanner** | Automatically flags PII risks in your resume before you apply |
-| **Redis Caching** | Same resume + JD returns in under 5ms instead of 4 seconds — 800x faster |
-| **Admin Dashboard** | Platform analytics — total users, analyses run, skill gap trends across all users |
-| **Google OAuth** | One-click sign in with Google alongside email/password auth |
-| **Email Verification** | Nodemailer verification flow with resend support |
-| **Forgot Password** | Cryptographic token-based password reset via email |
+| Resume stored as extracted text, not the PDF | Uploads are held in memory only, so no files are written to disk, and the text is reused by every analysis and chat. |
+| Prompts demand JSON only, and the response shape is validated | A malformed AI reply returns a clean error instead of breaking the UI. |
+| Analyses are cached by a hash of resume + job inputs | Re-analyzing the same job with the same resume costs no extra AI call. |
+| Job-search responses carry an `X-Cache` header (`HIT`, `MISS`, `BYPASS`, `ERROR`) | Cache behavior is easy to observe and benchmark. |
+| Access token 30 min, refresh token 7 days | The refresh token reissues both cookies when the access token expires. |
+| Auth and delete routes limited to 10 requests per 15 minutes per IP | Slows down brute-force attempts. |
 
----
+> [!NOTE]
+> **Where your data goes.** Your resume text and job descriptions are sent to Google's Gemini API for analysis. They are stored in your PostgreSQL database and cached in Redis.
 
-## Tech Stack
+## Tech stack
 
-### Frontend
-- **React 18** with React Router v6 — client-side routing, no page reloads
-- **Tailwind CSS** — utility-first styling
-- **Vite** — fast builds and hot module replacement
-- **Axios** — HTTP client with `withCredentials: true` for cross-domain cookies
-- Deployed on **Vercel** with `vercel.json` rewrite for SPA routing
-
-### Backend
-- **Node.js + Express** — REST API with ES modules
-- **Passport.js** — Google OAuth 2.0 strategy
-- **Multer** (memoryStorage) — PDF upload without touching disk
-- **pdf-parse** — extract text from uploaded resume
-- **Nodemailer** — email verification and password reset
-- **Helmet** — security headers on every response
-- **express-rate-limit** — brute force protection on auth routes
-- Deployed on **Render**
-
-### Database & Cache
-- **PostgreSQL** — relational data with JSONB columns for AI skill arrays
-- **Redis (Upstash)** — in-memory cache for AI responses
-- MD5 content-based cache keys — same resume + JD always returns same result
-- Cache TTL: 1 hour
-
-### AI
-- **Gemini 1.5 Flash** via Google AI Studio
-- Structured JSON prompt engineering — strict output format, no markdown
-- Response validation before `JSON.parse()`
-
-### DevOps
-- **Docker Compose** — 5 services: React (Nginx), Node.js, PostgreSQL, Redis, Nginx reverse proxy
-- **GitHub Actions** — CI/CD pipeline, auto-deploys to Render on every push to `main`
-- **Nginx** — reverse proxy routing `/api/*` to Node, `/*` to React, rate limiting
-
----
-
-## Architecture
-
-```
-Browser
-   │
-   ▼
-Vercel (React + Nginx)
-   │
-   │  API calls (HTTPS, httpOnly cookies)
-   ▼
-Render (Node.js + Express)
-   │
-   ├── PostgreSQL (users, applications, saved_jobs)
-   ├── Redis / Upstash (AI response cache)
-   └── Gemini API (AI analysis + chat)
-```
-
-### Authentication Flow
-
-```
-Register → bcrypt hash → save to DB → send verification email
-Login    → verify password → check is_verified
-       → sign access token (30min) + refresh token (7d)
-       → set httpOnly cookies (sameSite: none, secure: true)
-
-Every request → Authorization middleware
-             → verify access token
-             → if expired → verify refresh token
-             → issue new tokens transparently
-             → continue request
-```
-
-Tokens are stored in **httpOnly cookies** — JavaScript cannot read them, protecting against XSS. Refresh token rotation means every new access token also rotates the refresh token, invalidating any stolen tokens.
-
-### Redis Caching Flow
-
-```
-POST /api/ai/analyze
-   │
-   ├── Create cache key: MD5(resumeText + jobDescription)
-   ├── Check Redis → HIT  → return in <5ms
-   │                 MISS → call Gemini (2-4 seconds)
-   │                      → cache result for 1 hour
-   └── Return { matchScore, missingSkills, strengths, suggestions }
-```
-
----
-
-## Performance
-
-| Metric | Value |
+| Layer | Technology |
 |---|---|
-| Cache miss (Gemini API call) | 2,000 – 4,000ms |
-| Cache hit (Redis) | < 5ms |
-| Speed improvement | **800x faster** on repeat analyses |
-| Cache TTL | 3,600 seconds (1 hour) |
-| Concurrent load tested | 50 parallel requests |
+| **Frontend** | React 19, Vite, Tailwind CSS 3, React Router 7, Axios, Radix UI |
+| **Backend** | Node.js 20, Express 5, Passport (Google OAuth 2.0), Zod, Helmet, express-rate-limit |
+| **Auth** | JWT (jsonwebtoken), bcrypt, HTTP-only cookies, Nodemailer with the Brevo SMTP relay |
+| **AI** | Google Gemini (`gemini-flash-latest` for analysis, `gemini-3.5-flash` for chat) |
+| **Jobs data** | JSearch API on RapidAPI (US listings, two result pages per search) |
+| **Data** | PostgreSQL 15, Redis 7 (ioredis) |
+| **Files** | Multer (in-memory), pdf-parse |
+| **DevOps** | Docker, Docker Compose, Nginx, Vercel config for the client, k6 benchmark script |
 
----
-
-## Security
-
-- **httpOnly cookies** — tokens inaccessible to JavaScript (XSS protection)
-- **sameSite: none + secure: true** — cross-domain cookie support (OWASP compliant)
-- **bcrypt** at 10 rounds — password hashing
-- **Parameterised SQL queries** — SQL injection prevention throughout
-- **Helmet.js** — sets 11 security headers (CSP, HSTS, X-Frame-Options etc.)
-- **Rate limiting** — 30 req/min on API, 10 req/min on auth routes
-- **Refresh token rotation** — reuse detection invalidates both tokens
-- **Crypto random tokens** — 32-byte cryptographically secure tokens for email verification and password reset
-- **OWASP Top 10** alignment throughout
-
----
-
-## Database Schema
-
-```sql
-CREATE TABLE users (
-  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name              VARCHAR(255) NOT NULL,
-  email             VARCHAR(255) UNIQUE NOT NULL,
-  password          VARCHAR(255) NOT NULL,
-  resume_text       TEXT,
-  resume_uploaded_at TIMESTAMP,
-  role              VARCHAR(50) DEFAULT 'user',
-  is_verified       BOOLEAN DEFAULT false,
-  verify_token      TEXT,
-  refreshtoken      TEXT,
-  created_at        TIMESTAMP DEFAULT NOW()
-);
-
-CREATE TABLE applications (
-  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id        UUID REFERENCES users(id) ON DELETE CASCADE,
-  company        VARCHAR(255) NOT NULL,
-  role           VARCHAR(255) NOT NULL,
-  job_desc       TEXT NOT NULL,
-  match_score    INTEGER CHECK (match_score BETWEEN 0 AND 100),
-  missing_skills JSONB,
-  strengths      JSONB,
-  suggestions    TEXT,
-  status         VARCHAR(50) DEFAULT 'APPLIED',
-  created_at     TIMESTAMP DEFAULT NOW()
-);
-
-CREATE TABLE saved_jobs (
-  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id    UUID REFERENCES users(id) ON DELETE CASCADE,
-  title      VARCHAR(255) NOT NULL,
-  company    VARCHAR(255) NOT NULL,
-  location   VARCHAR(255),
-  job_desc   TEXT,
-  source_url TEXT,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-```
-
----
-
-## Local Development
+## Quick start
 
 ### Prerequisites
-- Node.js 20+
-- PostgreSQL 15+
-- Redis (or Upstash account)
-- Gemini API key from [aistudio.google.com](https://aistudio.google.com)
-- RapidAPI key for JSearch
 
-### Setup
+| Needed | For |
+|---|---|
+| [Docker](https://docs.docker.com/get-docker/) with Compose v2 | Running everything with one command |
+| [Gemini API key](https://aistudio.google.com/apikey) | Resume review, match analysis and chat |
+| [RapidAPI](https://rapidapi.com/) key subscribed to JSearch | Job search |
+| [Brevo](https://www.brevo.com/) SMTP credentials | Verification and password-reset emails |
 
-```bash
-# Clone the repo
-git clone https://github.com/shubhrato/jobfit.git
-cd jobfit
+Optional: a Google OAuth client for "Continue with Google". For local development without Docker you also need Node.js 20.
 
-# Install backend dependencies
-cd server && npm install
-
-# Install frontend dependencies
-cd ../client && npm install
-```
-
-### Environment Variables
-
-Create `server/.env`:
-
-```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/jobfit
-JWT_SECRET_ACESSTOKEN=your_access_secret
-JWT_SECRET_REFRESHTOKEN=your_refresh_secret
-GEMINI_API_KEY=your_gemini_key
-GEMINI_CHAT_API_KEY=your_second_gemini_key
-RAPIDAPI_KEY=your_rapidapi_key
-EMAIL_USER=your_gmail@gmail.com
-EMAIL_PASS=your_gmail_app_password
-CLIENT_URL=http://localhost:5173
-NODE_ENV=development
-REDIS_URL=redis://localhost:6379
-```
-
-Create `client/.env`:
-
-```env
-VITE_API_URL=http://localhost:3000
-```
-
-### Run locally
+### Run with Docker Compose
 
 ```bash
-# Terminal 1 — backend
-cd server && npm run dev
+git clone https://github.com/shubhrato-badole/JobFit.git
+cd JobFit
 
-# Terminal 2 — frontend
-cd client && npm run dev
+# 1. Create your env files from the templates
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+
+# 2. Fill in the required values in server/.env (see Configuration below)
+
+# 3. Build and start Nginx, the client, the API, PostgreSQL and Redis
+docker compose up --build
 ```
 
-App runs at `http://localhost:5173`
+| Service | URL |
+|---|---|
+| Web app (Nginx) | http://localhost |
+| API (direct) | http://localhost:3000 |
+| PostgreSQL (host port) | `localhost:5433` |
+| Redis (host port) | `localhost:6380` |
 
-### Run with Docker
+The database tables are created automatically on the first start.
+
+> [!TIP]
+> **No SMTP credentials yet?** Register, then verify the account by hand:
+> `docker compose exec postgres psql -U postgres -d jobfit -c "UPDATE users SET is_verified = true WHERE email = 'you@example.com';"`
+
+> [!TIP]
+> **Make yourself an admin** to open the Admin page:
+> `docker compose exec postgres psql -U postgres -d jobfit -c "UPDATE users SET role = 'admin' WHERE email = 'you@example.com';"`
+
+> [!NOTE]
+> Sessions use `Secure` cookies. Chrome accepts them on `http://localhost`; some other browsers do not, so use Chrome for local testing.
+
+### Run locally for development
 
 ```bash
-# From root folder
-docker-compose up --build
+# Infrastructure only (tables are created on first start)
+docker compose up -d postgres redis
 
-# App runs at http://localhost:80
+# API
+cd server
+npm install
+npm run dev                  # http://localhost:3000
+
+# Web app (new terminal)
+cd client
+npm install
+npm run dev                  # http://localhost:5173
 ```
 
----
+For this setup, change these values:
 
-## Project Structure
+| File | Variable | Value |
+|---|---|---|
+| `server/.env` | `CLIENT_URL` | `http://localhost:5173` |
+| `server/.env` | `CORS_ORIGINS` | `http://localhost:5173` |
+| `server/.env` | `GOOGLE_CALLBACK_URL` | `http://localhost:3000/api/auth/google/callback` |
+| `client/.env` | `VITE_API_URL` | `http://localhost:3000` |
 
-```
-jobfit/
-├── client/                    # React frontend
-│   ├── src/
-│   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── Onboarding.jsx      # resume upload + AI scoring
-│   │   │   ├── Dashboard.jsx       # stats overview
-│   │   │   ├── Analysze.jsx        # core AI analysis feature
-│   │   │   ├── Tracker.jsx         # Kanban application tracker
-│   │   │   ├── JobSearch.jsx       # real job listings
-│   │   │   ├── SavedJobs.jsx
-│   │   │   ├── Profile.jsx
-│   │   │   ├── Admin.jsx           # admin dashboard
-│   │   │   ├── AiChatBot.jsx       # AI chat component
-│   │   │   ├── AuthContext.jsx     # global auth state
-│   │   │   ├── ForgotPassword.jsx
-│   │   │   ├── VerifyEmail.jsx
-│   │   │   └── protectedRoutes.jsx
-│   │   └── components/
-│   │       ├── Api.js              # axios instance
-│   │       ├── Navbar.jsx
-│   │       └── Footer.jsx
-│   ├── Dockerfile                  # multi-stage: Node builder + Nginx
-│   ├── nginx.conf                  # SPA routing (try_files)
-│   └── vercel.json                 # rewrite all routes to index.html
-│
-├── server/                    # Node.js backend
-│   ├── src/
-│   │   ├── index.js                # Express app entry point
-│   │   ├── database.js             # pg.Pool connection
-│   │   ├── lib/
-│   │   │   └── redis.js            # ioredis client with error handler
-│   │   ├── middleware/
-│   │   │   ├── authmiddelware.js   # JWT verification + refresh
-│   │   │   └── RateLimit.js
-│   │   └── routes/
-│   │       ├── auth.js             # register, login, OAuth, verify, reset
-│   │       ├── resume.js           # PDF upload + AI scoring
-│   │       ├── jobanalysze.js      # core AI match analysis + Redis cache
-│   │       ├── ChatBot.js          # AI chat with context
-│   │       ├── tracker.js          # application CRUD
-│   │       ├── dashboard.js        # stats + skill gap aggregation
-│   │       ├── jobsearch.js        # JSearch API proxy + saved jobs
-│   │       ├── profile.js          # user profile management
-│   │       └── admin.js            # admin-only analytics
-│   ├── db/
-│   │   └── schema.sql
-│   └── Dockerfile
-│
-├── nginx/
-│   └── nginx.conf                  # reverse proxy + rate limiting
-└── docker-compose.yml              # 5 services
-```
+## Configuration
 
----
+Copy `server/.env.example` to `server/.env` and `client/.env.example` to `client/.env`. Never commit real `.env` files; they are already in `.gitignore`.
 
-## API Endpoints
+<details>
+<summary><strong>All environment variables</strong></summary>
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/api/auth/register` | ✗ | Register with email + password |
-| POST | `/api/auth/login` | ✗ | Login, returns JWT cookies |
-| POST | `/api/auth/logout` | ✓ | Clear cookies |
-| GET | `/api/auth/me` | ✓ | Get current user |
-| GET | `/api/auth/google` | ✗ | Google OAuth redirect |
-| GET | `/api/auth/google/callback` | ✗ | OAuth callback |
-| GET | `/api/auth/verify-email` | ✗ | Verify email token |
-| POST | `/api/auth/resend-verification` | ✗ | Resend verification email |
-| POST | `/api/auth/forgot-password` | ✗ | Send reset email |
-| POST | `/api/auth/reset-password` | ✗ | Reset with token |
-| POST | `/api/resume/upload` | ✓ | Upload PDF + extract text |
-| POST | `/api/ai/analyze` | ✓ | AI job match analysis |
-| POST | `/api/chat` | ✓ | AI chat with resume + JD context |
-| GET | `/api/tracker` | ✓ | Get all applications |
-| POST | `/api/ai/tracker` | ✓ | Save analysis to tracker |
-| PATCH | `/api/tracker/:id` | ✓ | Update application status |
-| DELETE | `/api/tracker/:id` | ✓ | Delete application |
-| GET | `/api/dashboard/stats` | ✓ | Platform stats for current user |
-| GET | `/api/jobs/search` | ✓ | Search live job listings |
-| POST | `/api/jobs/save` | ✓ | Save a job |
-| GET | `/api/jobs/saved` | ✓ | Get saved jobs |
-| DELETE | `/api/jobs/saved/:id` | ✓ | Remove saved job |
-| GET | `/api/profile` | ✓ | Get profile |
-| PATCH | `/api/profile` | ✓ | Update name/email |
-| PATCH | `/api/profile/password` | ✓ | Change password |
-| DELETE | `/api/profile` | ✓ | Delete account |
-| GET | `/api/admin/stats` | ✓ Admin | Platform-wide analytics |
+**Server (`server/.env`)**
 
----
+| Variable | Required | Description |
+|---|---|---|
+| `GEMINI_API_KEY` | Yes | Gemini key for resume review and match analysis |
+| `GEMINI_CHATBOT_KEY` | Yes | Gemini key for the chat feature (can be the same key) |
+| `RAPID_API_KEY` | Yes | RapidAPI key with a JSearch subscription |
+| `JWT_SECRET_ACESSTOKEN` | Yes | Secret for access tokens (the spelling matches the code) |
+| `JWT_SECRET_REFRESHTOKEN` | Yes | Secret for refresh tokens |
+| `DATABASE_URL` | Yes (local) | PostgreSQL connection string. Docker Compose sets this for you |
+| `REDIS_URL` | Yes (local) | Redis connection string. Docker Compose sets this for you |
+| `DATABASE_SSL` | No | Set to `false` for a local PostgreSQL. Leave unset for managed databases, which need SSL |
+| `REDIS_TLS` | No | Set to `false` for a local Redis. Leave unset for managed Redis, which needs TLS |
+| `CORS_ORIGINS` | Yes | Comma-separated list of allowed browser origins |
+| `CLIENT_URL` | Yes | Public URL of the web app, used in emails and the Google sign-in redirect |
+| `EMAIL_USER`, `EMAIL_PASS` | Yes | Brevo SMTP credentials for verification and reset emails |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_CALLBACK_URL` | No | Google sign-in. Callback path: `/api/auth/google/callback` |
+| `PORT` | No | API port. Default `3000` |
 
-## CI/CD Pipeline
+Generate a JWT secret with: `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`
 
-```
-Push to main branch
-      ↓
-GitHub Actions triggers
-      ↓
-Webhook to Render → backend redeploys (3 min)
-Vercel auto-detects push → frontend redeploys (2 min)
-      ↓
-Zero manual steps after initial setup
+**Client (`client/.env`)**
+
+| Variable | Description |
+|---|---|
+| `VITE_API_URL` | API origin. Leave it empty when Nginx serves both (Docker Compose). Use `http://localhost:3000` for `npm run dev` |
+
+</details>
+
+## API overview
+
+All routes live under `/api`. Everything except registration, login, email verification, password reset and Google sign-in requires the HTTP-only auth cookie.
+
+| Prefix | Purpose |
+|---|---|
+| `/api/auth` | `register`, `verify-email`, `resend-verification`, `login`, `logout`, `me`, `forgot-password`, `verify-password`, `reset-password`, `google`, `google/callback` |
+| `/api/resume` | `POST /upload` (PDF in the `resume` field, 5 MB max), `GET /status` |
+| `/api/ai` | `POST /analyze` (company, role, jobDesc), `POST /tracker` (save an analysis as an application) |
+| `/api/jobs` | `GET /search?q=...`, `GET /saved`, `POST /saved`, `DELETE /:id` |
+| `/api/tracker` | `GET /`, `PATCH /:id` (change status), `DELETE /:id` |
+| `/api/dashboard` | `GET /user` (totals, average score, recent applications, top skill gaps) |
+| `/api/chat` | `POST /` (message, history, jobDesc, analysisResult) |
+| `/api/profile` | `GET /`, `PATCH /change`, `PATCH /password`, `DELETE /delete` |
+| `/api/admin` | `GET /stats` (admin role only) |
+
+<details>
+<summary><strong>Example: analyze a job</strong></summary>
+
+```http
+POST /api/ai/analyze
+{ "company": "Peregrine Advisors", "role": "Full Stack Developer", "jobDesc": "…at least 50 characters…" }
 ```
 
+```json
+{
+  "matchScore": 32,
+  "missingSkills": ["Python", "AWS Lambda", "…"],
+  "strengths": ["React.js frontend development", "…"],
+  "suggestions": ["…", "…", "…"]
+}
+```
+
+</details>
+
+## Database
+
+Three tables, created from [`server/database/schema.sql`](server/database/schema.sql):
+
+| Table | Holds |
+|---|---|
+| `users` | Account, role, verification state, extracted resume text, resume score, feedback and target roles |
+| `applications` | Tracked jobs: company, role, status, match score, missing skills, strengths, suggestions |
+| `saved_jobs` | Bookmarked listings per user |
+
+Indexes cover `applications.user_id`, `applications.status`, `saved_jobs.user_id` and `users.email`.
+
+## Performance and observability
+
+- Job-search responses include an `X-Cache` header, so you can see whether Redis served the request.
+- Requests to `/api/jobs/search` and `/api/ai/analyze` are timed and logged as `[PERFORMANCE] METHOD path | status | duration`.
+- [`server/src/tests/benchmark.js`](server/src/tests/benchmark.js) is a [k6](https://k6.io/) script that measures cache hit, miss and bypass latency on job search:
+
+```bash
+BASE_URL=http://localhost COOKIE="accessToken=...; refreshToken=..." VUS=1 ITERATIONS=10 \
+  k6 run server/src/tests/benchmark.js
+```
+
+## Deployment
+
+- **Single host**: `docker compose up -d --build` runs Nginx (port 80), the client, the API, PostgreSQL and Redis. Nginx sends `/api/` to the API and everything else to the web app.
+- **Split hosting**: the client ships with a `vercel.json` for Vercel, and the API runs behind a proxy (the server trusts one proxy hop). Use managed PostgreSQL and Redis there, leave `DATABASE_SSL` and `REDIS_TLS` unset, and set `CORS_ORIGINS` and `CLIENT_URL` to your client's URL.
+
+## Limitations and roadmap
+
+**Known limitations**
+
+- Resumes must be text-based PDFs up to 5 MB. Scanned images are rejected, and the text limit is 50,000 characters.
+- Job search is pinned to US listings (`country=us`).
+- The chat assistant sees only the first 1,000 characters of your resume.
+- Scores come from a language model, so treat them as guidance rather than a verdict.
+- There is no automated test suite yet, and no published benchmark results (only the k6 script).
+
+**Ideas**
+
+- Support DOCX resumes and OCR for scanned PDFs.
+- Let users choose a country for job search.
+- Add unit and integration tests, and a CI pipeline.
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repo and create a branch: `git checkout -b feature/my-change`.
+2. Make your change and run the app locally to check it.
+3. Open a pull request describing what changed and why. For larger changes, open an issue first.
+
+Found a bug or have an idea? [Open an issue](https://github.com/shubhrato-badole/JobFit/issues).
+
+## License
+
+Released under the [MIT License](LICENSE). Copyright © 2026 Shubhrato Badole.
+
 ---
 
-## What I Learned Building This
+<div align="center">
 
-- How cross-domain cookies actually work (sameSite, secure, ITP)
-- Why `pg.Pool` not `pg.Client` matters under concurrent load
-- Redis crash prevention — `redis.on('error')` is not optional
-- JWT refresh token rotation and reuse detection
-- Why `memoryStorage` is critical on stateless deployment platforms
-- JSONB in PostgreSQL and `jsonb_array_elements_text()` for skill analytics
-- Multi-stage Docker builds — 10x smaller production images
+Built by [Shubhrato Badole](https://github.com/shubhrato-badole)
 
----
-
-## Author
-
-**Shubhrato Badole**  
-Final-year B.Tech CSE (Cybersecurity) — G.H. Raisoni College, Nagpur  
-Cyber Cell Intern — State Cyber Crime Investigation Unit
-
-[LinkedIn](https://linkedin.com/in/shubhrato) · [GitHub](https://github.com/shubhrato) · [bshubhrato@gmail.com](mailto:bshubhrato@gmail.com)
-
----
-
-*JobFit is a portfolio project built to solve a real problem. If you are a developer who has ever applied to 20 jobs and heard nothing back — this was built for you.*
+</div>

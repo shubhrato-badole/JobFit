@@ -5,9 +5,8 @@ dotenv.config();
 
 const db = new Pool({
 connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  // Managed databases need SSL; the local Docker Postgres does not (DATABASE_SSL=false).
+  ssl: process.env.DATABASE_SSL === 'false' ? false : { rejectUnauthorized: false },
  })
 
 db.connect();

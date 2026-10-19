@@ -42,6 +42,8 @@ services:
       - NODE_ENV=production
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgresql://postgres:password@postgres:5432/jobfit
+      - DATABASE_SSL=false
+      - REDIS_TLS=false
 
     ports:
       - "3000:3000"
@@ -68,6 +70,7 @@ services:
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./server/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
 
     restart: unless-stopped
 
